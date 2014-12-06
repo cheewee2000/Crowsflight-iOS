@@ -120,12 +120,14 @@
 		44471D4817AC6408008413B7 /* walk-91.png in Resources */ = {isa = PBXBuildFile; fileRef = 44471CEB17AC6408008413B7 /* walk-91.png */; };
 		44471D4917AC6408008413B7 /* walk-92.png in Resources */ = {isa = PBXBuildFile; fileRef = 44471CEC17AC6408008413B7 /* walk-92.png */; };
 		444BD8B917A4393B00C7A65A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 44C97DE817A433F300974240 /* libz.dylib */; };
-		444BD8BC17A43AB200C7A65A /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 444BD8BA17A43AB100C7A65A /* libTestFlight.a */; };
 		44795DBA1767843800921101 /* Andale Mono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 44795DB91767843800921101 /* Andale Mono.ttf */; };
 		44795DBD176988EB00921101 /* cwtToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 44795DBC176988EB00921101 /* cwtToolbar.m */; };
 		447965CD175008C300A45031 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447965CC175008C300A45031 /* MessageUI.framework */; };
 		448AC1A817BD685B00281208 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 448AC1A717BD685B00281208 /* Reachability.m */; };
 		448AC1AA17BD687700281208 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 448AC1A917BD687700281208 /* SystemConfiguration.framework */; };
+		4491D8AD1A33775F00C56401 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4491D8AC1A33775F00C56401 /* Crashlytics.framework */; };
+		4491D8B01A33C24600C56401 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4491D8AF1A33C24600C56401 /* Main.storyboard */; };
+		4491D8B21A33C2FD00C56401 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4491D8B11A33C2FD00C56401 /* Images.xcassets */; };
 		449758FF1783CE3000341552 /* EarthandLinesBLUE.png in Resources */ = {isa = PBXBuildFile; fileRef = 449758BB1783CE3000341552 /* EarthandLinesBLUE.png */; };
 		449759001783CE3000341552 /* EarthandLinesBLUE@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 449758BC1783CE3000341552 /* EarthandLinesBLUE@2x.png */; };
 		449759011783CE3000341552 /* EarthBLUE.png in Resources */ = {isa = PBXBuildFile; fileRef = 449758BD1783CE3000341552 /* EarthBLUE.png */; };
@@ -230,7 +232,6 @@
 		44C1D147175CF95F007798A6 /* MTStatusBarOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C1D146175CF95F007798A6 /* MTStatusBarOverlay.m */; };
 		44C7F757174F3BC600112096 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44C7F756174F3BC500112096 /* MapKit.framework */; };
 		44CDC4F417AB185E006ABAA4 /* teeth-02.png in Resources */ = {isa = PBXBuildFile; fileRef = 44CDC4F317AB185E006ABAA4 /* teeth-02.png */; };
-		44CDC4F617AB6AC3006ABAA4 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44CDC4F517AB6AC3006ABAA4 /* Crashlytics.framework */; };
 		44D4D195178B78C800E5937A /* cwtViewController3.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D4D193178B763100E5937A /* cwtViewController3.m */; };
 		44DA559D176EAF7D004A4C1F /* cwtArrow.m in Sources */ = {isa = PBXBuildFile; fileRef = 44DA559C176EAF7D004A4C1F /* cwtArrow.m */; };
 		44DAE01C17359AC900C17F07 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44DAE01B17359AC900C17F07 /* UIKit.framework */; };
@@ -394,7 +395,6 @@
 		44471CEA17AC6408008413B7 /* walk-90.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "walk-90.png"; sourceTree = "<group>"; };
 		44471CEB17AC6408008413B7 /* walk-91.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "walk-91.png"; sourceTree = "<group>"; };
 		44471CEC17AC6408008413B7 /* walk-92.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "walk-92.png"; sourceTree = "<group>"; };
-		444BD8BA17A43AB100C7A65A /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
 		44795DB91767843800921101 /* Andale Mono.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Andale Mono.ttf"; sourceTree = "<group>"; };
 		44795DBB176988EB00921101 /* cwtToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cwtToolbar.h; sourceTree = "<group>"; };
 		44795DBC176988EB00921101 /* cwtToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = cwtToolbar.m; sourceTree = "<group>"; };
@@ -402,9 +402,9 @@
 		448AC1A617BD685B00281208 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		448AC1A717BD685B00281208 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		448AC1A917BD687700281208 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		448AC1AB17BD72C700281208 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
-		448AC1AC17BD72C700281208 /* TestFlight+AsyncLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+AsyncLogging.h"; sourceTree = "<group>"; };
-		448AC1AD17BD72C700281208 /* TestFlight+ManualSessions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+ManualSessions.h"; sourceTree = "<group>"; };
+		4491D8AC1A33775F00C56401 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		4491D8AF1A33C24600C56401 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		4491D8B11A33C2FD00C56401 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		449758BB1783CE3000341552 /* EarthandLinesBLUE.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EarthandLinesBLUE.png; sourceTree = "<group>"; };
 		449758BC1783CE3000341552 /* EarthandLinesBLUE@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EarthandLinesBLUE@2x.png"; sourceTree = "<group>"; };
 		449758BD1783CE3000341552 /* EarthBLUE.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EarthBLUE.png; sourceTree = "<group>"; };
@@ -514,7 +514,6 @@
 		44C7F756174F3BC500112096 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		44C97DE817A433F300974240 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		44CDC4F317AB185E006ABAA4 /* teeth-02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "teeth-02.png"; sourceTree = "<group>"; };
-		44CDC4F517AB6AC3006ABAA4 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		44D4D192178B763100E5937A /* cwtViewController3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cwtViewController3.h; sourceTree = "<group>"; };
 		44D4D193178B763100E5937A /* cwtViewController3.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = cwtViewController3.m; sourceTree = "<group>"; };
 		44DA559B176EAF7D004A4C1F /* cwtArrow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cwtArrow.h; sourceTree = "<group>"; };
@@ -595,9 +594,8 @@
 				44DAE0601735A08C00C17F07 /* CoreLocation.framework in Frameworks */,
 				44DAE01C17359AC900C17F07 /* UIKit.framework in Frameworks */,
 				44DAE01E17359AC900C17F07 /* Foundation.framework in Frameworks */,
+				4491D8AD1A33775F00C56401 /* Crashlytics.framework in Frameworks */,
 				44DAE02017359AC900C17F07 /* CoreGraphics.framework in Frameworks */,
-				444BD8BC17A43AB200C7A65A /* libTestFlight.a in Frameworks */,
-				44CDC4F617AB6AC3006ABAA4 /* Crashlytics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -717,6 +715,23 @@
 				44E7EBD017A701AA0054E1BB /* Crowsflight_Create_001.wav */,
 			);
 			name = Sounds;
+			sourceTree = "<group>";
+		};
+		4491D8AE1A33C1FD00C56401 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				44DAE09117361C1E00C17F07 /* cwtDrawArc.h */,
+				44DAE09217361C1F00C17F07 /* cwtDrawArc.m */,
+				44DA559B176EAF7D004A4C1F /* cwtArrow.h */,
+				44DA559C176EAF7D004A4C1F /* cwtArrow.m */,
+				44C1D13E17599F8B007798A6 /* SIAlertView.h */,
+				44C1D13F17599F8B007798A6 /* SIAlertView.m */,
+				44C1D145175CF95E007798A6 /* MTStatusBarOverlay.h */,
+				44C1D146175CF95F007798A6 /* MTStatusBarOverlay.m */,
+				441CAA3917552656003131F8 /* UINavigationController+GZDrawer.h */,
+				441CAA3A17552656003131F8 /* UINavigationController+GZDrawer.m */,
+			);
+			name = Helpers;
 			sourceTree = "<group>";
 		};
 		449758BA1783CE3000341552 /* MapView */ = {
@@ -903,9 +918,9 @@
 				448AC1A917BD687700281208 /* SystemConfiguration.framework */,
 				448AC1A617BD685B00281208 /* Reachability.h */,
 				448AC1A717BD685B00281208 /* Reachability.m */,
-				44CDC4F517AB6AC3006ABAA4 /* Crashlytics.framework */,
 				442F15DC17A6FF0700571D19 /* AudioToolbox.framework */,
 				44C1D1431759A0CE007798A6 /* QuartzCore.framework */,
+				4491D8AC1A33775F00C56401 /* Crashlytics.framework */,
 				44DAE02117359AC900C17F07 /* Crowsflight */,
 				44DAE04817359ACA00C17F07 /* CrowsflightTests */,
 				44DAE01A17359AC900C17F07 /* Frameworks */,
@@ -941,16 +956,10 @@
 		44DAE02117359AC900C17F07 /* Crowsflight */ = {
 			isa = PBXGroup;
 			children = (
-				448AC1AB17BD72C700281208 /* TestFlight.h */,
-				448AC1AC17BD72C700281208 /* TestFlight+AsyncLogging.h */,
-				448AC1AD17BD72C700281208 /* TestFlight+ManualSessions.h */,
+				4491D8AE1A33C1FD00C56401 /* Helpers */,
 				442F15D917A6FAEA00571D19 /* Sounds */,
-				444BD8BA17A43AB100C7A65A /* libTestFlight.a */,
-				44C1D145175CF95E007798A6 /* MTStatusBarOverlay.h */,
-				44C1D146175CF95F007798A6 /* MTStatusBarOverlay.m */,
 				44C1D14117599FC3007798A6 /* SIAlertView.bundle */,
-				44C1D13E17599F8B007798A6 /* SIAlertView.h */,
-				44C1D13F17599F8B007798A6 /* SIAlertView.m */,
+				4491D8AF1A33C24600C56401 /* Main.storyboard */,
 				44795DBB176988EB00921101 /* cwtToolbar.h */,
 				44795DBC176988EB00921101 /* cwtToolbar.m */,
 				44DAE02A17359AC900C17F07 /* cwtAppDelegate.h */,
@@ -959,17 +968,13 @@
 				44D4D193178B763100E5937A /* cwtViewController3.m */,
 				442A5356178287CC008A1687 /* cfLocationViewController2.h */,
 				442A5357178287CC008A1687 /* cfLocationViewController2.m */,
+				44DAE02317359AC900C17F07 /* Crowsflight-Info.plist */,
 				4424DA1117BE8502005FBBC6 /* Settings.bundle */,
-				44DAE09117361C1E00C17F07 /* cwtDrawArc.h */,
-				44DAE09217361C1F00C17F07 /* cwtDrawArc.m */,
-				44DA559B176EAF7D004A4C1F /* cwtArrow.h */,
-				44DA559C176EAF7D004A4C1F /* cwtArrow.m */,
 				44DAE02217359AC900C17F07 /* Supporting Files */,
 				4497593F1783D08900341552 /* TableView */,
 				449759401783D0A200341552 /* MapView */,
 				449759411783D0B900341552 /* IAP */,
-				441CAA3917552656003131F8 /* UINavigationController+GZDrawer.h */,
-				441CAA3A17552656003131F8 /* UINavigationController+GZDrawer.m */,
+				4491D8B11A33C2FD00C56401 /* Images.xcassets */,
 			);
 			path = Crowsflight;
 			sourceTree = "<group>";
@@ -992,7 +997,6 @@
 				449758E31783CE3000341552 /* TableView */,
 				449758F61783CE3000341552 /* Toolbar */,
 				44795DB91767843800921101 /* Andale Mono.ttf */,
-				44DAE02317359AC900C17F07 /* Crowsflight-Info.plist */,
 				44ECCC4C1752D5D100857F57 /* Crowsflight-Prefix.pch */,
 				44DAE03117359AC900C17F07 /* Default-568h@2x.png */,
 				44DAE02D17359AC900C17F07 /* Default.png */,
@@ -1087,7 +1091,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = cwt;
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "CW&T";
 				TargetAttributes = {
 					44DAE01717359AC900C17F07 = {
@@ -1183,6 +1187,7 @@
 				4497592C1783CE3000341552 /* folded-map@2x.png in Resources */,
 				4497592D1783CE3000341552 /* longpress3.png in Resources */,
 				4497592E1783CE3000341552 /* longpress3@2x.png in Resources */,
+				4491D8B21A33C2FD00C56401 /* Images.xcassets in Resources */,
 				4497592F1783CE3000341552 /* search.png in Resources */,
 				449759301783CE3000341552 /* search@2x.png in Resources */,
 				449759311783CE3000341552 /* swipe3.png in Resources */,
@@ -1276,6 +1281,7 @@
 				44471D1217AC6408008413B7 /* walk-37.png in Resources */,
 				44471D1317AC6408008413B7 /* walk-38.png in Resources */,
 				44471D1417AC6408008413B7 /* walk-39.png in Resources */,
+				4491D8B01A33C24600C56401 /* Main.storyboard in Resources */,
 				44471D1517AC6408008413B7 /* walk-40.png in Resources */,
 				44471D1617AC6408008413B7 /* walk-41.png in Resources */,
 				44471D1717AC6408008413B7 /* walk-42.png in Resources */,
@@ -1371,7 +1377,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "./Crashlytics.framework/run 1eb6d15737d50f2df4316cb5b8b073da76a42b67";
+			shellScript = "./Crashlytics.framework/run 1eb6d15737d50f2df4316cb5b8b073da76a42b67 40bebb4237c785f5c3141f6294d24b895adf9fb4479d323fc36741241d8da9a8";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1485,12 +1491,14 @@
 		44DAE05417359ACA00C17F07 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = armv7;
-				CODE_SIGN_IDENTITY = "iPhone Developer: cw wang (XZCX966PV5)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: cw wang (XZCX966PV5)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)\"",
+					"$(SRCROOT)",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Crowsflight/Crowsflight-Prefix.pch";
@@ -1502,8 +1510,8 @@
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "399E5977-D3CA-4C6B-9193-906B7E8524E3";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1489349B-CE14-49B4-A9FB-FB83691BE8AC";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1511,12 +1519,14 @@
 		44DAE05517359ACA00C17F07 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = armv7;
-				CODE_SIGN_IDENTITY = "iPhone Developer: cw wang (XZCX966PV5)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: cw wang (XZCX966PV5)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)\"",
+					"$(SRCROOT)",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Crowsflight/Crowsflight-Prefix.pch";
@@ -1528,8 +1538,8 @@
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "399E5977-D3CA-4C6B-9193-906B7E8524E3";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1489349B-CE14-49B4-A9FB-FB83691BE8AC";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

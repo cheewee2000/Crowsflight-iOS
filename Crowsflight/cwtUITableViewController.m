@@ -21,20 +21,17 @@
     if (self) {
 
         //CGRect screen = [[UIScreen mainScreen] applicationFrame];
-        CGRect screenBounds = [[UIScreen mainScreen] applicationFrame];
-
-        //NSLog(@"%f",screenBounds.size.height);
+        //CGRect screenBounds = [[UIScreen mainScreen] applicationFrame];
+        CGRect screenBounds = [[UIScreen mainScreen] bounds];
         
         self.tableView.frame=CGRectMake(0, 0, screenBounds.size.width-40, screenBounds.size.height);
-        
-        
         
         [self.tableView setSeparatorStyle:(UITableViewCellSeparatorStyleNone)];
         [self.tableView setBackgroundColor:[UIColor colorWithRed:1.0 green:78/255.0f blue:36/255.0f alpha:1]];
         
         dele = [[UIApplication sharedApplication] delegate];
         
-        self.filterBar = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, screenBounds.size.width-39, 44)];
+        self.filterBar = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, screenBounds.size.width-40, 44)];
         self.filterBar.delegate=self;
 
         
@@ -117,9 +114,9 @@
     if(self.filterBar.text.length == 0)
     {
         self.isFiltered = FALSE;
-        int currentDestinationN=[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"];
+        int currentDestinationN=(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"];
         
-        if(currentDestinationN>=[dele.locationDictionaryArray count])currentDestinationN=[dele.locationDictionaryArray count]-1;
+        if(currentDestinationN>=[dele.locationDictionaryArray count])currentDestinationN=(int)[dele.locationDictionaryArray count]-1;
         
         
         NSIndexPath * ndxPath= [NSIndexPath indexPathForRow:currentDestinationN inSection:0];
@@ -143,7 +140,7 @@
     
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"enable_listInstructions"]==TRUE){
         
-        int instructionN=[[NSUserDefaults standardUserDefaults] integerForKey:@"listInstructions"];
+        int instructionN=(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"listInstructions"];
         
         NSLog(@"show list instructions");
         
@@ -199,7 +196,7 @@
 -(void)nextInstruction:(int)n{
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"enable_listInstructions"]==FALSE)return;
     
-    int instructionN=[[NSUserDefaults standardUserDefaults] integerForKey:@"listInstructions"];
+    int instructionN=(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"listInstructions"];
     if(n-1==instructionN){
         if(instructionN<3){
             instructionN++;
@@ -223,7 +220,7 @@
 
 
 -(void)setInstructionPosition{
-    int instructionN=[[NSUserDefaults standardUserDefaults] integerForKey:@"listInstructions"];
+    int instructionN=(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"listInstructions"];
     //CGRect screen = [[UIScreen mainScreen] applicationFrame];
     
     NSLog(@"instn %i",instructionN);
@@ -306,12 +303,12 @@
     else{
         
         if(self.isFiltered) {
-            rowCount = self.filteredTableData.count;
+            rowCount = (int)self.filteredTableData.count;
             [self setReorderingEnabled:FALSE];
         }
         else{
             [self setReorderingEnabled:( [dele.locationDictionaryArray count] > 1 )];
-            rowCount=[dele.locationDictionaryArray count];
+            rowCount=(int)[dele.locationDictionaryArray count];
         }
     }
     //return 0;
@@ -338,7 +335,8 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
 
-    
+    int screenWidth=[UIScreen mainScreen].bounds.size.width;
+
     if(!self.isFiltered){
     float yPos=0;
     
@@ -360,7 +358,7 @@
     
     NSString *strImgeName = [NSString stringWithFormat:@"walk-%i.png", walkAnimFrame];
     [walkAnimView setImage:[UIImage imageNamed:strImgeName]];
-    [walkAnimView setFrame:CGRectMake(0, [[UIScreen mainScreen] bounds].size.height-(h-y)-animationBottomPos, 320, 80)];
+    [walkAnimView setFrame:CGRectMake(0, [[UIScreen mainScreen] bounds].size.height-(h-y)-animationBottomPos, screenWidth, screenWidth*.25)];
     
     
     int doorAnimFrame=animationFrame;
@@ -369,8 +367,8 @@
     
     strImgeName = [NSString stringWithFormat:@"walk-d%i.png", doorAnimFrame];
     [doorAnimView setImage:[UIImage imageNamed:strImgeName]];
-    [doorAnimView setFrame:CGRectMake(0, [[UIScreen mainScreen] bounds].size.height-(h-y)-animationBottomPos, 320, 80)];
-    [doorBackground setFrame:CGRectMake(0, [[UIScreen mainScreen] bounds].size.height-(h-y)-animationBottomPos, 41 ,80)];
+    [doorAnimView setFrame:CGRectMake(0, [[UIScreen mainScreen] bounds].size.height-(h-y)-animationBottomPos, screenWidth, screenWidth*.25)];
+    [doorBackground setFrame:CGRectMake(0, [[UIScreen mainScreen] bounds].size.height-(h-y)-animationBottomPos, 41 ,screenWidth*.25)];
 
     
     if(animationFrame>=maxWalkFrames){
@@ -384,7 +382,7 @@
         
         strImgeName = [NSString stringWithFormat:@"walk-d%i.png", doorAnimFrame];
         [doorAnimView setImage:[UIImage imageNamed:strImgeName]];
-        [doorAnimView setFrame:CGRectMake(0, [[UIScreen mainScreen] bounds].size.height-(h-y)-animationBottomPos, 320,80)];
+        [doorAnimView setFrame:CGRectMake(0, [[UIScreen mainScreen] bounds].size.height-(h-y)-animationBottomPos, screenWidth,screenWidth*.25)];
            
     }
     if(h>10 && animationFrame>=maxWalkFrames+6){
@@ -435,7 +433,9 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    float lineWidth=[UIScreen mainScreen].bounds.size.width-40;
+    float screenWidth=[UIScreen mainScreen].bounds.size.width;
+
     if(indexPath.section==0){
 
         if(indexPath.row<[dele.locationDictionaryArray count]){
@@ -445,18 +445,18 @@
             else dictionary = [dele.locationDictionaryArray objectAtIndex:indexPath.row];
             
             BOOL isCurrent=FALSE;
-            int currentDestinationN=[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"];
+            int currentDestinationN=(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"];
             if(indexPath.row==currentDestinationN)isCurrent=TRUE;
             
             BOOL isLastRow=FALSE;
             int count=0;
-            if(self.isFiltered) count = [self.filteredTableData count];
-            else count = [dele.locationDictionaryArray count];
+            if(self.isFiltered) count = (int)[self.filteredTableData count];
+            else count = (int)[dele.locationDictionaryArray count];
             if(indexPath.row==count-1) isLastRow=TRUE;
             
             
     
-            NSString *identifier = [NSString stringWithFormat: @"cell-%@%i-%i-%i-%i", [[dictionary objectForKey:@"searchedText"] uppercaseString], indexPath.row,isCurrent,isLastRow,self.isFiltered];
+            NSString *identifier = [NSString stringWithFormat: @"cell-%@%i-%i-%i-%i", [[dictionary objectForKey:@"searchedText"] uppercaseString], (int)indexPath.row,isCurrent,isLastRow,self.isFiltered];
            
             LRSlidingTableViewCell *cell = (LRSlidingTableViewCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
         
@@ -479,7 +479,6 @@
             float lotDist=(log(1+dist)/log(100))*.275;
 
 
-            float lineWidth=[UIScreen mainScreen].bounds.size.width-40;
             
             UIView *progressBar = [[UIView alloc] init];
             [cell.contentView addSubview:progressBar];
@@ -538,7 +537,7 @@
             }
             
             //separation bar
-            UIView * bar=[[UIView alloc] initWithFrame:CGRectMake(0,  60-1, cell.bounds.size.width, 1)];
+            UIView * bar=[[UIView alloc] initWithFrame:CGRectMake(0,  60-1, lineWidth, 1)];
             bar.backgroundColor=[UIColor colorWithWhite:1 alpha:1];
             [cell addSubview:bar];
             
@@ -608,13 +607,13 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             
             
-            UIView * searchButton =[[UIView alloc] initWithFrame:CGRectMake(140, 5, 120, 40)];
+            UIView * searchButton =[[UIView alloc] initWithFrame:CGRectMake(lineWidth-140, 5, 120, 40)];
             //[searchButton setBackgroundColor:[UIColor colorWithWhite:.9 alpha:1]];
             searchButton.backgroundColor = [UIColor colorWithRed:0 green:.73 blue:1 alpha:1];
 
             
             
-            UILabel *swipeLabel = [[UILabel alloc] initWithFrame:CGRectMake(17, 5, 200, 30)];
+            UILabel *swipeLabel = [[UILabel alloc] initWithFrame:CGRectMake(17, 5, lineWidth, 30)];
             [swipeLabel setTextColor:[UIColor colorWithWhite:.95 alpha:1]];
             [swipeLabel setFont:[UIFont fontWithName: @"Helvetica" size: 20.0f]];
             [swipeLabel setBackgroundColor:[UIColor clearColor]];
@@ -651,12 +650,12 @@
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                 [cell.contentView setBackgroundColor:[UIColor colorWithRed:1.0 green:78/255.0f blue:36/255.0f alpha:1]];
 
-                UIImageView *swipeImage = [[UIImageView alloc] initWithFrame:CGRectMake(160, 0, 120 , 60)];
+                UIImageView *swipeImage = [[UIImageView alloc] initWithFrame:CGRectMake(lineWidth-130, 0, 120 , 60)];
                 swipeImage.image =[UIImage imageNamed:@"swipe3.png"];
                 [cell addSubview:swipeImage];
 
 
-                UILabel *swipeLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, 270, 20)];
+                UILabel *swipeLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, lineWidth, 20)];
                 [swipeLabel setBackgroundColor:[UIColor clearColor]];
 
                 NSString *text=@"SWIPE TO GET DIRECTIONS EMAIL DELETE";
@@ -687,11 +686,11 @@
             
             if (cell == nil){
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-                UIImageView *holdImage = [[UIImageView alloc] initWithFrame:CGRectMake(160, 0, 120 , 60)];
+                UIImageView *holdImage = [[UIImageView alloc] initWithFrame:CGRectMake(lineWidth-130, 0, 120 , 60)];
                 holdImage.image =[UIImage imageNamed:@"longpress3.png"];
                 [cell addSubview:holdImage];
                 
-                UILabel *holdLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, 270, 20)];
+                UILabel *holdLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, lineWidth-20, 20)];
                 [holdLabel setBackgroundColor:[UIColor clearColor]];
                 [cell.contentView setBackgroundColor:[UIColor colorWithRed:1.0 green:78/255.0f blue:36/255.0f alpha:1]];
 
@@ -705,7 +704,7 @@
                 cell.selectionStyle=UITableViewCellSelectionStyleNone;
                 
                 //top border
-                UIView *bar=[[UIView alloc] initWithFrame:CGRectMake(0,  0, cell.bounds.size.width, 1)];
+                UIView *bar=[[UIView alloc] initWithFrame:CGRectMake(0,  0, lineWidth, 1)];
                 bar.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"dotted-line.png"]];
                 [cell addSubview:bar];
             
@@ -734,7 +733,7 @@
             if (cell == nil) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
 
-                UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 15, 270, 50)];
+                UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 15, lineWidth-20, 50)];
                 [label setBackgroundColor:[UIColor clearColor]];
                 [cell.contentView setBackgroundColor:[UIColor colorWithRed:1.0 green:78/255.0f blue:36/255.0f alpha:1]];
 
@@ -754,7 +753,7 @@
                 [cell addSubview:label];
                 
                 //top border
-                UIView *bar=[[UIView alloc] initWithFrame:CGRectMake(0,  0, cell.bounds.size.width, 1)];
+                UIView *bar=[[UIView alloc] initWithFrame:CGRectMake(0,  0, lineWidth, 1)];
                 bar.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"dotted-line.png"]];
                 [cell addSubview:bar];
 
@@ -775,7 +774,7 @@
                 //[pin setImage:[UIImage imageNamed:@"white_pin.png"]];
                 //[cell addSubview:pin];
                 
-                UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 15, 270, 50)];
+                UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 15, lineWidth-20, 50)];
                 [label setBackgroundColor:[UIColor clearColor]];
                 [cell.contentView setBackgroundColor:[UIColor colorWithRed:1.0 green:78/255.0f blue:36/255.0f alpha:1]];
                 
@@ -795,7 +794,7 @@
                 [cell addSubview:label];
                 
                 //top border
-                UIView *bar=[[UIView alloc] initWithFrame:CGRectMake(0,  0, cell.bounds.size.width, 1)];
+                UIView *bar=[[UIView alloc] initWithFrame:CGRectMake(0,  0, lineWidth, 1)];
                 bar.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"dotted-line.png"]];
                 [cell addSubview:bar];
                 
@@ -813,14 +812,14 @@
             
             if (cell == nil) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-                UIImageView* pin=[[UIImageView alloc] initWithFrame:CGRectMake(cell.frame.size.width*.5-35, 110, 30, 30)];
+                UIImageView* pin=[[UIImageView alloc] initWithFrame:CGRectMake(lineWidth*.5-35, 110, 30, 30)];
                 [pin setImage:[UIImage imageNamed:@"unlock.png"]];
                 [cell addSubview:pin];
                 
                 cell.selectionStyle=UITableViewCellSelectionStyleNone;
             
                 
-                UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 15, 250, 80)];
+                UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 15, lineWidth-20, 80)];
                 [label setBackgroundColor:[UIColor clearColor]];
                 [cell.contentView setBackgroundColor:[UIColor colorWithRed:1.0 green:78/255.0f blue:36/255.0f alpha:1]];
 
@@ -834,7 +833,7 @@
                 [cell addSubview:label];
                 
                 //top border
-                UIView *bar=[[UIView alloc] initWithFrame:CGRectMake(0,  0, cell.bounds.size.width, 1)];
+                UIView *bar=[[UIView alloc] initWithFrame:CGRectMake(0,  0, lineWidth, 1)];
                 bar.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"dotted-line.png"]];
                 [cell addSubview:bar];
                 
@@ -853,35 +852,36 @@
     
     //walk animation View
     else if (indexPath.section==2){
-        NSLog(@"frame height %f",tableView.contentSize.height);
+        //NSLog(@"frame height %f",tableView.contentSize.height);
         float yPos=0;
         
         
         NSString *identifier = [NSString stringWithFormat:@"easter-%f",yPos];
         
         UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
-                
+
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];           
-            UIImageView* yOffset=[[UIImageView alloc] initWithFrame:CGRectMake(54, 40+yPos, 150, 175)];
+            UIImageView* yOffset=[[UIImageView alloc] initWithFrame:CGRectMake(lineWidth*.5-175/2.0, 40+yPos, 150, 175)];
             [yOffset setImage:[UIImage imageNamed:@"teeth-02.png"]];
             [cell addSubview:yOffset];
+            [cell setBackgroundColor:[UIColor colorWithRed:1.0 green:78/255.0f blue:36/255.0f alpha:1]];
+
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
         }
         
         walkAnimView=[[UIImageView alloc] init];
         [cell addSubview:walkAnimView];
 
-        
         doorBackground=[[UIImageView alloc] init];
-        [doorBackground setFrame:CGRectMake(0, [[UIScreen mainScreen] bounds].size.height, 320,80)];
+        [doorBackground setFrame:CGRectMake(0, [[UIScreen mainScreen] bounds].size.height, screenWidth ,80)];
         [doorBackground setBackgroundColor:[UIColor colorWithRed:1.0 green:78/255.0f blue:36/255.0f alpha:1]];
         [cell addSubview:doorBackground];
 
         
         
          doorAnimView=[[UIImageView alloc] init];
-        [doorAnimView setFrame:CGRectMake(0, [[UIScreen mainScreen] bounds].size.height, 320,80)];
+        [doorAnimView setFrame:CGRectMake(0, [[UIScreen mainScreen] bounds].size.height, screenWidth,80)];
         [doorAnimView setImage:[UIImage imageNamed:@"walk-walk.png"]];
         [cell addSubview:doorAnimView];
         
@@ -945,7 +945,7 @@
 
         
         
-        NSLog(@"selected row %i",dele.viewController.locationViewController.page);
+        NSLog(@"selected row %i",(int)dele.viewController.locationViewController.page);
     }
 
 }
@@ -956,7 +956,7 @@
     if(indexPath.section==0){
         
         if(indexPath.row<[dele.locationDictionaryArray count]){
-            NSString *identifier = [NSString stringWithFormat: @"cell%ihighlighted", indexPath.row];
+            NSString *identifier = [NSString stringWithFormat: @"cell%ihighlighted", (int)indexPath.row];
             
             //LRSlidingTableViewCell *cell = (LRSlidingTableViewCell *)[dragTableViewController dequeueReusableCellWithIdentifier:identifier];
             LRSlidingTableViewCell *cell = [[LRSlidingTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -1062,10 +1062,13 @@
         self.isFiltered = TRUE;
         [[NSUserDefaults standardUserDefaults] setValue:self.filterBar.text forKey:@"lastSearchText"];
         [self doFilter];
-        //reset scroll to 0
-        CGPoint contentOffset = self.tableView.contentOffset;
-        contentOffset.y = 0;
-        [self.tableView setContentOffset:contentOffset animated:NO];
+        //reset scroll to 0 if there are results
+        if(self.filteredTableData.count>0)
+        {
+            CGPoint contentOffset = self.tableView.contentOffset;
+            //contentOffset.y = 10;
+            [self.tableView setContentOffset:contentOffset animated:NO];
+        }
     }
 
     _searchBarMayResign = NO;
@@ -1078,8 +1081,8 @@
     
     if(self.filterBar.text.length == 0)
     {
-        int currentDestinationN=[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"];
-        if(currentDestinationN>=[dele.locationDictionaryArray count])currentDestinationN=[dele.locationDictionaryArray count]-1;
+        int currentDestinationN=(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"];
+        if(currentDestinationN>=[dele.locationDictionaryArray count])currentDestinationN=(int)[dele.locationDictionaryArray count]-1;
 
         NSIndexPath * ndxPath= [NSIndexPath indexPathForRow:currentDestinationN inSection:0];
         [self.tableView  scrollToRowAtIndexPath:ndxPath atScrollPosition:UITableViewScrollPositionMiddle  animated:NO];
@@ -1094,11 +1097,6 @@
 
 -(BOOL)textFieldShouldEndEditing:(UITextField *)textField{
 
-    
-
-    
-    
-    
     return _searchBarMayResign;
 }
 

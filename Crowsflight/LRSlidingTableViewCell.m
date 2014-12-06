@@ -30,7 +30,8 @@
     defaultBackgroundView.backgroundColor = [UIColor colorWithRed:1 green:1 blue:0 alpha:1];
     self.backgroundView = defaultBackgroundView;
       
-      
+      float cellWidth=[UIScreen mainScreen].bounds.size.width-40;
+
       float imgH=35;
       
       UIButton *mbutton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -38,7 +39,7 @@
                   action:@selector(mapItemClicked)
         forControlEvents:UIControlEventTouchDown];
       [mbutton setImage:[UIImage imageNamed:@"folded-map.png"] forState:UIControlStateNormal];
-      mbutton.frame = CGRectMake(50, 30-imgH/2, imgH, imgH);
+      mbutton.frame = CGRectMake(cellWidth*.25-imgH*.5, 30-imgH/2, imgH, imgH);
       [defaultBackgroundView addSubview:mbutton];
       
       
@@ -47,7 +48,7 @@
                   action:@selector(emailItemClicked)
         forControlEvents:UIControlEventTouchDown];
       [ebutton setImage:[UIImage imageNamed:@"email.png"] forState:UIControlStateNormal];
-      ebutton.frame = CGRectMake(125, 30-imgH/2, imgH, imgH);
+      ebutton.frame = CGRectMake(cellWidth*.5-imgH*.5, 30-imgH/2, imgH, imgH);
       [defaultBackgroundView addSubview:ebutton];
       
       UIButton *xbutton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -55,7 +56,7 @@
                  action:@selector(deleteRow)
        forControlEvents:UIControlEventTouchDown];
       [xbutton setImage:[UIImage imageNamed:@"x.png"] forState:UIControlStateNormal];
-      xbutton.frame = CGRectMake(200, 30-imgH/2, imgH, imgH);
+      xbutton.frame = CGRectMake(cellWidth*.75-imgH*.5, 30-imgH/2, imgH, imgH);
       [defaultBackgroundView addSubview:xbutton];
       
       dele=[[UIApplication sharedApplication] delegate];

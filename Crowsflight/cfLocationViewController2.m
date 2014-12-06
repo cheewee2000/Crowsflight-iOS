@@ -72,7 +72,7 @@
     [self.pageNText setFont:[UIFont fontWithName:@"Andale Mono" size:8.0]];
     self.pageNText.textAlignment = NSTextAlignmentRight;
     [self.view addSubview:self.pageNText];
-    [self.pageNText setText:[NSString stringWithFormat:@"%i/%i", self.page+1, dele.nDestinations]];
+    [self.pageNText setText:[NSString stringWithFormat:@"%i/%i", (int)self.page+1, (int)dele.nDestinations]];
     
     
     //location name button

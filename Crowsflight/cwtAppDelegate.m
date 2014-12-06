@@ -27,18 +27,9 @@
 
     [Crashlytics startWithAPIKey:@"1eb6d15737d50f2df4316cb5b8b073da76a42b67"];
     
-    [TestFlight takeOff:@"37792565-9c70-4042-90c0-9d8e9d017e6d"];
 
     [cwtIAP sharedInstance];
 
-//    UIImage *image = [UIImage imageNamed:@"toolbarbackground.png"];
-//    [[UIToolbar appearance] setBackgroundImage:image forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
-//    UIToolbar * toolBar=[UIToolbar appearance];
-//    
-//    toolBar.layer.masksToBounds = NO;
-//    toolBar.layer.shadowOffset = CGSizeMake(0, 20);
-//    toolBar.layer.shadowRadius = 10;
-//    toolBar.layer.shadowOpacity = 0.5;
     
     [self loadmyLocations];
 
@@ -57,18 +48,21 @@
     [self.window makeKeyAndVisible];
     [self.window addSubview:self.navController.view];
     
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
-    {
-        NSLog(@"Running in IOS-7");
+//    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
+//    {
+//        NSLog(@"Running in IOS-7");
+//
+//        CGRect screenBounds = [[UIScreen mainScreen] applicationFrame];
+//        self.window.frame=[[UIScreen mainScreen] applicationFrame];
+//        self.viewController.view.frame=[[UIScreen mainScreen] applicationFrame];
+//
+//        UIView* status=[[UIView alloc] initWithFrame:CGRectMake(0, -20, screenBounds.size.width, 20)];
+//        status.backgroundColor=[UIColor whiteColor];
+//        [self.window addSubview:status];
+//    }
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
-        CGRect screenBounds = [[UIScreen mainScreen] applicationFrame];
-        self.window.frame=[[UIScreen mainScreen] applicationFrame];
-        self.viewController.view.frame=[[UIScreen mainScreen] applicationFrame];
-
-        UIView* status=[[UIView alloc] initWithFrame:CGRectMake(0, -20, screenBounds.size.width, 20)];
-        status.backgroundColor=[UIColor whiteColor];
-        [self.window addSubview:status];
-    }
     
     self.overlay = [MTStatusBarOverlay sharedInstance];
     self.overlay.animation = MTStatusBarOverlayAnimationShrink;
@@ -159,7 +153,7 @@
         [self addNewDestination:hnear newlat:nlat newlng:nlng];
         
         
-        NSLog(@"save url to: %i", [self.locationDictionaryArray count]-1);
+        NSLog(@"save url to: %i", (int)[self.locationDictionaryArray count]-1);
         
 
         [[NSUserDefaults standardUserDefaults]setInteger:[self.locationDictionaryArray count]-1 forKey:@"currentDestinationN"];
@@ -187,8 +181,8 @@
     [self copyFile];
     
 	//load destination list
-	NSLog(@"The array count: %i", [self.locationDictionaryArray count]);
-	self.nDestinations=[self.locationDictionaryArray count];
+	NSLog(@"The array count: %i", (int)[self.locationDictionaryArray count]);
+	self.nDestinations=(int)[self.locationDictionaryArray count];
         
 
 }
@@ -291,7 +285,7 @@
     self.myLat=newLocation.coordinate.latitude;
     self.myLng=newLocation.coordinate.longitude;
 
-    [(cwtViewController3*)self.window.rootViewController updateViewControllersWithLatLng: [[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"]];
+    [(cwtViewController3*)self.window.rootViewController updateViewControllersWithLatLng: (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"]];
     
 }
 
@@ -302,7 +296,7 @@
     self.heading=newHeading.trueHeading; //heading in degress
     self.headingAccuracy=newHeading.headingAccuracy;
 
-    [(cwtViewController3*)self.window.rootViewController updateViewControllersWithHeading:[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"]];
+    [(cwtViewController3*)self.window.rootViewController updateViewControllersWithHeading:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"]];
     
     
     if(self.lastHeadingAccuracy!=self.headingAccuracy){
@@ -370,7 +364,7 @@
 
 		[[NSUserDefaults standardUserDefaults] setInteger:[self.locationDictionaryArray count]-1 forKey:@"currentDestinationN"];
 		
-        NSLog(@"Saved destination. nDestinations: %i", [self.locationDictionaryArray count]);
+        NSLog(@"Saved destination. nDestinations: %i", (int)[self.locationDictionaryArray count]);
 
 	}
     
@@ -380,7 +374,7 @@
 
 -(void)editDestination:(NSString *)name newlat:(double)_lat newlng:(double)_lng{
     //get old values
-    int currentDestinationN=[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"];
+    int currentDestinationN=(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"];
 	//load dictionary
 	NSMutableDictionary * dictionary = [self.locationDictionaryArray objectAtIndex:currentDestinationN];
     
@@ -411,7 +405,7 @@
     NSString *path = [documentsDirectory stringByAppendingPathComponent:@"/locationList.plist"];
     [self.locationDictionaryArray writeToFile:path atomically:YES];
     
-    [(cwtViewController3*)self.window.rootViewController updateViewControllersWithLatLng: [[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"]];
+    [(cwtViewController3*)self.window.rootViewController updateViewControllersWithLatLng: (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"]];
     [(cwtViewController3*)self.window.rootViewController updateViewControllersWithName];
     
 
@@ -453,10 +447,16 @@
     self.headingAccuracy=-2;
     self.lastHeadingAccuracy=-3;
 
+    
+    
 
     // Create the manager object
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
+    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+        [self.locationManager requestWhenInUseAuthorization];
+    }
+    
     // This is the most important property to set for the manager. It ultimately determines how the manager will
     // attempt to acquire location and thus, the amount of power that will be consumed.
     //self.locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation;

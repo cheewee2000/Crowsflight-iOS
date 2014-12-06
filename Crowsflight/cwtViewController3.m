@@ -11,9 +11,6 @@
 #import "cfLocationViewController2.h"
 
 #import "cwtListViewController.h"
-#import "cwtUITableViewController.h"
-
-
 
 #import "cwtIAP.h"
 #import <StoreKit/StoreKit.h>
@@ -56,8 +53,9 @@
 	// Do any additional setup after loading the view.
     self.view.backgroundColor=[UIColor colorWithWhite:.95 alpha:1];
     
-    CGRect screen = [[UIScreen mainScreen] applicationFrame];
-    
+    //CGRect screen = [[UIScreen mainScreen] applicationFrame];
+    CGRect screen = self.view.frame;
+
     
     
     self.view.layer.masksToBounds=NO;
@@ -164,7 +162,7 @@
 -(void)nextInstruction:(int)n{
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"enable_mainInstructions"]==FALSE)return;
     
-    int instructionN=[[NSUserDefaults standardUserDefaults] integerForKey:@"mainInstructions"];
+    int instructionN=(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"mainInstructions"];
     if(n-1==instructionN){
         if(instructionN<6){//last instruction
             instructionN++;
@@ -189,7 +187,7 @@
 
 
 -(void)setInstructionPosition{
-    int instructionN=[[NSUserDefaults standardUserDefaults] integerForKey:@"mainInstructions"];
+    int instructionN=(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"mainInstructions"];
     CGRect screen = [[UIScreen mainScreen] applicationFrame];
 
     NSLog(@"instn %i",instructionN);
@@ -269,7 +267,7 @@
     
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"enable_mainInstructions"]==TRUE){
         
-        int instructionN=[[NSUserDefaults standardUserDefaults] integerForKey:@"mainInstructions"];
+        int instructionN=(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"mainInstructions"];
         
         NSLog(@"show main instructions");
   
@@ -623,7 +621,7 @@
 	
 	if(didWrite){
         [[NSUserDefaults standardUserDefaults] setInteger:[dele.locationDictionaryArray count]-1 forKey:@"currentDestinationN"];
-		NSLog(@"Saved destination. nDestinations: %i", [dele.locationDictionaryArray count]);
+		NSLog(@"Saved destination. nDestinations: %i", (int)[dele.locationDictionaryArray count]);
         
         [dele loadmyLocations];
         
@@ -846,7 +844,7 @@
     if(expired==false)
     {
         //load destination number
-        int currentDestinationN=[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"];
+        int currentDestinationN=(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"];
         
         //load dictionary
         NSMutableDictionary * dictionary = [dele.locationDictionaryArray objectAtIndex:currentDestinationN];
