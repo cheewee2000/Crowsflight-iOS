@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>address</key>
+		<string>123 address place holder</string>
+		<key>lat</key>
+		<real>40.70553588867188</real>
+		<key>lng</key>
+		<real>-73.99626922607422</real>
+		<key>searchedText</key>
+		<string>Brooklyn Bridge</string>
+	</dict>
+	<dict>
+		<key>address</key>
+		<string>123 address place holder</string>
+		<key>lat</key>
+		<real>40.72929000854492</real>
+		<key>lng</key>
+		<real>-73.99366760253906</real>
+		<key>searchedText</key>
+		<string>721 Broadway New York</string>
+	</dict>
+	<dict>
+		<key>address</key>
+		<string>123 address place holder</string>
+		<key>lat</key>
+		<real>35.68948745727539</real>
+		<key>lng</key>
+		<real>139.6917114257812</real>
+		<key>searchedText</key>
+		<string>Tokyo</string>
+	</dict>
+</array>
+</plist>
