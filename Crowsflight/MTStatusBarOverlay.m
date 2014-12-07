@@ -80,7 +80,7 @@ MAX([UIApplication sharedApplication].statusBarFrame.size.width, [UIApplication 
 #define kLightThemeShadowColor                      [UIColor clearColor]
 #define kLightThemeErrorMessageShadowColor          [UIColor clearColor]
 #define kLightThemeFinishedMessageShadowColor       [UIColor clearColor]
-#define kLightThemeActivityIndicatorViewStyle		UIActivityIndicatorViewStyleGray
+#define kLightThemeActivityIndicatorViewStyle		UIActivityIndicatorViewStyleWhite
 #define kLightThemeDetailViewBackgroundColor		[UIColor blackColor]
 #define kLightThemeDetailViewBorderColor			[UIColor clearColor]
 #define kLightThemeHistoryTextColor					[UIColor colorWithRed:0.749f green:0.749f blue:0.749f alpha:1.0f]
@@ -105,7 +105,7 @@ MAX([UIApplication sharedApplication].statusBarFrame.size.width, [UIApplication 
 ///////////////////////////////////////////////////////
 
 #define kProgressViewAlpha                          0.4f
-#define kProgressViewBackgroundColor                [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:1.0f]
+#define kProgressViewBackgroundColor                [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f]
 
 
 ///////////////////////////////////////////////////////

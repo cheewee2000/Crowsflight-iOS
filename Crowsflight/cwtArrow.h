@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface cwtArrow : UIView
+@interface cwtArrow : UIView{
+    int x,y;
+    
+}
 
 @property (nonatomic,assign) float spread;
 @property (nonatomic,assign) float start;

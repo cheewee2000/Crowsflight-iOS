@@ -37,7 +37,7 @@
     self.progress=1;
     
     dele = [[UIApplication sharedApplication] delegate];
-    CGRect screen = [[UIScreen mainScreen] applicationFrame];
+    CGRect screen = [[UIScreen mainScreen] bounds];
     
     //    self.arrowImage=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrow-line.png"]];
     //    self.arrowImage.center=CGPointMake(screen.size.width*.5, screen.size.height*.5);
@@ -45,8 +45,8 @@
     
     
     //main arrow
-    self.arrow=[[cwtArrow alloc] initWithFrame:CGRectMake(0,0, 650,650)];
-    [self.arrow setCenter:CGPointMake(screen.size.width*.5, screen.size.height*.5)];
+    self.arrow=[[cwtArrow alloc] initWithFrame:CGRectMake(0,0, screen.size.height*1.5,screen.size.height*1.5)];
+    //[self.arrow setCenter:CGPointMake(screen.size.width*.5, screen.size.height*.5)];
     self.arrow.backgroundColor=[UIColor clearColor];
     [self.view addSubview:self.arrow];
     [self.arrow setHidden:TRUE];

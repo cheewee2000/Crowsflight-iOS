@@ -20,9 +20,11 @@
     if (self) {
         // Initialization code
         self.spread=60.0;
+        self.frame=frame;
         //self.showExtras=TRUE;
         //self.showExtras=[[NSUserDefaults standardUserDefaults] boolForKey:@"showInfo"];
-         
+        x=self.frame.size.width*.5;
+        y=self.frame.size.height*.5;
     }
     return self;
 }
@@ -35,13 +37,12 @@
     //int thickness=210;
     //int r=100+10+thickness*.5;
 
-    int thickness=255;
+    int thickness=[[UIScreen mainScreen] bounds].size.height*.5;//255;
     int r=60+thickness*.5;
 
     //CGRect screen = [[UIScreen mainScreen] applicationFrame];
 
-	int x=325;
-	int y=325;
+
 	
     //float angle=15;
     if(self.spread<=1)self.spread=88.0;
