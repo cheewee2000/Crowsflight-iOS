@@ -216,10 +216,6 @@
 		449759741783D6D700341552 /* loading-23@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4497595C1783D6D700341552 /* loading-23@2x.png */; };
 		449759751783D6D700341552 /* loading-24@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4497595D1783D6D700341552 /* loading-24@2x.png */; };
 		449759771783D76F00341552 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 449759761783D76F00341552 /* Icon.png */; };
-		4497597C1783DD4400341552 /* compass-background.png in Resources */ = {isa = PBXBuildFile; fileRef = 449759781783DD4300341552 /* compass-background.png */; };
-		4497597D1783DD4400341552 /* compass-background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 449759791783DD4300341552 /* compass-background@2x.png */; };
-		4497597E1783DD4400341552 /* compass-n.png in Resources */ = {isa = PBXBuildFile; fileRef = 4497597A1783DD4300341552 /* compass-n.png */; };
-		4497597F1783DD4400341552 /* compass-n@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4497597B1783DD4400341552 /* compass-n@2x.png */; };
 		449A1E021765938000EF78B5 /* ATSDragToReorderTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 449A1E011765938000EF78B5 /* ATSDragToReorderTableViewController.m */; };
 		44AA298F177AA85800D32B46 /* cwtAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 44AA298E177AA85800D32B46 /* cwtAnnotation.m */; };
 		44C1D135175956BA007798A6 /* bike.png in Resources */ = {isa = PBXBuildFile; fileRef = 44C1D131175956BA007798A6 /* bike.png */; };
@@ -493,10 +489,6 @@
 		4497595C1783D6D700341552 /* loading-23@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loading-23@2x.png"; sourceTree = "<group>"; };
 		4497595D1783D6D700341552 /* loading-24@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loading-24@2x.png"; sourceTree = "<group>"; };
 		449759761783D76F00341552 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
-		449759781783DD4300341552 /* compass-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "compass-background.png"; path = "Images/compass-background.png"; sourceTree = "<group>"; };
-		449759791783DD4300341552 /* compass-background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "compass-background@2x.png"; path = "Images/compass-background@2x.png"; sourceTree = "<group>"; };
-		4497597A1783DD4300341552 /* compass-n.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "compass-n.png"; path = "Images/compass-n.png"; sourceTree = "<group>"; };
-		4497597B1783DD4400341552 /* compass-n@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "compass-n@2x.png"; path = "Images/compass-n@2x.png"; sourceTree = "<group>"; };
 		449A1E001765937F00EF78B5 /* ATSDragToReorderTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATSDragToReorderTableViewController.h; sourceTree = "<group>"; };
 		449A1E011765938000EF78B5 /* ATSDragToReorderTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATSDragToReorderTableViewController.m; sourceTree = "<group>"; };
 		44AA298D177AA85800D32B46 /* cwtAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cwtAnnotation.h; sourceTree = "<group>"; };
@@ -985,10 +977,6 @@
 				44EF406417C2C07B00173706 /* Instructions4 */,
 				440E45BA17AC181B00A6E931 /* walk-anim */,
 				44CDC4F317AB185E006ABAA4 /* teeth-02.png */,
-				449759781783DD4300341552 /* compass-background.png */,
-				449759791783DD4300341552 /* compass-background@2x.png */,
-				4497597A1783DD4300341552 /* compass-n.png */,
-				4497597B1783DD4400341552 /* compass-n@2x.png */,
 				449759761783D76F00341552 /* Icon.png */,
 				449759421783D52500341552 /* Icon@2x.png */,
 				449758BA1783CE3000341552 /* MapView */,
@@ -1230,10 +1218,6 @@
 				449759741783D6D700341552 /* loading-23@2x.png in Resources */,
 				449759751783D6D700341552 /* loading-24@2x.png in Resources */,
 				449759771783D76F00341552 /* Icon.png in Resources */,
-				4497597C1783DD4400341552 /* compass-background.png in Resources */,
-				4497597D1783DD4400341552 /* compass-background@2x.png in Resources */,
-				4497597E1783DD4400341552 /* compass-n.png in Resources */,
-				4497597F1783DD4400341552 /* compass-n@2x.png in Resources */,
 				44CDC4F417AB185E006ABAA4 /* teeth-02.png in Resources */,
 				44471C8A17AC4E6F008413B7 /* walk-d1.png in Resources */,
 				44471C8B17AC4E6F008413B7 /* walk-d2.png in Resources */,

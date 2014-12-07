@@ -61,11 +61,11 @@
     self.view.layer.masksToBounds=NO;
     
     //add compass
-    self.compassImage=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"compass-background.png"]];
+    self.compassImage=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"compass-background"]];
     self.compassImage.center=CGPointMake(screen.size.width*.5, screen.size.height*.5);
     [self.view addSubview:self.compassImage];
     
-    self.compassN=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"compass-n.png"]];
+    self.compassN=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"compass-n"]];
     self.compassN.center=CGPointMake(screen.size.width*.5, screen.size.height*.5);
     [self.view addSubview:self.compassN];
     
