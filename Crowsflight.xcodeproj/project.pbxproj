@@ -127,7 +127,7 @@
 		448AC1AA17BD687700281208 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 448AC1A917BD687700281208 /* SystemConfiguration.framework */; };
 		4491D8AD1A33775F00C56401 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4491D8AC1A33775F00C56401 /* Crashlytics.framework */; };
 		4491D8B01A33C24600C56401 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4491D8AF1A33C24600C56401 /* Main.storyboard */; };
-		4491D8B21A33C2FD00C56401 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4491D8B11A33C2FD00C56401 /* Images.xcassets */; };
+		4491D8B41A34F25900C56401 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4491D8B31A34F25900C56401 /* Images.xcassets */; };
 		449758FF1783CE3000341552 /* EarthandLinesBLUE.png in Resources */ = {isa = PBXBuildFile; fileRef = 449758BB1783CE3000341552 /* EarthandLinesBLUE.png */; };
 		449759001783CE3000341552 /* EarthandLinesBLUE@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 449758BC1783CE3000341552 /* EarthandLinesBLUE@2x.png */; };
 		449759011783CE3000341552 /* EarthBLUE.png in Resources */ = {isa = PBXBuildFile; fileRef = 449758BD1783CE3000341552 /* EarthBLUE.png */; };
@@ -400,7 +400,7 @@
 		448AC1A917BD687700281208 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		4491D8AC1A33775F00C56401 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		4491D8AF1A33C24600C56401 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		4491D8B11A33C2FD00C56401 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		4491D8B31A34F25900C56401 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		449758BB1783CE3000341552 /* EarthandLinesBLUE.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EarthandLinesBLUE.png; sourceTree = "<group>"; };
 		449758BC1783CE3000341552 /* EarthandLinesBLUE@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EarthandLinesBLUE@2x.png"; sourceTree = "<group>"; };
 		449758BD1783CE3000341552 /* EarthBLUE.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EarthBLUE.png; sourceTree = "<group>"; };
@@ -961,12 +961,12 @@
 				442A5356178287CC008A1687 /* cfLocationViewController2.h */,
 				442A5357178287CC008A1687 /* cfLocationViewController2.m */,
 				44DAE02317359AC900C17F07 /* Crowsflight-Info.plist */,
+				4491D8B31A34F25900C56401 /* Images.xcassets */,
 				4424DA1117BE8502005FBBC6 /* Settings.bundle */,
 				44DAE02217359AC900C17F07 /* Supporting Files */,
 				4497593F1783D08900341552 /* TableView */,
 				449759401783D0A200341552 /* MapView */,
 				449759411783D0B900341552 /* IAP */,
-				4491D8B11A33C2FD00C56401 /* Images.xcassets */,
 			);
 			path = Crowsflight;
 			sourceTree = "<group>";
@@ -1175,7 +1175,6 @@
 				4497592C1783CE3000341552 /* folded-map@2x.png in Resources */,
 				4497592D1783CE3000341552 /* longpress3.png in Resources */,
 				4497592E1783CE3000341552 /* longpress3@2x.png in Resources */,
-				4491D8B21A33C2FD00C56401 /* Images.xcassets in Resources */,
 				4497592F1783CE3000341552 /* search.png in Resources */,
 				449759301783CE3000341552 /* search@2x.png in Resources */,
 				449759311783CE3000341552 /* swipe3.png in Resources */,
@@ -1276,6 +1275,7 @@
 				44471D1C17AC6408008413B7 /* walk-47.png in Resources */,
 				44471D1D17AC6408008413B7 /* walk-48.png in Resources */,
 				44471D1E17AC6408008413B7 /* walk-49.png in Resources */,
+				4491D8B41A34F25900C56401 /* Images.xcassets in Resources */,
 				44471D1F17AC6408008413B7 /* walk-50.png in Resources */,
 				44471D2017AC6408008413B7 /* walk-51.png in Resources */,
 				44471D2117AC6408008413B7 /* walk-52.png in Resources */,

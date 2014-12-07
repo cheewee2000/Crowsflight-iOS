@@ -354,7 +354,7 @@
     int animationBottomPos=60;
     int animationFrame=[[UIScreen mainScreen] bounds].size.height-(h-y)-yPos-animationStart;
     
-    NSLog(@"animation Frame %i",animationFrame);
+    //NSLog(@"animation Frame %i",animationFrame);
     
     int maxWalkFrames=93;
 
@@ -382,7 +382,7 @@
         
         doorAnimFrame=(maxWalkFrames+6)-animationFrame;
         
-        NSLog(@"door Frame %i",animationFrame);
+        //NSLog(@"door Frame %i",animationFrame);
 
         if(doorAnimFrame>=6)doorAnimFrame=6;
         else if(doorAnimFrame<=0)doorAnimFrame=0;

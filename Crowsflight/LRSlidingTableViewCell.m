@@ -72,13 +72,29 @@
     //remove by index
     if([dele.locationDictionaryArray count]>1){
         
-        UITableView* tableView = (UITableView *)self.superview;
+        /*
+        UIView *view;
+        while (view != nil && ![view isKindOfClass:[cwtUITableViewController class]]) {
+            view = [view superview];
+        }
+        UITableView *tableView = (UITableView *)view;
+        
+        
+        //UITableView* tableView = (UITableView *)self.superview;
         NSIndexPath* pathOfTheCell = [tableView indexPathForCell:self];
         NSInteger row = pathOfTheCell.row;
         
-        
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:pathOfTheCell];
         
+        cwtUITableViewController *vc = (cwtUITableViewController *) tableView.dataSource;
+*/
+        
+        UITableView *tableView = (UITableView *)[self findSuperViewWithClass:[UITableView class]];
+        NSIndexPath* pathOfTheCell = [tableView indexPathForCell:self];
+        NSInteger row = pathOfTheCell.row;
+
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:pathOfTheCell];
+
         cwtUITableViewController *vc = (cwtUITableViewController *) tableView.dataSource;
 
         //delete marked rows
@@ -117,18 +133,32 @@
 
 }
 
+- (UIView *)findSuperViewWithClass:(Class)superViewClass {
+    
+    UIView *superView = self.superview;
+    UIView *foundSuperView = nil;
+    
+    while (nil != superView && nil == foundSuperView) {
+        if ([superView isKindOfClass:superViewClass]) {
+            foundSuperView = superView;
+        } else {
+            superView = superView.superview;
+        }
+    }
+    return foundSuperView;
+}
 
 - (void) emailItemClicked{
     
     NSLog(@"email");
 
-    UITableView* tableView = (UITableView *)self.superview;
-    NSIndexPath* pathOfTheCell = [tableView indexPathForCell:self];
-    //NSInteger row = pathOfTheCell.row;
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:pathOfTheCell];
+//    UITableView* tableView = (UITableView *)self.superview;
+//    NSIndexPath* pathOfTheCell = [tableView indexPathForCell:self];
+//    //NSInteger row = pathOfTheCell.row;
+//    UITableViewCell *cell = [tableView cellForRowAtIndexPath:pathOfTheCell];
 
     
-    NSMutableDictionary * dictionary = [dele.locationDictionaryArray objectAtIndex:cell.tag];
+    NSMutableDictionary * dictionary = [dele.locationDictionaryArray objectAtIndex:self.tag];
     
     NSString * name=[[dictionary objectForKey:@"searchedText"] uppercaseString];
     
@@ -169,10 +199,14 @@
     Class mapItemClass = [MKMapItem class];
     
     
-    UITableView* tableView = (UITableView *)self.superview;
-    NSIndexPath* pathOfTheCell = [tableView indexPathForCell:self];
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:pathOfTheCell];
-    NSMutableDictionary * dictionary = [dele.locationDictionaryArray objectAtIndex:cell.tag];
+    //UITableView* tableView = (UITableView *)self.superview;
+    //NSIndexPath* pathOfTheCell = [tableView indexPathForCell:self];
+    //NSIndexPath *pathOfTheCell = [tableView indexPathForRowAtPoint:self.center];
+    //UITableViewCell *cell = [tableView cellForRowAtIndexPath:pathOfTheCell];
+    
+
+    
+    NSMutableDictionary * dictionary = [dele.locationDictionaryArray objectAtIndex:self.tag];
     
     float lat=[[dictionary valueForKey:@"lat"] floatValue];
     float lng=[[dictionary valueForKey:@"lng"] floatValue];
@@ -203,8 +237,6 @@
 
 
 }
-
-
 
 
 
