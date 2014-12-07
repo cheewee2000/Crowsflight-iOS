@@ -76,7 +76,7 @@
     
     
     //location name button
-    self.destinationButton=[[UIButton alloc] initWithFrame:CGRectMake(10, 25, screen.size.width-20, 80)];
+    self.destinationButton=[[UIButton alloc] initWithFrame:CGRectMake(15, screen.size.height*.1, screen.size.width-30, 120)];
     [self.destinationButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:18.0]];
     [self.destinationButton setTitleColor:[UIColor colorWithWhite:.2 alpha:1] forState:UIControlStateNormal];
     self.destinationButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
