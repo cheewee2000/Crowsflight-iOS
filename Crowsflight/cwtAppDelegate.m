@@ -61,7 +61,8 @@
 //        [self.window addSubview:status];
 //    }
     
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    //[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    //[[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:255.0/255 green:255.0/255 blue:255.0/255 alpha:1.0]];
 
     
     self.overlay = [MTStatusBarOverlay sharedInstance];

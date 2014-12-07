@@ -55,11 +55,16 @@
         self.filterBar.borderStyle = UITextBorderStyleNone;
         self.filterBar.returnKeyType=UIReturnKeySearch;
 
+        UIView * statusBackground=[[UIView alloc] initWithFrame:CGRectMake(0, -20, [[UIScreen mainScreen] bounds].size.width, 20)];
+        [statusBackground setBackgroundColor:[UIColor whiteColor]];
+        [self.filterBar addSubview:statusBackground];
+    
+        
         _searchBarMayResign = YES;
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textDidChange) name:UITextFieldTextDidChangeNotification object:nil];
         
-        
+
     }
 
     return self;    
@@ -86,6 +91,8 @@
     self.instructions=[[UIImageView alloc] init];
     [self.instructions setAlpha:.98];
     [self.view addSubview:self.instructions];
+    
+
     
 
 }
