@@ -25,8 +25,15 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 
-    [Crashlytics startWithAPIKey:@"1eb6d15737d50f2df4316cb5b8b073da76a42b67"];
+    //iCloud
+    NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateKeyValuePairs:) name:NSUbiquitousKeyValueStoreDidChangeExternallyNotification object:store];
     
+    // Synchronize Store
+    [store synchronize];
+
+    
+    [Crashlytics startWithAPIKey:@"1eb6d15737d50f2df4316cb5b8b073da76a42b67"];
 
     [cwtIAP sharedInstance];
 
@@ -95,9 +102,12 @@
     // Start the notifier, which will cause the reachability object to retain itself!
     [reach startNotifier];
     
+
     
     return YES;
 }
+
+
 
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
@@ -161,6 +171,7 @@
         //self.viewController.locationViewController.page=[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"];
         [self.viewController flipToPage:[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"]];
 
+        
     }
   return YES;
     
@@ -369,6 +380,58 @@
 
 	}
     
+    
+    [self iCloudSync];
+    
+    
+    
+}
+
+-(void)iCloudSync{
+    // Save To iCloud
+    NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+    
+    if (store != nil) {
+        [store setObject:self.locationDictionaryArray forKey:@"locations"];
+        [store synchronize];
+    }
+}
+
+
+
+- (void)updateKeyValuePairs:(NSNotification *)notification {
+    NSDictionary *userInfo = [notification userInfo];
+    NSNumber *changeReason = [userInfo objectForKey:NSUbiquitousKeyValueStoreChangeReasonKey];
+    NSInteger reason = -1;
+    
+    // Is a Reason Specified?
+    if (!changeReason) {
+        return;
+        
+    } else {
+        reason = [changeReason integerValue];
+    }
+    
+    // Proceed If Reason Was (1) Changes on Server or (2) Initial Sync
+    if ((reason == NSUbiquitousKeyValueStoreServerChange) || (reason == NSUbiquitousKeyValueStoreInitialSyncChange)) {
+        NSArray *changedKeys = [userInfo objectForKey:NSUbiquitousKeyValueStoreChangedKeysKey];
+        NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+        
+        // Search Keys for "locations" Key
+        for (NSString *key in changedKeys) {
+            if ([key isEqualToString:@"locations"]) {
+                // Update Data Source
+                self.locationDictionaryArray = [NSMutableArray arrayWithArray:[store objectForKey:key]];
+                
+                // Save Local Copy
+                NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+                [ud setObject:self.locationDictionaryArray forKey:@"locations"];
+                
+                // Reload Table View
+                //[self.tableView reloadData];
+            }
+        }
+    }
 }
 
 
@@ -409,6 +472,7 @@
     [(cwtViewController3*)self.window.rootViewController updateViewControllersWithLatLng: (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"]];
     [(cwtViewController3*)self.window.rootViewController updateViewControllersWithName];
     
+    [self iCloudSync];
 
         
 }

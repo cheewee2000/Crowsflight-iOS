@@ -108,7 +108,7 @@
         [dele.locationDictionaryArray writeToFile:path atomically:YES];
         [dele loadmyLocations];
 
-
+        [dele iCloudSync];
         
         if(vc.isFiltered){
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
@@ -132,6 +132,9 @@
     }
 
 }
+
+
+
 
 - (UIView *)findSuperViewWithClass:(Class)superViewClass {
     

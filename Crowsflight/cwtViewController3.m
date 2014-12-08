@@ -418,6 +418,8 @@
 }
 
 -(void)showList{
+    //[[NSUbiquitousKeyValueStore defaultStore] synchronize];
+
     //[self.audioSelect1 play];
 
     //AudioServicesPlaySystemSound(audioSelect1);
@@ -628,8 +630,9 @@
         
         [self flipToPage:[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"]];
     }
-    
+    [dele iCloudSync];
 }
+
 
 -(void) flipToPage:(NSInteger)x {
     

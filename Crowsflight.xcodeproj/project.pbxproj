@@ -401,6 +401,7 @@
 		4491D8AC1A33775F00C56401 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		4491D8AF1A33C24600C56401 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		4491D8B31A34F25900C56401 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		4491D8B51A35032800C56401 /* Crowsflight.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Crowsflight.entitlements; sourceTree = "<group>"; };
 		449758BB1783CE3000341552 /* EarthandLinesBLUE.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EarthandLinesBLUE.png; sourceTree = "<group>"; };
 		449758BC1783CE3000341552 /* EarthandLinesBLUE@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EarthandLinesBLUE@2x.png"; sourceTree = "<group>"; };
 		449758BD1783CE3000341552 /* EarthBLUE.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EarthBLUE.png; sourceTree = "<group>"; };
@@ -948,6 +949,7 @@
 		44DAE02117359AC900C17F07 /* Crowsflight */ = {
 			isa = PBXGroup;
 			children = (
+				4491D8B51A35032800C56401 /* Crowsflight.entitlements */,
 				4491D8AE1A33C1FD00C56401 /* Helpers */,
 				442F15D917A6FAEA00571D19 /* Sounds */,
 				44C1D14117599FC3007798A6 /* SIAlertView.bundle */,
@@ -1084,6 +1086,11 @@
 				TargetAttributes = {
 					44DAE01717359AC900C17F07 = {
 						DevelopmentTeam = L6DVQR8JB9;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -1477,6 +1484,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = Crowsflight/Crowsflight.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1505,6 +1513,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = Crowsflight/Crowsflight.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (

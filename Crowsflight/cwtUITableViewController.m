@@ -819,7 +819,7 @@
             
             if (cell == nil) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-                UIImageView* pin=[[UIImageView alloc] initWithFrame:CGRectMake(lineWidth*.5-35, 110, 30, 30)];
+                UIImageView* pin=[[UIImageView alloc] initWithFrame:CGRectMake(lineWidth*.5-15, 110, 30, 30)];
                 [pin setImage:[UIImage imageNamed:@"unlock.png"]];
                 [cell addSubview:pin];
                 

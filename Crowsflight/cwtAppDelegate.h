@@ -46,6 +46,7 @@
 
 -(void)addNewDestination:(NSString *)name newlat:(double)_lat newlng:(double)_lng;
 -(void)editDestination:(NSString *)name newlat:(double)_lat newlng:(double)_lng;
+-(void)iCloudSync;
 
 
 @property (nonatomic) BOOL hasInternet;
