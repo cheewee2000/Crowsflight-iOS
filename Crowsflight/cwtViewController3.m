@@ -105,20 +105,20 @@
     int iconWidth=44;
     
     UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeCustom];
-    [hamburger setBackgroundImage:[UIImage imageNamed:@"hamburger.png"] forState:UIControlStateNormal];
-    hamburger.frame=CGRectMake(10.0, 0,iconWidth, iconWidth);
+    [hamburger setBackgroundImage:[UIImage imageNamed:@"hamburger"] forState:UIControlStateNormal];
+    hamburger.frame=CGRectMake(screen.size.width*.07, 0,iconWidth, iconWidth);
     [hamburger addTarget:self action:@selector(showList) forControlEvents:UIControlEventTouchDown];
     [buttonBar addSubview:hamburger];
     
     UIButton *pin = [UIButton buttonWithType:UIButtonTypeCustom];
-    [pin setBackgroundImage:[UIImage imageNamed:@"pin.png"] forState:UIControlStateNormal];
+    [pin setBackgroundImage:[UIImage imageNamed:@"pin"] forState:UIControlStateNormal];
     pin.frame=CGRectMake(screen.size.width*.5-iconWidth*.5, 0, iconWidth,iconWidth);
     [pin addTarget:self action:@selector(pinCurrentLocation) forControlEvents:UIControlEventTouchDown];
     [buttonBar addSubview:pin];
     
     UIButton *map = [UIButton buttonWithType:UIButtonTypeCustom];
-    [map setBackgroundImage:[UIImage imageNamed:@"map.png"] forState:UIControlStateNormal];
-    map.frame=CGRectMake(screen.size.width-iconWidth-10, 0, iconWidth,iconWidth);
+    [map setBackgroundImage:[UIImage imageNamed:@"map"] forState:UIControlStateNormal];
+    map.frame=CGRectMake(screen.size.width-iconWidth-screen.size.width*.07, 0, iconWidth,iconWidth);
     [map addTarget:self action:@selector(openMapView) forControlEvents:UIControlEventTouchDown];
     [buttonBar addSubview:map];
     
@@ -142,8 +142,8 @@
     moreInfo = [UIButton buttonWithType:UIButtonTypeCustom];
     moreInfo.frame=CGRectMake(screen.size.width*.5-iconWidth*.5, screen.size.height-60.0-iconWidth, iconWidth,iconWidth);    
     [moreInfo addTarget:self action:@selector(setShowInfo) forControlEvents:UIControlEventTouchUpInside];
-    [moreInfo setImage:[UIImage imageNamed:@"more-info2.png"] forState:UIControlStateNormal];
-    [moreInfo setImage:[UIImage imageNamed:@"less-info.png"] forState:UIControlStateSelected];
+    [moreInfo setImage:[UIImage imageNamed:@"more-info2"] forState:UIControlStateNormal];
+    [moreInfo setImage:[UIImage imageNamed:@"less-info"] forState:UIControlStateSelected];
     
     [self.view addSubview:moreInfo];
 
@@ -167,7 +167,7 @@
         if(instructionN<6){//last instruction
             instructionN++;
             [[NSUserDefaults standardUserDefaults] setInteger:instructionN forKey:@"mainInstructions"];
-            [self.instructions setImage:[UIImage imageNamed:[NSString stringWithFormat:@"Crowsflight_Instructions_002-%02i.png",instructionN]]];
+            [self.instructions setImage:[UIImage imageNamed:[NSString stringWithFormat:@"Crowsflight_Instructions_006-%02i",instructionN]]];
             [self setInstructionPosition];
             [self.instructions setHidden:FALSE];
         }
@@ -188,13 +188,15 @@
 
 -(void)setInstructionPosition{
     int instructionN=(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"mainInstructions"];
-    CGRect screen = [[UIScreen mainScreen] applicationFrame];
+    CGRect screen = [[UIScreen mainScreen] bounds];
 
     NSLog(@"instn %i",instructionN);
-    if(instructionN==4) [self.instructions setFrame:CGRectMake(0, -40, 320, 320)];
-    else if(instructionN==5) [self.instructions setFrame:CGRectMake(0, screen.size.height*.5-320+30, 320, 320)];
-
-    else [self.instructions setFrame:CGRectMake(0, screen.size.height-320, 320, 320)];
+    if(instructionN==0) [self.instructions setFrame:CGRectMake(0,screen.size.height*.5+60, screen.size.width, screen.size.width)];
+    
+    else if(instructionN==4) [self.instructions setFrame:CGRectMake(0,screen.size.height*.15, screen.size.width, screen.size.width)];
+    else if(instructionN==5) [self.instructions setFrame:CGRectMake(0, screen.size.height*.5-screen.size.width-50, screen.size.width, screen.size.width)];
+    else if(instructionN==6) [self.instructions setFrame:CGRectMake(0, screen.size.height-60-50-screen.size.width, screen.size.width, screen.size.width)];
+    else [self.instructions setFrame:CGRectMake(0, screen.size.height-screen.size.width-44, screen.size.width, screen.size.width)];
     
 
 }
@@ -271,7 +273,7 @@
         
         NSLog(@"show main instructions");
   
-        [self.instructions setImage:[UIImage imageNamed:[NSString stringWithFormat:@"Crowsflight_Instructions_002-%02i.png",instructionN]]];
+        [self.instructions setImage:[UIImage imageNamed:[NSString stringWithFormat:@"Crowsflight_Instructions_006-%02i",instructionN]]];
         [self.instructions setHidden:FALSE];
         
         if(instructionN==0){

@@ -127,7 +127,7 @@
 
         NSLog(@"finished deleting");
         
-        [vc nextInstruction:3];
+        [vc nextInstruction:2];
         
     }
 

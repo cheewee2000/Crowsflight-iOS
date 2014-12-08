@@ -227,15 +227,16 @@
             
             //first launch
             if(instructionN==0){
-                instructionN=1;
+                //instructionN=1;
                 [[NSUserDefaults standardUserDefaults] setInteger:instructionN forKey:@"mapInstructions"];
             }
             
             NSLog(@"show map inst %i",instructionN);
 
-            if((wasSearchView==TRUE && instructionN==1) || (wasSearchView==FALSE && instructionN==2)){
-                [self.instructions setImage:[UIImage imageNamed:[NSString stringWithFormat:@"Crowsflight_mapInstructions_002-%02i.png",instructionN]]];
+            if((wasSearchView==TRUE && instructionN==0) || (wasSearchView==FALSE && instructionN==1)){
+                [self.instructions setImage:[UIImage imageNamed:[NSString stringWithFormat:@"Crowsflight_mapInstructions_006-%02i",instructionN]]];
                 [self.instructions setHidden:FALSE];
+
             }else{
                 
                 [self.instructions setHidden:TRUE];
@@ -266,12 +267,12 @@
     
     if(n-1==instructionN){
 
-        if(instructionN<2){//last instruction
+        if(instructionN<1){//last instruction
             NSLog(@"next instruction %i",n);
 
             instructionN++;
             [[NSUserDefaults standardUserDefaults] setInteger:instructionN forKey:@"mapInstructions"];
-            [self.instructions setImage:[UIImage imageNamed:[NSString stringWithFormat:@"Crowsflight_mapInstructions_002-%02i.png",instructionN]]];
+            [self.instructions setImage:[UIImage imageNamed:[NSString stringWithFormat:@"Crowsflight_mapInstructions_006-%02i",instructionN]]];
             [self.instructions setHidden:FALSE];
         }
         
@@ -345,7 +346,7 @@
     //allowLongpress=TRUE;
 
     self.instructions=[[UIImageView alloc] init];
-    [self.instructions setFrame:CGRectMake(0, 0, 320, 320)];
+    [self.instructions setFrame:CGRectMake(0, -screen.size.width*.5, screen.size.width, screen.size.width)];
     [self.instructions setAlpha:.98];
 
     [self.view addSubview:self.instructions];
@@ -509,7 +510,7 @@
     }
      
 
-    [self nextInstruction:3];
+    [self nextInstruction:2];
 
 
     
@@ -655,7 +656,7 @@
     
     else if([annotation.subtitle isEqual:@"SAVE LOCATION"]){
         AudioServicesPlaySystemSound(audioCreate);
-        [self nextInstruction:2];
+        [self nextInstruction:1];
 
         NSLog(@"saved annotation: %i",(int)annotation.index);
         [dele addNewDestination:annotation.title newlat:annotation.coordinate.latitude newlng:annotation.coordinate.longitude];

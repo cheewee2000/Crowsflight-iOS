@@ -153,12 +153,12 @@
         
         //first launch
         if(instructionN==0){
-            instructionN=1;
+            //instructionN=1;
             [[NSUserDefaults standardUserDefaults] setInteger:instructionN forKey:@"listInstructions"];
         }
         
         if( instructionN>=0 && self.isFiltered==FALSE){
-            [self.instructions setImage:[UIImage imageNamed:[NSString stringWithFormat:@"Crowsflight_listInstructions_002-%02i.png",instructionN]]];
+            [self.instructions setImage:[UIImage imageNamed:[NSString stringWithFormat:@"Crowsflight_listInstructions_006-%02i.png",instructionN]]];
             [self.instructions setHidden:FALSE];
             [self setInstructionPosition];
 
@@ -208,7 +208,7 @@
         if(instructionN<3){
             instructionN++;
             [[NSUserDefaults standardUserDefaults] setInteger:instructionN forKey:@"listInstructions"];
-            [self.instructions setImage:[UIImage imageNamed:[NSString stringWithFormat:@"Crowsflight_listInstructions_002-%02i.png",instructionN]]];
+            [self.instructions setImage:[UIImage imageNamed:[NSString stringWithFormat:@"Crowsflight_listInstructions_006-%02i.png",instructionN]]];
             
             [self setInstructionPosition];
             
@@ -228,18 +228,18 @@
 
 -(void)setInstructionPosition{
     int instructionN=(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"listInstructions"];
-    //CGRect screen = [[UIScreen mainScreen] applicationFrame];
+    CGRect screen = [[UIScreen mainScreen] bounds];
     
     NSLog(@"instn %i",instructionN);
     
-    if(instructionN==3){
-        [self.instructions setFrame:CGRectMake(0, -20, 320, 320)];
+    if(instructionN==2){
+        [self.instructions setFrame:CGRectMake(-22,40, screen.size.width, screen.size.width)];
 
         
         
         //reset scroll to 0
         CGPoint contentOffset = self.tableView.contentOffset;
-        contentOffset.y = 0;
+        contentOffset.y = -20;
         [self.tableView setContentOffset:contentOffset animated:NO];
     }
     
@@ -247,7 +247,7 @@
     else
     {
         //[self.instructions setFrame:CGRectMake(0, dele.nDestinations*self.cell.frame.size.height-20, 320, 320)];
-        [self.instructions setFrame:CGRectMake(0, (dele.nDestinations-1)*60-20, 320, 320)];
+        [self.instructions setFrame:CGRectMake(-22, (dele.nDestinations-1)*60+100, screen.size.width, screen.size.width)];
 
     }
     
@@ -414,7 +414,7 @@
     [self.filterBar resignFirstResponder];
     self.currentlyActiveSlidingCell = cell;
     
-    [self nextInstruction:2];
+    [self nextInstruction:1];
     
 }
 
