@@ -25,13 +25,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 
-    //iCloud
-    NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateKeyValuePairs:) name:NSUbiquitousKeyValueStoreDidChangeExternallyNotification object:store];
     
-    // Synchronize Store
-    [store synchronize];
-
     
     [Crashlytics startWithAPIKey:@"1eb6d15737d50f2df4316cb5b8b073da76a42b67"];
 
@@ -49,7 +43,7 @@
     
     self.navController = [[UINavigationController alloc] initWithRootViewController:self.viewController];
     [self.navController setNavigationBarHidden:YES animated:NO];
-    self.navController.wantsFullScreenLayout=NO;
+    //self.navController.wantsFullScreenLayout=NO;
 
     
     [self.window makeKeyAndVisible];
@@ -73,9 +67,10 @@
 
     
     self.overlay = [MTStatusBarOverlay sharedInstance];
-    self.overlay.animation = MTStatusBarOverlayAnimationShrink;
+    self.overlay.animation = MTStatusBarOverlayAnimationNone;
     self.overlay.detailViewMode = MTDetailViewModeHistory;
     self.overlay.delegate = self;
+    self.overlay.backgroundColor=[UIColor colorWithWhite:.95 alpha:1];
     //overlay.hidesActivity=TRUE;
     
     self.headingAccuracy=-2;
@@ -102,6 +97,14 @@
     // Start the notifier, which will cause the reachability object to retain itself!
     [reach startNotifier];
     
+
+    //iCloud
+    NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateKeyValuePairs:) name:NSUbiquitousKeyValueStoreDidChangeExternallyNotification object:store];
+    
+    // Synchronize Store
+    [store synchronize];
+
 
     
     return YES;
@@ -330,7 +333,7 @@
             [self.overlay postErrorMessage:@"wave in ∞ motion to calibrate compass" duration:0];
             
             //[overlay setShrinked:YES animated:YES];
-            if(self.overlay.isShrinked==NO) [self performSelector:@selector(shrink) withObject:nil afterDelay:12.0];
+            //if(self.overlay.isShrinked==NO) [self performSelector:@selector(shrink) withObject:nil afterDelay:12.0];
         }
         self.lastHeadingAccuracy=self.headingAccuracy;
     }
@@ -381,7 +384,7 @@
 	}
     
     
-    [self iCloudSync];
+   [self iCloudSync];
     
     
     
@@ -394,6 +397,7 @@
     if (store != nil) {
         [store setObject:self.locationDictionaryArray forKey:@"locations"];
         [store synchronize];
+        NSLog(@"iCloud Sync Upload");
     }
 }
 
@@ -403,7 +407,8 @@
     NSDictionary *userInfo = [notification userInfo];
     NSNumber *changeReason = [userInfo objectForKey:NSUbiquitousKeyValueStoreChangeReasonKey];
     NSInteger reason = -1;
-    
+    NSLog(@"iCloud Sync Download");
+
     // Is a Reason Specified?
     if (!changeReason) {
         return;
@@ -427,6 +432,8 @@
                 NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
                 [ud setObject:self.locationDictionaryArray forKey:@"locations"];
                 
+                NSLog(@"update locationDictionaryArray");
+
                 // Reload Table View
                 //[self.tableView reloadData];
             }

@@ -123,7 +123,7 @@
                 
                 NSMutableDictionary *dictionary=[dele.locationDictionaryArray objectAtIndex:i];
                 
-                int currentDestinationN=[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"];
+                int currentDestinationN=(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"];
                 
                     CLLocationCoordinate2D annotationCoord;
                     
@@ -223,7 +223,7 @@
     
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"enable_mapInstructions"]==TRUE){
         
-            int instructionN=[[NSUserDefaults standardUserDefaults] integerForKey:@"mapInstructions"];
+            int instructionN=(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"mapInstructions"];
             
             //first launch
             if(instructionN==0){
@@ -262,7 +262,7 @@
 
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"enable_mapInstructions"]==FALSE)return;
     
-    int instructionN=[[NSUserDefaults standardUserDefaults] integerForKey:@"mapInstructions"];
+    int instructionN=(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"mapInstructions"];
     
     if(n-1==instructionN){
 
@@ -313,7 +313,7 @@
     mapView.mapType = [[NSUserDefaults standardUserDefaults] integerForKey:@"mapType"];
     [self.view addSubview:mapView];
     
-    self.mapButton =[[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width-70, 20, 44, 44)];
+    self.mapButton =[[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width-70, self.view.bounds.size.height*.07, 44, 44)];
     [self.mapButton addTarget:self action:@selector(mapTypeButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     
     [self.view addSubview:self.mapButton];
@@ -647,7 +647,7 @@
     if([annotation.subtitle isEqual:@""] ){
         //AudioServicesPlaySystemSound(audioSelect3);
 
-        NSLog(@"clicked annotation: %i",annotation.index);
+        NSLog(@"clicked annotation: %i",(int)annotation.index);
         [[NSUserDefaults standardUserDefaults] setInteger:annotation.index forKey:@"currentDestinationN"];
 
     }
@@ -657,7 +657,7 @@
         AudioServicesPlaySystemSound(audioCreate);
         [self nextInstruction:2];
 
-        NSLog(@"saved annotation: %i",annotation.index);
+        NSLog(@"saved annotation: %i",(int)annotation.index);
         [dele addNewDestination:annotation.title newlat:annotation.coordinate.latitude newlng:annotation.coordinate.longitude];
         
     }

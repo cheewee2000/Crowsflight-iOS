@@ -389,7 +389,7 @@ kDetailViewWidth, kHistoryTableRowHeight*kMaxHistoryTableRowCount + kStatusBarHe
 		[self addSubviewToBackgroundView:statusBarBackgroundImageView_];
         
 		// Activity Indicator
-		activityIndicator_ = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+		activityIndicator_ = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
 		activityIndicator_.frame = CGRectMake(6.f, 3.f, backgroundView_.frame.size.height - 6.f, backgroundView_.frame.size.height - 6.f);
 		activityIndicator_.hidesWhenStopped = YES;
         
@@ -1189,23 +1189,27 @@ kDetailViewWidth, kHistoryTableRowHeight*kMaxHistoryTableRowCount + kStatusBarHe
 //    }
 //    else{
     
-        if (style == UIStatusBarStyleDefault && !IsIPad && !IsIPhoneEmulationMode) {
-            // choose image depending on size
-            if (self.shrinked) {
-                self.statusBarBackgroundImageView.image = [self.defaultStatusBarImageShrinked stretchableImageWithLeftCapWidth:2.0f topCapHeight:0.0f];
-            
-            } else {
-                self.statusBarBackgroundImageView.image = [self.defaultStatusBarImage stretchableImageWithLeftCapWidth:2.0f topCapHeight:0.0f];
-            }
-            statusBarBackgroundImageView_.backgroundColor = [UIColor blackColor];
-
-        }
-        // black status bar? -> no image
-        else {
-            self.statusBarBackgroundImageView.image = nil;
-            statusBarBackgroundImageView_.backgroundColor = [UIColor blackColor];
-        }
+//        if (style == UIStatusBarStyleDefault && !IsIPad && !IsIPhoneEmulationMode) {
+//            // choose image depending on size
+//            if (self.shrinked) {
+//                self.statusBarBackgroundImageView.image = [self.defaultStatusBarImageShrinked stretchableImageWithLeftCapWidth:2.0f topCapHeight:0.0f];
+//            
+//            } else {
+//                self.statusBarBackgroundImageView.image = [self.defaultStatusBarImage stretchableImageWithLeftCapWidth:2.0f topCapHeight:0.0f];
+//            }
+//            statusBarBackgroundImageView_.backgroundColor = [UIColor blackColor];
+//
+//        }
+//        // black status bar? -> no image
+//        else {
+//            self.statusBarBackgroundImageView.image = nil;
+//            statusBarBackgroundImageView_.backgroundColor = [UIColor blackColor];
+//        }
     //}
+    
+    //statusBarBackgroundImageView_.backgroundColor = [UIColor whiteColor];
+    //statusBarBackgroundImageView_.backgroundColor=[UIColor colorWithWhite:.95 alpha:.8];
+
 }
 
 - (void)setColorSchemeForStatusBarStyle:(UIStatusBarStyle)style messageType:(MTMessageType)messageType {
@@ -1240,7 +1244,7 @@ kDetailViewWidth, kHistoryTableRowHeight*kMaxHistoryTableRowCount + kStatusBarHe
                 break;
         }
         
-		self.activityIndicator.activityIndicatorViewStyle = kLightThemeActivityIndicatorViewStyle;
+		//self.activityIndicator.activityIndicatorViewStyle = kLightThemeActivityIndicatorViewStyle;
         
         if ([self.activityIndicator respondsToSelector:@selector(setColor:)]) {
             [self.activityIndicator setColor:kLightThemeTextColor];
@@ -1276,10 +1280,10 @@ kDetailViewWidth, kHistoryTableRowHeight*kMaxHistoryTableRowCount + kStatusBarHe
         self.statusLabel2.shadowColor = nil;
         self.finishedLabel.shadowColor = nil;
         
-		self.activityIndicator.activityIndicatorViewStyle = kDarkThemeActivityIndicatorViewStyle;
+		//self.activityIndicator.activityIndicatorViewStyle = kDarkThemeActivityIndicatorViewStyle;
         
         if ([self.activityIndicator respondsToSelector:@selector(setColor:)]) {
-            [self.activityIndicator setColor:nil];
+            [self.activityIndicator setColor:[UIColor whiteColor]];
         }
         
 		self.detailView.backgroundColor = kDarkThemeDetailViewBackgroundColor;

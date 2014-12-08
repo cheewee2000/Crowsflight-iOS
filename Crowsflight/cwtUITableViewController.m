@@ -35,7 +35,7 @@
         self.filterBar.delegate=self;
 
         
-        UIImageView *searchImage = [[UIImageView alloc] initWithFrame:CGRectMake(10, 5, 30, 30)];
+        UIImageView *searchImage = [[UIImageView alloc] initWithFrame:CGRectMake(00, 5, 30, 30)];
         searchImage.image = [UIImage imageNamed:@"search.png"];
         [self.filterBar  setLeftView:searchImage];
         [self.filterBar  setLeftViewMode:UITextFieldViewModeAlways];

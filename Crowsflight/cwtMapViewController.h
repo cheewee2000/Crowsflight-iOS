@@ -61,7 +61,7 @@
 
 
 @property (nonatomic, strong) UIImageView  *instructions;
--(void)nextInstruction;
+//-(void)nextInstruction;
 
 
 @end
