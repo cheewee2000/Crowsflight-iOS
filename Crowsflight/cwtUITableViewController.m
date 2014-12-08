@@ -916,7 +916,8 @@
         }
         else if(indexPath.row==3){
             
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://appstore.com/crowsflight"]];
+            //[[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://appstore.com/crowsflight"]];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"itms-apps://itunes.apple.com/app/id444185307"]];
 
             //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://itunes.apple.com/ru/app/id444185307"]];
 

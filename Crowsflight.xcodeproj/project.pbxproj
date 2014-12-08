@@ -120,13 +120,13 @@
 		44471D4817AC6408008413B7 /* walk-91.png in Resources */ = {isa = PBXBuildFile; fileRef = 44471CEB17AC6408008413B7 /* walk-91.png */; };
 		44471D4917AC6408008413B7 /* walk-92.png in Resources */ = {isa = PBXBuildFile; fileRef = 44471CEC17AC6408008413B7 /* walk-92.png */; };
 		444BD8B917A4393B00C7A65A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 44C97DE817A433F300974240 /* libz.dylib */; };
+		445273DB1A36196E00807504 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 445273DA1A36196E00807504 /* Launch Screen.xib */; };
 		44795DBA1767843800921101 /* Andale Mono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 44795DB91767843800921101 /* Andale Mono.ttf */; };
 		44795DBD176988EB00921101 /* cwtToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 44795DBC176988EB00921101 /* cwtToolbar.m */; };
 		447965CD175008C300A45031 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447965CC175008C300A45031 /* MessageUI.framework */; };
 		448AC1A817BD685B00281208 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 448AC1A717BD685B00281208 /* Reachability.m */; };
 		448AC1AA17BD687700281208 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 448AC1A917BD687700281208 /* SystemConfiguration.framework */; };
 		4491D8AD1A33775F00C56401 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4491D8AC1A33775F00C56401 /* Crashlytics.framework */; };
-		4491D8B01A33C24600C56401 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4491D8AF1A33C24600C56401 /* Main.storyboard */; };
 		4491D8B41A34F25900C56401 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4491D8B31A34F25900C56401 /* Images.xcassets */; };
 		449758FF1783CE3000341552 /* EarthandLinesBLUE.png in Resources */ = {isa = PBXBuildFile; fileRef = 449758BB1783CE3000341552 /* EarthandLinesBLUE.png */; };
 		449759001783CE3000341552 /* EarthandLinesBLUE@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 449758BC1783CE3000341552 /* EarthandLinesBLUE@2x.png */; };
@@ -391,6 +391,7 @@
 		44471CEA17AC6408008413B7 /* walk-90.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "walk-90.png"; sourceTree = "<group>"; };
 		44471CEB17AC6408008413B7 /* walk-91.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "walk-91.png"; sourceTree = "<group>"; };
 		44471CEC17AC6408008413B7 /* walk-92.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "walk-92.png"; sourceTree = "<group>"; };
+		445273DA1A36196E00807504 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		44795DB91767843800921101 /* Andale Mono.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Andale Mono.ttf"; sourceTree = "<group>"; };
 		44795DBB176988EB00921101 /* cwtToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cwtToolbar.h; sourceTree = "<group>"; };
 		44795DBC176988EB00921101 /* cwtToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = cwtToolbar.m; sourceTree = "<group>"; };
@@ -399,7 +400,6 @@
 		448AC1A717BD685B00281208 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		448AC1A917BD687700281208 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		4491D8AC1A33775F00C56401 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
-		4491D8AF1A33C24600C56401 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		4491D8B31A34F25900C56401 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		4491D8B51A35032800C56401 /* Crowsflight.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Crowsflight.entitlements; sourceTree = "<group>"; };
 		449758BB1783CE3000341552 /* EarthandLinesBLUE.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EarthandLinesBLUE.png; sourceTree = "<group>"; };
@@ -953,7 +953,6 @@
 				4491D8AE1A33C1FD00C56401 /* Helpers */,
 				442F15D917A6FAEA00571D19 /* Sounds */,
 				44C1D14117599FC3007798A6 /* SIAlertView.bundle */,
-				4491D8AF1A33C24600C56401 /* Main.storyboard */,
 				44795DBB176988EB00921101 /* cwtToolbar.h */,
 				44795DBC176988EB00921101 /* cwtToolbar.m */,
 				44DAE02A17359AC900C17F07 /* cwtAppDelegate.h */,
@@ -963,6 +962,7 @@
 				442A5356178287CC008A1687 /* cfLocationViewController2.h */,
 				442A5357178287CC008A1687 /* cfLocationViewController2.m */,
 				44DAE02317359AC900C17F07 /* Crowsflight-Info.plist */,
+				445273DA1A36196E00807504 /* Launch Screen.xib */,
 				4491D8B31A34F25900C56401 /* Images.xcassets */,
 				4424DA1117BE8502005FBBC6 /* Settings.bundle */,
 				44DAE02217359AC900C17F07 /* Supporting Files */,
@@ -1082,7 +1082,7 @@
 			attributes = {
 				CLASSPREFIX = cwt;
 				LastUpgradeCheck = 0610;
-				ORGANIZATIONNAME = "CW&T";
+				ORGANIZATIONNAME = CWandT;
 				TargetAttributes = {
 					44DAE01717359AC900C17F07 = {
 						DevelopmentTeam = L6DVQR8JB9;
@@ -1271,7 +1271,6 @@
 				44471D1217AC6408008413B7 /* walk-37.png in Resources */,
 				44471D1317AC6408008413B7 /* walk-38.png in Resources */,
 				44471D1417AC6408008413B7 /* walk-39.png in Resources */,
-				4491D8B01A33C24600C56401 /* Main.storyboard in Resources */,
 				44471D1517AC6408008413B7 /* walk-40.png in Resources */,
 				44471D1617AC6408008413B7 /* walk-41.png in Resources */,
 				44471D1717AC6408008413B7 /* walk-42.png in Resources */,
@@ -1285,6 +1284,7 @@
 				4491D8B41A34F25900C56401 /* Images.xcassets in Resources */,
 				44471D1F17AC6408008413B7 /* walk-50.png in Resources */,
 				44471D2017AC6408008413B7 /* walk-51.png in Resources */,
+				445273DB1A36196E00807504 /* Launch Screen.xib in Resources */,
 				44471D2117AC6408008413B7 /* walk-52.png in Resources */,
 				44471D2217AC6408008413B7 /* walk-53.png in Resources */,
 				44471D2317AC6408008413B7 /* walk-54.png in Resources */,
