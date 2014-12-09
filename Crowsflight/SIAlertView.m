@@ -959,9 +959,10 @@ static SIAlertView *__si_alert_current_view;
 //    
 //    [spinner startAnimating];
 
-    
+    CGRect screen = [[UIScreen mainScreen] applicationFrame];
+
     self.progressPie = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
-    self.progressPie.center=CGPointMake(160, 120);
+    self.progressPie.center=CGPointMake(screen.size.width/2.0, 120);
     self.progressPie.animationImages = [NSArray arrayWithObjects:
                                         [UIImage imageNamed:@"loading-1.png"],
                                         [UIImage imageNamed:@"loading-2.png"],
