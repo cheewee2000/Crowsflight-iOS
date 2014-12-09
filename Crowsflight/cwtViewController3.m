@@ -552,12 +552,13 @@
     else
 	{
         
-        if([name isEqual:@""] || name==NULL){
-            
-            [self addNewDestination:[NSString stringWithFormat:@"%f,%f",coordinate.latitude,coordinate.longitude] newlat:coordinate.latitude newlng:coordinate.longitude];
-        
-        }
-        else  [self addNewDestination:name newlat:coordinate.latitude newlng:coordinate.longitude];
+//        if([name isEqual:@""] || name==NULL){
+//            
+//            [self addNewDestination:[NSString stringWithFormat:@"%f,%f",coordinate.latitude,coordinate.longitude] newlat:coordinate.latitude newlng:coordinate.longitude];
+//        
+//        }
+//        else
+            [self addNewDestination:name newlat:coordinate.latitude newlng:coordinate.longitude];
 
         
         //[dele.viewController showLocationEditAlert];

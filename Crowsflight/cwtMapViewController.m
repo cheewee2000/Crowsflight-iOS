@@ -482,19 +482,20 @@
 
                 locTitle=[locTitle uppercaseString];
             }
-            else{
-                locTitle=@"";
+            
+
+            if(locTitle==NULL || [locTitle isEqual:@""]){
+                locTitle=[NSString stringWithFormat:@"%f,%f",touchMapCoordinate.latitude,touchMapCoordinate.longitude];
             }
             
-            NSLog(@"%@",locTitle);
+            NSLog(@"loc Title: %@",locTitle);
             
 
             [dele.viewController addLocation:touchMapCoordinate title:locTitle];
             AudioServicesPlaySystemSound(audioCreate);
 
         }];
-    
-        
+
       
     }
     

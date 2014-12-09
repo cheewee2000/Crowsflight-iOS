@@ -582,16 +582,23 @@
             
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             
-            UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(15, -10, 270, 80)];
+            UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(15, -5, 270, 80)];
             [label2 setTextColor:[UIColor colorWithWhite:.2 alpha:1]];
             [label2 setBackgroundColor:[UIColor clearColor]];
-            //[label2 setBackgroundColor:[UIColor colorWithRed:1.0 green:78/255.0f blue:36/255.0f alpha:1]];
-
-            
             [label2 setFont:[UIFont fontWithName: @"Helvetica" size: 10.0f]];
-            [label2 setText:[@"Search for a new address, placename \nor enter lat,lng directly \n(e.g. 40.729,-73.993)" uppercaseString]];
-            label2.numberOfLines=3;
+            [label2 setText:[@"Search for a new address, placename \n\nor enter lat,lng directly \n(e.g. 40.729,-73.993)" uppercaseString]];
+            label2.numberOfLines=4;
             [cell addSubview:label2];
+            
+            
+            UILabel *label3 = [[UILabel alloc] initWithFrame:CGRectMake(15, 45, 270, 80)];
+            [label3 setTextColor:[UIColor colorWithWhite:.2 alpha:1]];
+            [label3 setBackgroundColor:[UIColor clearColor]];
+            [label3 setFont:[UIFont fontWithName: @"Helvetica" size: 10.0f]];
+            [label3 setText:@"USE what3words TOO!\n(E.G. AFTER.BLANK.REJECT)" ];
+            label3.numberOfLines=3;
+            [cell addSubview:label3];
+            
             //cell.contentView.backgroundColor = [UIColor colorWithRed:111/255.0 green:227/255.0 blue:1 alpha:1];
             cell.contentView.backgroundColor = [UIColor colorWithWhite:.95 alpha:1];
 
