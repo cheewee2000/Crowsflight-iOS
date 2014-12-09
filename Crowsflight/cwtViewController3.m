@@ -738,44 +738,49 @@
         NSMutableArray *threeWords = [[NSMutableArray alloc] init];
         [threeWords setArray:[searchField.text componentsSeparatedByString:@"."]];
 
+
+        NSRegularExpression* oneWordRegex = [[NSRegularExpression alloc] initWithPattern:@"^\\*[\\p{L}\\-0-9]{6,31}" options:NSRegularExpressionCaseInsensitive error:nil];
         
-        if([slatlng count]==2){
+        NSArray* oneWordMatches = [oneWordRegex matchesInString:searchField.text options:0 range:NSMakeRange(0, [searchField.text length])];
+        
+        NSRegularExpression* regex = [[NSRegularExpression alloc] initWithPattern:@"-?\\d+\\.\\d+" options:NSRegularExpressionCaseInsensitive error:nil];
+        NSArray* matches = [regex matchesInString:searchField.text options:0 range:NSMakeRange(0, [searchField.text length])];
+        
+        //if([slatlng count]==2){
             //NSLog(@"parsing lat lng");
-            
-            NSString* slat = [slatlng objectAtIndex: 0];
-            NSString* slng = [slatlng objectAtIndex: 1];
-            
-            NSRegularExpression* regex = [[NSRegularExpression alloc] initWithPattern:@"-?\\d+\\.\\d+" options:NSRegularExpressionCaseInsensitive error:nil];
-            
-            NSArray* matches = [regex matchesInString:searchField.text options:0 range:NSMakeRange(0, [searchField.text length])];
-            
-            //NSLog(@"match=%@", matches );
-            
-            if([matches count]==2)
-            {
-                AudioServicesPlaySystemSound(audioCreate);
-                [self addNewDestination:searchField.text newlat:[slat doubleValue] newlng:[slng doubleValue] ];
-                isAddress=FALSE;
-            }
+        if([matches count]==2)
+        {
+        NSString* slat = [slatlng objectAtIndex: 0];
+        NSString* slng = [slatlng objectAtIndex: 1];
+        
+
+        //NSLog(@"match=%@", matches );
+        
+        
+            AudioServicesPlaySystemSound(audioCreate);
+            [self addNewDestination:searchField.text newlat:[slat doubleValue] newlng:[slng doubleValue] ];
+            isAddress=FALSE;
         }
-        else if([threeWords count]==3)
+        //}
+        else if([threeWords count]==3 || [oneWordMatches count]==1)
         {
                 isAddress=FALSE;
 
                 //show progress
                 NSString* mess=[NSString stringWithFormat:@"%@\n\n\n\n",searchField.text];
                 SIAlertView * progressAlert = [ [SIAlertView alloc] initWithTitle: @"LOOKING UP..." andMessage:mess];
-                //progressAlert = [ [SIAlertView alloc] initWithTitle: @"LOOKING UP..." andMessage:mess ];
                 progressAlert.showSpinner=TRUE;
                 progressAlert.showTextField=FALSE;
                 [progressAlert show];
                 
                 [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+            
+
                 NSString *postString = [NSString stringWithFormat:@"key=%@&string=%@&corners=%i",@"9TQ1TY3J",searchField.text,false];
-                NSString *urlString = @"http://api.what3words.com/w3w";
+                //NSString *urlString = @"http://api.what3words.com/w3w";
 
                 // Create the request.
-                NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString] ];
+                NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString: @"http://api.what3words.com/w3w"] ];
                 
                 // Specify that it will be a POST request
                 request.HTTPMethod = @"POST";
@@ -786,12 +791,11 @@
                 
                 
                 //NSString *requestString = @"your url here";
-                NSOperationQueue *queue = [[NSOperationQueue alloc] init];
                 [NSURLConnection sendAsynchronousRequest:request
                                                    queue:[NSOperationQueue mainQueue]
                                        completionHandler:
                  ^(NSURLResponse *response, NSData *data, NSError *error) {
-                     //NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+                   //  NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
                      
                      //user forced cancel
                      if(progressAlert.visible==NO)return;
