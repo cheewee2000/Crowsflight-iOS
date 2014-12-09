@@ -346,7 +346,7 @@
     //allowLongpress=TRUE;
 
     self.instructions=[[UIImageView alloc] init];
-    [self.instructions setFrame:CGRectMake(0, -screen.size.width*.5, screen.size.width, screen.size.width)];
+    [self.instructions setFrame:CGRectMake(22, -screen.size.width*.125, screen.size.width, screen.size.width)];
     [self.instructions setAlpha:.98];
 
     [self.view addSubview:self.instructions];
