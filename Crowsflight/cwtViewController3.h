@@ -22,11 +22,12 @@
     SIAlertView *searchAlert;
     SIAlertView *addLocAlert;
     UIAlertView *inappAlert;
-    SIAlertView* progressAlert;
+    //SIAlertView* progressAlert;
     
     cwtAppDelegate* dele;
     UIButton *moreInfo;
     SystemSoundID audioCreate;
+    NSMutableData *_responseData;
 
 
 }

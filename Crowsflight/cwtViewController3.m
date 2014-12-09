@@ -724,8 +724,20 @@
     {
         BOOL isAddress=TRUE;
         NSMutableArray *slatlng = [[NSMutableArray alloc] init];
-        
         [slatlng setArray:[searchField.text componentsSeparatedByString:@","]];
+        
+        
+        
+        //            3 words:
+        //            /^\p{L}+\.\p{L}+\.\p{L}+$/u
+        //
+        //            OneWord
+        //            /^\*[\p{L}\-0-9]{6,31}$/u
+        
+        //NSLog(@"match=%@", matches );
+        NSMutableArray *threeWords = [[NSMutableArray alloc] init];
+        [threeWords setArray:[searchField.text componentsSeparatedByString:@"."]];
+
         
         if([slatlng count]==2){
             //NSLog(@"parsing lat lng");
@@ -742,12 +754,106 @@
             if([matches count]==2)
             {
                 AudioServicesPlaySystemSound(audioCreate);
-
                 [self addNewDestination:searchField.text newlat:[slat doubleValue] newlng:[slng doubleValue] ];
                 isAddress=FALSE;
             }
-            
         }
+        else if([threeWords count]==3)
+        {
+                isAddress=FALSE;
+
+                //show progress
+                NSString* mess=[NSString stringWithFormat:@"%@\n\n\n\n",searchField.text];
+                SIAlertView * progressAlert = [ [SIAlertView alloc] initWithTitle: @"LOOKING UP..." andMessage:mess];
+                //progressAlert = [ [SIAlertView alloc] initWithTitle: @"LOOKING UP..." andMessage:mess ];
+                progressAlert.showSpinner=TRUE;
+                progressAlert.showTextField=FALSE;
+                [progressAlert show];
+                
+                [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+                NSString *postString = [NSString stringWithFormat:@"key=%@&string=%@&corners=%i",@"9TQ1TY3J",searchField.text,false];
+                NSString *urlString = @"http://api.what3words.com/w3w";
+
+                // Create the request.
+                NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString] ];
+                
+                // Specify that it will be a POST request
+                request.HTTPMethod = @"POST";
+
+                // Convert your data and set your request's HTTPBody property
+                NSData *requestBodyData = [postString dataUsingEncoding:NSUTF8StringEncoding];
+                request.HTTPBody = requestBodyData;
+                
+                
+                //NSString *requestString = @"your url here";
+                NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+                [NSURLConnection sendAsynchronousRequest:request
+                                                   queue:[NSOperationQueue mainQueue]
+                                       completionHandler:
+                 ^(NSURLResponse *response, NSData *data, NSError *error) {
+                     //NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+                     
+                     //user forced cancel
+                     if(progressAlert.visible==NO)return;
+                     [progressAlert dismissAnimated:YES];
+     
+                     
+                     //if (!error && httpResponse.statusCode >= 200 && httpResponse.statusCode <300) {
+                     if (!error) {
+
+                         //Error checking
+                         
+                         NSError *derror;
+                         NSMutableDictionary *returnedDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&derror];
+                         
+                         float lat=[[[returnedDict objectForKey:@"position"] objectAtIndex:0] floatValue];
+                         float lng=[[[returnedDict objectForKey:@"position"] objectAtIndex:1] floatValue];
+                         
+ 
+                         if (derror != nil || (lat==0 && lng==0))
+                         {
+                             
+                             NSString *errorMessage=@"NO RESULTS";
+                             if(dele.hasInternet==FALSE){
+                                 errorMessage=@"NO INTERNET CONNECTION";
+                             }
+                             SIAlertView* alert = [ [SIAlertView alloc] initWithTitle:errorMessage andMessage:@""];
+                             [alert addButtonWithTitle:@"OK"
+                                                  type:SIAlertViewButtonTypeDefault
+                                               handler:^(SIAlertView *alertView) {
+                                                   [self showList];
+                                               }];
+                             
+                             alert.showTextField=FALSE;
+                             [alert show];
+                             
+                         }
+                         else
+                         {
+                             AudioServicesPlaySystemSound(audioCreate);
+
+                             CLLocationCoordinate2D coord;
+                             coord = CLLocationCoordinate2DMake(lat, lng);
+                             [dele.viewController addLocation:coord title:searchField.text];
+                             //[self.navigationController pushDrawerViewController:self.mapViewController  withStyle:DrawerLayoutStyleRightAnchored animated:YES];
+
+                         }
+    
+                         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+                         
+                         
+                     }
+                     
+        
+
+
+                 }];
+                
+            
+                
+            }
+
         
         if(isAddress){
  
@@ -763,6 +869,34 @@
             request.naturalLanguageQuery = searchField.text;
             request.region = newRegion;
             
+            
+            
+            if (self.localSearch != nil)
+            {
+                self.localSearch = nil;
+            }
+            
+            //show progress
+            NSString* mess=[NSString stringWithFormat:@"%@\n\n\n\n",searchField.text];
+            
+            //progressAlert = [ [SIAlertView alloc] initWithTitle: @"SEARCHING FOR..." andMessage:mess ];
+            SIAlertView * progressAlert = [ [SIAlertView alloc] initWithTitle: @"SEARCHING for..." andMessage:mess];
+            
+            progressAlert.showSpinner=TRUE;
+            progressAlert.showTextField=FALSE;
+            
+            
+            [progressAlert show];
+            
+            
+            
+            self.localSearch = [[MKLocalSearch alloc] initWithRequest:request];
+            
+            
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+            
+            
+
             MKLocalSearchCompletionHandler completionHandler = ^(MKLocalSearchResponse *response, NSError *error)
             {
                 
@@ -807,35 +941,16 @@
                 [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
             };
             
-            if (self.localSearch != nil)
-            {
-                self.localSearch = nil;
-            }
-            
-            //show progress
-            NSString* mess=[NSString stringWithFormat:@"%@\n\n\n\n",searchField.text];
-            
-            progressAlert = [ [SIAlertView alloc] initWithTitle: @"SEARCHING FOR..." andMessage:mess ];
-            
-            progressAlert.showSpinner=TRUE;
-            progressAlert.showTextField=FALSE;
-
-
-            [progressAlert show];
-
-
-            
-            self.localSearch = [[MKLocalSearch alloc] initWithRequest:request];
-            
             [self.localSearch startWithCompletionHandler:completionHandler];
-            
-            [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-            
+
             
             
         }
     }
 }
+
+
+
 
 
 

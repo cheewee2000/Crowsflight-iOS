@@ -465,6 +465,7 @@ static SIAlertView *__si_alert_current_view;
             [SIAlertView hideBackgroundAnimated:YES];
         }
     }
+    NSLog(@"dismiss SIAlertView");
 }
 
 #pragma mark - Transitions
