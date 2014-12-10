@@ -760,7 +760,7 @@
         
         //NSLog(@"match=%@", matches );
         NSMutableArray *threeWords = [[NSMutableArray alloc] init];
-        [threeWords setArray:[searchField.text componentsSeparatedByString:@"."]];
+        [threeWords setArray:[[searchField.text lowercaseString] componentsSeparatedByString:@"."]];
 
 
         NSRegularExpression* oneWordRegex = [[NSRegularExpression alloc] initWithPattern:@"^\\*[\\p{L}\\-0-9]{6,31}" options:NSRegularExpressionCaseInsensitive error:nil];
@@ -791,11 +791,32 @@
             isAddress=FALSE;
 
             W3wPosition *position = [self.w3wSDK convertW3WToPosition:threeWords];
+
+            if (position==nil)
+            {
+                
+                NSString *errorMessage=@"NO RESULTS";
+                SIAlertView* alert = [ [SIAlertView alloc] initWithTitle:errorMessage andMessage:@""];
+                [alert addButtonWithTitle:@"OK"
+                                     type:SIAlertViewButtonTypeDefault
+                                  handler:^(SIAlertView *alertView) {
+                                      [self showList];
+                                  }];
+                
+                alert.showTextField=FALSE;
+                [alert show];
+                
+            }else{
+                
+                AudioServicesPlaySystemSound(audioCreate);
+                CLLocationCoordinate2D coord;
+                coord = CLLocationCoordinate2DMake(position.lat, position.lng);
+                [dele.viewController addLocation:coord title:searchField.text];
+                
+            }
             
-            AudioServicesPlaySystemSound(audioCreate);
-            CLLocationCoordinate2D coord;
-            coord = CLLocationCoordinate2DMake(position.lat, position.lng);
-            [dele.viewController addLocation:coord title:searchField.text];
+            
+            
             
         }
             else if([oneWordMatches count]==1)
