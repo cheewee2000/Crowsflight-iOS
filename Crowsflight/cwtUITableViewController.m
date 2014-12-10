@@ -582,21 +582,25 @@
             
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             
-            UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(15, -5, 270, 80)];
+            UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(15, -10, lineWidth, 80)];
             [label2 setTextColor:[UIColor colorWithWhite:.2 alpha:1]];
             [label2 setBackgroundColor:[UIColor clearColor]];
             [label2 setFont:[UIFont fontWithName: @"Helvetica" size: 10.0f]];
-            [label2 setText:[@"Search for a new address, placename \n\nor enter lat,lng directly \n(e.g. 40.729,-73.993)" uppercaseString]];
+            //[label2 setText:[@"Search for a new address, placename \n\nor enter lat,lng directly \n(e.g. 40.729,-73.993)" uppercaseString]];
+            [label2 setText:@"SEARCH ADDRESS, PLACENAME, LAT/LNG OR what3words" ];
+
             label2.numberOfLines=4;
             [cell addSubview:label2];
             
             
-            UILabel *label3 = [[UILabel alloc] initWithFrame:CGRectMake(15, 45, 270, 80)];
+            UILabel *label3 = [[UILabel alloc] initWithFrame:CGRectMake(15, 35, lineWidth, 80)];
             [label3 setTextColor:[UIColor colorWithWhite:.2 alpha:1]];
             [label3 setBackgroundColor:[UIColor clearColor]];
             [label3 setFont:[UIFont fontWithName: @"Helvetica" size: 10.0f]];
-            [label3 setText:@"USE what3words TOO!\n(E.G. AFTER.BLANK.REJECT)" ];
-            label3.numberOfLines=3;
+            //[label3 setText:@"USE what3words TOO!\n(E.G. AFTER.BLANK.REJECT)" ];
+
+            [label3 setText:@"PLACENAME (TOKYO, )\nLAT,LNG (40.729,-73.993)\nwhat3words (recent.pints.giving)" ];
+            label3.numberOfLines=4;
             [cell addSubview:label3];
             
             //cell.contentView.backgroundColor = [UIColor colorWithRed:111/255.0 green:227/255.0 blue:1 alpha:1];
@@ -621,19 +625,17 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             
             
-            UIView * searchButton =[[UIView alloc] initWithFrame:CGRectMake(lineWidth-140, 5, 120, 40)];
+            UIView * searchButton =[[UIView alloc] initWithFrame:CGRectMake(lineWidth-80, 5, 60, 40)];
             //[searchButton setBackgroundColor:[UIColor colorWithWhite:.9 alpha:1]];
             searchButton.backgroundColor = [UIColor colorWithRed:0 green:.73 blue:1 alpha:1];
 
             
             
-            UILabel *swipeLabel = [[UILabel alloc] initWithFrame:CGRectMake(17, 5, lineWidth, 30)];
+            UILabel *swipeLabel = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 60, 30)];
             [swipeLabel setTextColor:[UIColor colorWithWhite:.95 alpha:1]];
             [swipeLabel setFont:[UIFont fontWithName: @"Helvetica" size: 20.0f]];
             [swipeLabel setBackgroundColor:[UIColor clearColor]];
-
-            //[swipeLabel setText:[NSString stringWithFormat:@"SEARCH FOR %@",self.filterBar.text]];
-            [swipeLabel setText:@"SEARCH"];
+            [swipeLabel setText:@"GO"];
 
 
             //cell.contentView.backgroundColor = [UIColor colorWithRed:111/255.0 green:227/255.0 blue:1 alpha:1];
