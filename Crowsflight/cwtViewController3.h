@@ -15,6 +15,7 @@
 #import "SIAlertView.h"
 #import "cwtToolBar.h"
 #import <AudioToolbox/AudioToolbox.h>
+#import <W3wSDK/W3wSDK.h>
 
 @interface cwtViewController3 : UIViewController <UITextFieldDelegate>{
     
@@ -70,6 +71,9 @@
 
 @property (nonatomic, strong) UIImageView  *instructions;
 -(void)nextInstruction:(int)n;
+
+@property (nonatomic, strong) W3wSDK *w3wSDK;
+
 
 @end
 

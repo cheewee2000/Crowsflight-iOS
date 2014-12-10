@@ -20,6 +20,8 @@
 
 #import "cwtMapViewController.h"
 
+
+
 #define DEGREES_TO_RADIANS(angle) (angle / 180.0 * M_PI)
 
 
@@ -154,8 +156,29 @@
     [self.instructions setAlpha:.98];
     [self.view addSubview:self.instructions];
     
+    [self initW3wSDK];
+
     
 }
+
+
+- (void)initW3wSDK
+{
+    // Get w3w files
+    NSString *masterFilePath = [[NSBundle mainBundle] pathForResource:@"w3w_master" ofType:@"dat"];
+    NSString *yBucketsFilePath = [[NSBundle mainBundle] pathForResource:@"w3w_ybuckets" ofType:@"dat"];
+    NSString *englishFilePath = [[NSBundle mainBundle] pathForResource:@"w3w_en_words" ofType:nil];
+    
+    // Setup sdk
+    W3wSDKFactory *factory = [[W3wSDKFactory alloc] initWithMasterFilePath:masterFilePath
+                                                          yBucketsFilePath:yBucketsFilePath
+                                                       englishWordListPath:englishFilePath];
+    [factory addEnglish];
+    
+    self.w3wSDK = [factory build];
+}
+
+
 
 #pragma mark - Instructions
 
@@ -763,8 +786,21 @@
             isAddress=FALSE;
         }
         //}
-        else if([threeWords count]==3 || [oneWordMatches count]==1)
+        else if([threeWords count]==3 )
         {
+            isAddress=FALSE;
+
+            W3wPosition *position = [self.w3wSDK convertW3WToPosition:threeWords];
+            
+            AudioServicesPlaySystemSound(audioCreate);
+            CLLocationCoordinate2D coord;
+            coord = CLLocationCoordinate2DMake(position.lat, position.lng);
+            [dele.viewController addLocation:coord title:searchField.text];
+            
+        }
+            else if([oneWordMatches count]==1)
+            {
+            
                 isAddress=FALSE;
 
                 //show progress
@@ -953,7 +989,6 @@
         }
     }
 }
-
 
 
 

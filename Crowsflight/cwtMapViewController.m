@@ -485,7 +485,9 @@
             
 
             if(locTitle==NULL || [locTitle isEqual:@""]){
-                locTitle=[NSString stringWithFormat:@"%f,%f",touchMapCoordinate.latitude,touchMapCoordinate.longitude];
+                W3wPosition *position = [dele.viewController.w3wSDK convertPositionToW3W:kW3wLanguageEnglish lat:touchMapCoordinate.latitude lng:touchMapCoordinate.longitude];
+
+                locTitle=[NSString stringWithFormat:@"%@\n%f,%f",position.getW3w,touchMapCoordinate.latitude,touchMapCoordinate.longitude];
             }
             
             NSLog(@"loc Title: %@",locTitle);
@@ -503,7 +505,9 @@
     {
         
         NSLog(@"no internet?");
-
+        W3wPosition *position = [dele.viewController.w3wSDK convertPositionToW3W:kW3wLanguageEnglish lat:touchMapCoordinate.latitude lng:touchMapCoordinate.longitude];
+        
+        locTitle=[NSString stringWithFormat:@"%@\n%f,%f",position.getW3w,touchMapCoordinate.latitude,touchMapCoordinate.longitude];
         [dele.viewController addLocation:touchMapCoordinate title:locTitle];
         AudioServicesPlaySystemSound(audioCreate);
         [self dismissViewControllerAnimated:YES completion:nil];

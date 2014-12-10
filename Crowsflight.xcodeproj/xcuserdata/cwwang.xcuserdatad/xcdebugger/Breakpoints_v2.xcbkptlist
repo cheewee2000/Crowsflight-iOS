@@ -36,11 +36,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Crowsflight/cwtViewController3.m"
-            timestampString = "439837688.309892"
+            timestampString = "439913914.211436"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "749"
-            endingLineNumber = "749"
+            startingLineNumber = "772"
+            endingLineNumber = "772"
             landmarkName = "-searchGeo:"
             landmarkType = "5">
          </BreakpointContent>

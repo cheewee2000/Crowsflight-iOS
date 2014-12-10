@@ -20,6 +20,10 @@
 		442A53AD1783CB75008A1687 /* fly@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 442A53A91783CB75008A1687 /* fly@2x.png */; };
 		442A53AE1783CB75008A1687 /* walk@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 442A53AA1783CB75008A1687 /* walk@2x.png */; };
 		442F15DD17A6FF0700571D19 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 442F15DC17A6FF0700571D19 /* AudioToolbox.framework */; };
+		444023F21A388D680022D80B /* w3w_en_words in Resources */ = {isa = PBXBuildFile; fileRef = 444023EE1A388D680022D80B /* w3w_en_words */; };
+		444023F31A388D680022D80B /* w3w_master.dat in Resources */ = {isa = PBXBuildFile; fileRef = 444023EF1A388D680022D80B /* w3w_master.dat */; };
+		444023F41A388D680022D80B /* w3w_ybuckets.dat in Resources */ = {isa = PBXBuildFile; fileRef = 444023F01A388D680022D80B /* w3w_ybuckets.dat */; };
+		444023F51A388D680022D80B /* W3wSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 444023F11A388D680022D80B /* W3wSDK.framework */; };
 		44471C8A17AC4E6F008413B7 /* walk-d1.png in Resources */ = {isa = PBXBuildFile; fileRef = 44471C3617AC4E6F008413B7 /* walk-d1.png */; };
 		44471C8B17AC4E6F008413B7 /* walk-d2.png in Resources */ = {isa = PBXBuildFile; fileRef = 44471C3717AC4E6F008413B7 /* walk-d2.png */; };
 		44471C8C17AC4E6F008413B7 /* walk-d3.png in Resources */ = {isa = PBXBuildFile; fileRef = 44471C3817AC4E6F008413B7 /* walk-d3.png */; };
@@ -268,6 +272,10 @@
 		442A53A91783CB75008A1687 /* fly@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fly@2x.png"; sourceTree = "<group>"; };
 		442A53AA1783CB75008A1687 /* walk@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "walk@2x.png"; sourceTree = "<group>"; };
 		442F15DC17A6FF0700571D19 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		444023EE1A388D680022D80B /* w3w_en_words */ = {isa = PBXFileReference; lastKnownFileType = file; path = w3w_en_words; sourceTree = "<group>"; };
+		444023EF1A388D680022D80B /* w3w_master.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = w3w_master.dat; sourceTree = "<group>"; };
+		444023F01A388D680022D80B /* w3w_ybuckets.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = w3w_ybuckets.dat; sourceTree = "<group>"; };
+		444023F11A388D680022D80B /* W3wSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = W3wSDK.framework; sourceTree = "<group>"; };
 		44471C3617AC4E6F008413B7 /* walk-d1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "walk-d1.png"; sourceTree = "<group>"; };
 		44471C3717AC4E6F008413B7 /* walk-d2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "walk-d2.png"; sourceTree = "<group>"; };
 		44471C3817AC4E6F008413B7 /* walk-d3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "walk-d3.png"; sourceTree = "<group>"; };
@@ -540,6 +548,7 @@
 				44DAE01C17359AC900C17F07 /* UIKit.framework in Frameworks */,
 				44DAE01E17359AC900C17F07 /* Foundation.framework in Frameworks */,
 				4491D8AD1A33775F00C56401 /* Crashlytics.framework in Frameworks */,
+				444023F51A388D680022D80B /* W3wSDK.framework in Frameworks */,
 				44DAE02017359AC900C17F07 /* CoreGraphics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -660,6 +669,25 @@
 				44E7EBD017A701AA0054E1BB /* Crowsflight_Create_001.wav */,
 			);
 			name = Sounds;
+			sourceTree = "<group>";
+		};
+		444023ED1A388D680022D80B /* raw */ = {
+			isa = PBXGroup;
+			children = (
+				444023EE1A388D680022D80B /* w3w_en_words */,
+				444023EF1A388D680022D80B /* w3w_master.dat */,
+				444023F01A388D680022D80B /* w3w_ybuckets.dat */,
+			);
+			path = raw;
+			sourceTree = "<group>";
+		};
+		444023F61A388D710022D80B /* what3words */ = {
+			isa = PBXGroup;
+			children = (
+				444023ED1A388D680022D80B /* raw */,
+				444023F11A388D680022D80B /* W3wSDK.framework */,
+			);
+			name = what3words;
 			sourceTree = "<group>";
 		};
 		4491D8AE1A33C1FD00C56401 /* Helpers */ = {
@@ -861,6 +889,7 @@
 			isa = PBXGroup;
 			children = (
 				448AC1A917BD687700281208 /* SystemConfiguration.framework */,
+				444023F61A388D710022D80B /* what3words */,
 				448AC1A617BD685B00281208 /* Reachability.h */,
 				448AC1A717BD685B00281208 /* Reachability.m */,
 				442F15DC17A6FF0700571D19 /* AudioToolbox.framework */,
@@ -1067,6 +1096,7 @@
 				449759081783CE3000341552 /* loading-12.png in Resources */,
 				449759091783CE3000341552 /* loading-13.png in Resources */,
 				4497590A1783CE3000341552 /* loading-14.png in Resources */,
+				444023F31A388D680022D80B /* w3w_master.dat in Resources */,
 				44E7EBD917A701AA0054E1BB /* Crowsflight_Create_001.wav in Resources */,
 				4497590B1783CE3000341552 /* loading-15.png in Resources */,
 				4497590C1783CE3000341552 /* loading-16.png in Resources */,
@@ -1121,6 +1151,7 @@
 				449759431783D52500341552 /* Icon@2x.png in Resources */,
 				4497595E1783D6D700341552 /* loading-1@2x.png in Resources */,
 				4497595F1783D6D700341552 /* loading-2@2x.png in Resources */,
+				444023F21A388D680022D80B /* w3w_en_words in Resources */,
 				449759601783D6D700341552 /* loading-3@2x.png in Resources */,
 				449759611783D6D700341552 /* loading-4@2x.png in Resources */,
 				449759621783D6D700341552 /* loading-5@2x.png in Resources */,
@@ -1245,6 +1276,7 @@
 				44471D4617AC6408008413B7 /* walk-89.png in Resources */,
 				44471D4717AC6408008413B7 /* walk-90.png in Resources */,
 				44471D4817AC6408008413B7 /* walk-91.png in Resources */,
+				444023F41A388D680022D80B /* w3w_ybuckets.dat in Resources */,
 				44471D4917AC6408008413B7 /* walk-92.png in Resources */,
 				4424DA1217BE8502005FBBC6 /* Settings.bundle in Resources */,
 			);
@@ -1387,6 +1419,9 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Crowsflight",
+					"$(PROJECT_DIR)/Crowsflight/W3wFramework",
+					"$(PROJECT_DIR)/W3wFramework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Crowsflight/Crowsflight-Prefix.pch";
@@ -1416,6 +1451,9 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Crowsflight",
+					"$(PROJECT_DIR)/Crowsflight/W3wFramework",
+					"$(PROJECT_DIR)/W3wFramework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Crowsflight/Crowsflight-Prefix.pch";
