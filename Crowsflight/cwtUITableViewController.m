@@ -1158,7 +1158,7 @@
         //[self performSelectorInBackground:@selector(search) withObject:self.view];
         [dele.viewController searchGeo:(UITextField*)self.filterBar];
         
-        [self nextInstruction:4];
+        [self nextInstruction:3];
         return YES;
     }
     return NO;

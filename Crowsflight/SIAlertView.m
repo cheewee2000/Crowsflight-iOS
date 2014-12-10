@@ -818,7 +818,7 @@ static SIAlertView *__si_alert_current_view;
                                       NSParagraphStyleAttributeName: paragraphStyle };
         
         
-        CGSize size = [self.title sizeWithAttributes:attributes];
+        CGSize size = [self.message sizeWithAttributes:attributes];
         
         
         return MAX(minHeight, size.height*2.1);
