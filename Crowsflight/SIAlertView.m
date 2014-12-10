@@ -23,7 +23,7 @@ NSString *const SIAlertViewDidDismissNotification = @"SIAlertViewDidDismissNotif
 #define GAP -5
 #define CANCEL_BUTTON_PADDING_TOP 0
 #define CONTENT_PADDING_LEFT 0
-#define CONTENT_PADDING_TOP 20
+#define CONTENT_PADDING_TOP 25
 #define CONTENT_PADDING_BOTTOM 0
 #define BUTTON_HEIGHT 44
 #define CONTAINER_WIDTH 320 //replaced with [[UIScreen mainScreen] bounds].size.width
@@ -779,11 +779,24 @@ static SIAlertView *__si_alert_current_view;
 - (CGFloat)heightForTitleLabel
 {
     if (self.titleLabel) {
-        CGSize size = [self.title sizeWithFont:self.titleLabel.font
-                                   minFontSize:self.titleLabel.font.pointSize * self.titleLabel.minimumScaleFactor
-                                actualFontSize:nil
-                                      forWidth:[[UIScreen mainScreen] bounds].size.width - CONTENT_PADDING_LEFT * 2
-                                 lineBreakMode:self.titleLabel.lineBreakMode];
+//        CGSize size = [self.title sizeWithFont:self.titleLabel.font
+//                                   minFontSize:self.titleLabel.font.pointSize * self.titleLabel.minimumScaleFactor
+//                                actualFontSize:nil
+//                                      forWidth:[[UIScreen mainScreen] bounds].size.width - CONTENT_PADDING_LEFT * 2
+//                                 lineBreakMode:self.titleLabel.lineBreakMode];
+//        
+    
+        
+        NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+        
+        paragraphStyle.lineBreakMode=self.titleLabel.lineBreakMode;
+        NSDictionary *attributes = @{ NSFontAttributeName: self.titleLabel.font,
+                                      NSParagraphStyleAttributeName: paragraphStyle };
+        
+        
+        CGSize size = [self.title sizeWithAttributes:attributes];
+        
+        
         return size.height;
     }
     return 0;
@@ -793,10 +806,21 @@ static SIAlertView *__si_alert_current_view;
 {
     CGFloat minHeight = MESSAGE_MIN_LINE_COUNT * self.messageLabel.font.lineHeight;
     if (self.messageLabel) {
-        CGFloat maxHeight = MESSAGE_MAX_LINE_COUNT * self.messageLabel.font.lineHeight;
-        CGSize size = [self.message sizeWithFont:self.messageLabel.font
-                               constrainedToSize:CGSizeMake([[UIScreen mainScreen] bounds].size.width - CONTENT_PADDING_LEFT * 2, maxHeight)
-                                   lineBreakMode:self.messageLabel.lineBreakMode];
+//        CGFloat maxHeight = MESSAGE_MAX_LINE_COUNT * self.messageLabel.font.lineHeight;
+//        CGSize size = [self.message sizeWithFont:self.messageLabel.font
+//                               constrainedToSize:CGSizeMake([[UIScreen mainScreen] bounds].size.width - CONTENT_PADDING_LEFT * 2, maxHeight)
+//                                   lineBreakMode:self.messageLabel.lineBreakMode];
+//        
+        NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+        
+        paragraphStyle.lineBreakMode=self.messageLabel.lineBreakMode;
+        NSDictionary *attributes = @{ NSFontAttributeName: self.messageLabel.font,
+                                      NSParagraphStyleAttributeName: paragraphStyle };
+        
+        
+        CGSize size = [self.title sizeWithAttributes:attributes];
+        
+        
         return MAX(minHeight, size.height*2.1);
         //return size.height*5;
 

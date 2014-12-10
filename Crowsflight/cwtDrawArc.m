@@ -84,9 +84,19 @@
         
         NSString *string = @"0";
         [[UIColor colorWithRed:0 green:.73f blue:1 alpha:1] set];
-        [string drawAtPoint:CGPointMake(x-2, y-r+t*.5+5) withFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:8.0]];
-    
+        //[string drawAtPoint:CGPointMake(x-2, y-r+t*.5+5) withFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:8.0]];
         
+        
+        UIFont *font = [UIFont fontWithName:@"HelveticaNeue-Light" size:8.0];
+        NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+        
+        NSDictionary *attributes = @{ NSFontAttributeName: font,
+                                      NSParagraphStyleAttributeName: paragraphStyle };
+        
+        [string drawAtPoint:CGPointMake(x-2, y-r+t*.5+5) withAttributes:attributes];
+        
+        [[UIColor colorWithRed:0 green:.73f blue:1 alpha:1] set];
+
         //distance tracking line
         float lx=x+cosf(DEGREES_TO_RADIANS(end))*(r+t*.5);
         float ly=y+sinf(DEGREES_TO_RADIANS(end))*(r+t*.5);

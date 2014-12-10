@@ -94,9 +94,15 @@
         
         UIFont*font=[UIFont fontWithName:@"HelveticaNeue-Light" size:8.0];
         
-        CGSize stringSize = [string sizeWithFont:font];
-        [string drawAtPoint:CGPointMake( x-stringSize.width*.5, y-(r-tickWidth) ) withFont:font];    
+
+//        [string drawAtPoint:CGPointMake( x-stringSize.width*.5, y-(r-tickWidth) ) withFont:font];    
         
+        NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+        NSDictionary *attributes = @{ NSFontAttributeName: font,
+                                      NSParagraphStyleAttributeName: paragraphStyle };
+        CGSize stringSize = [string sizeWithAttributes:attributes];
+
+        [string drawAtPoint:CGPointMake(x-stringSize.width*.5, y-(r-tickWidth) ) withAttributes:attributes];
     }
 
     

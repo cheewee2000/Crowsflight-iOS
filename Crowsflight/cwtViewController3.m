@@ -904,7 +904,8 @@
             newRegion.center.longitude = self.userLocation.longitude;
             newRegion.span.latitudeDelta = 0.112872;
             newRegion.span.longitudeDelta = 0.109863;
-            
+            //newRegion.span.latitudeDelta = 1;
+            //newRegion.span.longitudeDelta = 1;
             MKLocalSearchRequest *request = [[MKLocalSearchRequest alloc] init];
             
             request.naturalLanguageQuery = searchField.text;

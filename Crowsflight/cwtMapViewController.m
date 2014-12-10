@@ -54,6 +54,7 @@
             
             if (self.mapItemList.count == 1)
             {
+                
                 MKMapItem *mapItem = [self.mapItemList objectAtIndex:0];
                 
                 self.title = mapItem.name;
@@ -79,7 +80,6 @@
                 annotationPoint = MKMapPointForCoordinate(currentAnnotation.coordinate);
                 MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 1, 1);
                 zoomRect = MKMapRectUnion(zoomRect, pointRect);
-                                
                 
             }
             else{
@@ -87,12 +87,14 @@
                 // add all the found annotations to the map
                 for (MKMapItem *item in self.mapItemList)
                 {
-                    self.annotation = [[cwtAnnotation alloc] init];
-                    self.annotation.coordinate = item.placemark.location.coordinate;
-                    self.annotation.title = [item.name uppercaseString];
-                    self.annotation.subtitle=@"SAVE LOCATION";
-                    [self.mapView addAnnotation:self.annotation];
+                    cwtAnnotation *a = [[cwtAnnotation alloc] init];
+                    a.coordinate = item.placemark.location.coordinate;
+                    a.title = [item.name uppercaseString];
+                    a.subtitle=@"SAVE LOCATION";
+                    [self.mapView addAnnotation:a];
                 }
+                
+                
                 currentAnnotation=[self.mapView.annotations objectAtIndex:0];
                 
                 MKMapPoint annotationPoint ;

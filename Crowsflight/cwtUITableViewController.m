@@ -587,7 +587,7 @@
             [label2 setBackgroundColor:[UIColor clearColor]];
             [label2 setFont:[UIFont fontWithName: @"Helvetica" size: 10.0f]];
             //[label2 setText:[@"Search for a new address, placename \n\nor enter lat,lng directly \n(e.g. 40.729,-73.993)" uppercaseString]];
-            [label2 setText:@"SEARCH ADDRESS, PLACENAME, LAT/LNG OR what3words" ];
+            [label2 setText:@"SEARCH\nADDRESS, PLACENAME, LAT/LNG OR what3words" ];
 
             label2.numberOfLines=4;
             [cell addSubview:label2];
@@ -599,7 +599,7 @@
             [label3 setFont:[UIFont fontWithName: @"Helvetica" size: 10.0f]];
             //[label3 setText:@"USE what3words TOO!\n(E.G. AFTER.BLANK.REJECT)" ];
 
-            [label3 setText:@"PLACENAME (TOKYO, )\nLAT,LNG (40.729,-73.993)\nwhat3words (recent.pints.giving)" ];
+            [label3 setText:@"PLACENAME (e.g. UNION SQUARE)\nLAT,LNG (e.g. 40.729,-73.993)\nwhat3words (e.g. recent.pints.giving)" ];
             label3.numberOfLines=4;
             [cell addSubview:label3];
             
