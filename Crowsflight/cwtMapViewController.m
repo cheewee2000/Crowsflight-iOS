@@ -316,7 +316,7 @@
     mapView.mapType = [[NSUserDefaults standardUserDefaults] integerForKey:@"mapType"];
     [self.view addSubview:mapView];
     
-    self.mapButton =[[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width-70, self.view.bounds.size.height*.07, 44, 44)];
+    self.mapButton =[[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width-60, self.view.bounds.size.height-60, 44, 44)];
     [self.mapButton addTarget:self action:@selector(mapTypeButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     
     [self.view addSubview:self.mapButton];

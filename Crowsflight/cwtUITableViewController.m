@@ -1083,7 +1083,7 @@
         if(self.filteredTableData.count>0)
         {
             CGPoint contentOffset = self.tableView.contentOffset;
-            //contentOffset.y = 10;
+            contentOffset.y = -20;
             [self.tableView setContentOffset:contentOffset animated:NO];
         }
     }

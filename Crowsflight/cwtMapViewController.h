@@ -22,7 +22,7 @@
     MKMapView *mapView;
     
     NSString *name;
-@public BOOL wasSearchView;
+    @public BOOL wasSearchView;
     cwtAppDelegate* dele;
     UILongPressGestureRecognizer *lpgr;
     BOOL allowLongpress;
