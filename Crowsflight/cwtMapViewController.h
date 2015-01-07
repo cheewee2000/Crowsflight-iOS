@@ -32,6 +32,7 @@
     SystemSoundID audioCreate;
     //SystemSoundID audioSelect3;
 
+    BOOL locationLoaded;
 }
 
 

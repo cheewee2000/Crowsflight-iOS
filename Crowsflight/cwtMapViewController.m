@@ -23,14 +23,31 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        locationLoaded=false;
     }
     
     return self;
 }
 
+-(void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation{
+    
+    if(locationLoaded==false){
+        
+        [self updateMap];
+        locationLoaded=true;
+    }
+}
 
 -(void) viewWillAppear:(BOOL)animated{
+    if(locationLoaded)[self updateMap];
+    
     [super viewWillAppear:NO];
+  
+
+}
+
+-(void) updateMap{
+    
     MKMapRect zoomRect = MKMapRectNull;
     
     //if(!wasSearchView)
@@ -47,129 +64,130 @@
     
     // adjust the map to zoom/center to the annotations we want to show
     cwtAnnotation * currentAnnotation;
-
+    
+    
+    if(wasSearchView)
+    {
         
-        if(wasSearchView)
+        if (self.mapItemList.count == 1)
         {
             
-            if (self.mapItemList.count == 1)
+            MKMapItem *mapItem = [self.mapItemList objectAtIndex:0];
+            
+            self.title = mapItem.name;
+            
+            // add the single annotation to our map
+            self.annotation = [[cwtAnnotation alloc] init];
+            self.annotation.coordinate = mapItem.placemark.location.coordinate;
+            self.annotation.title = [mapItem.name uppercaseString];
+            self.annotation.subtitle=@"SAVE LOCATION";
+            
+            [self.mapView addAnnotation:self.annotation];
+            
+            currentAnnotation=self.annotation;
+            
+            
+            MKMapPoint annotationPoint ;
+            
+            //current loc
+            annotationPoint = MKMapPointForCoordinate(self.mapView.userLocation.coordinate);
+            zoomRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 1, 1);
+            
+            //current annotation
+            annotationPoint = MKMapPointForCoordinate(currentAnnotation.coordinate);
+            MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 1, 1);
+            zoomRect = MKMapRectUnion(zoomRect, pointRect);
+            
+        }
+        else{
+            
+            // add all the found annotations to the map
+            for (MKMapItem *item in self.mapItemList)
             {
-                
-                MKMapItem *mapItem = [self.mapItemList objectAtIndex:0];
-                
-                self.title = mapItem.name;
-                
-                // add the single annotation to our map
-                self.annotation = [[cwtAnnotation alloc] init];
-                self.annotation.coordinate = mapItem.placemark.location.coordinate;
-                self.annotation.title = [mapItem.name uppercaseString];                
-                self.annotation.subtitle=@"SAVE LOCATION";
-                
-                [self.mapView addAnnotation:self.annotation];
-                
-                currentAnnotation=self.annotation;
-                
-                
-                MKMapPoint annotationPoint ;
-                
-                //current loc
-                annotationPoint = MKMapPointForCoordinate(mapView.userLocation.coordinate);
-                zoomRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 1, 1);
-                
-                //current annotation
-                annotationPoint = MKMapPointForCoordinate(currentAnnotation.coordinate);
+                cwtAnnotation *a = [[cwtAnnotation alloc] init];
+                a.coordinate = item.placemark.location.coordinate;
+                a.title = [item.name uppercaseString];
+                a.subtitle=@"SAVE LOCATION";
+                [self.mapView addAnnotation:a];
+            }
+            
+            
+            currentAnnotation=[self.mapView.annotations objectAtIndex:0];
+            
+            MKMapPoint annotationPoint ;
+            
+            //current loc
+            annotationPoint = MKMapPointForCoordinate(self.mapView.userLocation.coordinate);
+            zoomRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 1, 1);
+            
+            //all search result annotation
+            for (id <MKAnnotation> annotation in self.mapView.annotations)
+            {
+                MKMapPoint annotationPoint = MKMapPointForCoordinate(annotation.coordinate);
                 MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 1, 1);
                 zoomRect = MKMapRectUnion(zoomRect, pointRect);
-                
             }
-            else{
             
-                // add all the found annotations to the map
-                for (MKMapItem *item in self.mapItemList)
-                {
-                    cwtAnnotation *a = [[cwtAnnotation alloc] init];
-                    a.coordinate = item.placemark.location.coordinate;
-                    a.title = [item.name uppercaseString];
-                    a.subtitle=@"SAVE LOCATION";
-                    [self.mapView addAnnotation:a];
-                }
-                
-                
-                currentAnnotation=[self.mapView.annotations objectAtIndex:0];
-                
-                MKMapPoint annotationPoint ;
-                
-                //current loc
-                annotationPoint = MKMapPointForCoordinate(mapView.userLocation.coordinate);
-                zoomRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 1, 1);
-                
-                //all search result annotation
-                for (id <MKAnnotation> annotation in mapView.annotations)
-                {
-                    MKMapPoint annotationPoint = MKMapPointForCoordinate(annotation.coordinate);
-                    MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 1, 1);
-                    zoomRect = MKMapRectUnion(zoomRect, pointRect);
-                }
-
-            }
         }
+    }
     
     //not search result
-        else {
-
-
-            //load all pins
-            //for (NSMutableDictionary *dictionary in dele.locationDictionaryArray)
-            for(int i=0; i<[dele.locationDictionaryArray count]; i++)
+    else {
+        
+        
+        //load all pins
+        //for (NSMutableDictionary *dictionary in dele.locationDictionaryArray)
+        for(int i=0; i<[dele.locationDictionaryArray count]; i++)
+        {
+            
+            NSMutableDictionary *dictionary=[dele.locationDictionaryArray objectAtIndex:i];
+            
+            int currentDestinationN=(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"];
+            
+            CLLocationCoordinate2D annotationCoord;
+            
+            annotationCoord.latitude = [[dictionary valueForKey:@"lat"] floatValue];;
+            annotationCoord.longitude = [[dictionary valueForKey:@"lng"] floatValue];
+            
+            self.annotation = [[cwtAnnotation alloc] init];
+            self.annotation.coordinate = annotationCoord;
+            self.annotation.title = [[dictionary valueForKey:@"searchedText"] uppercaseString];
+            //self.annotation.index=[dele.locationDictionaryArray indexOfObject:dictionary];
+            self.annotation.index=i;
+            
+            //if(currentDestinationN == [dele.locationDictionaryArray indexOfObject:dictionary])
+            if(currentDestinationN == i)
             {
-                
-                NSMutableDictionary *dictionary=[dele.locationDictionaryArray objectAtIndex:i];
-                
-                int currentDestinationN=(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"];
-                
-                    CLLocationCoordinate2D annotationCoord;
-                    
-                    annotationCoord.latitude = [[dictionary valueForKey:@"lat"] floatValue];;
-                    annotationCoord.longitude = [[dictionary valueForKey:@"lng"] floatValue];
-                    
-                    self.annotation = [[cwtAnnotation alloc] init];
-                    self.annotation.coordinate = annotationCoord;
-                    self.annotation.title = [[dictionary valueForKey:@"searchedText"] uppercaseString];
-                    //self.annotation.index=[dele.locationDictionaryArray indexOfObject:dictionary];
-                    self.annotation.index=i;
-
-                //if(currentDestinationN == [dele.locationDictionaryArray indexOfObject:dictionary])
-                if(currentDestinationN == i)
-                    {
-                    self.annotation.subtitle=@"drag pin to edit location";
-                    currentAnnotation=self.annotation;
-                }
-                else
-                {
-                    self.annotation.subtitle=@"";
-                }
-
-                [self.mapView addAnnotation:self.annotation];
-                
-               
-                MKMapPoint annotationPoint;
-
-                //current loc
-                annotationPoint = MKMapPointForCoordinate(mapView.userLocation.coordinate);
-                zoomRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 1, 1);
-                
-                //current annotation
-                annotationPoint = MKMapPointForCoordinate(currentAnnotation.coordinate);
-                MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 1, 1);
-                zoomRect = MKMapRectUnion(zoomRect, pointRect);
-                
+                self.annotation.subtitle=@"drag pin to edit location";
+                currentAnnotation=self.annotation;
             }
-
+            else
+            {
+                self.annotation.subtitle=@"";
+            }
+            
+            [self.mapView addAnnotation:self.annotation];
+            
             
         }
+        
+        MKMapPoint annotationPoint;
+        
+        //current loc
+        annotationPoint = MKMapPointForCoordinate(self.mapView.userLocation.coordinate);
+        zoomRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 1, 1);
+        //        NSLog(@"f,%f",self.mapView.userLocation.coordinate.latitude,self.mapView.userLocation.coordinate.longitude);
+        
+        
+        //current annotation
+        annotationPoint = MKMapPointForCoordinate(currentAnnotation.coordinate);
+        MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 1, 1);
+        zoomRect = MKMapRectUnion(zoomRect, pointRect);
+        
+    }
     
     
-
+    
     
     //add padding to map
     float xDiff=zoomRect.size.width*MAP_PADDING-zoomRect.size.width;
@@ -183,21 +201,24 @@
     zoomRect.size.width=zoomRect.size.width+xDiff;
     zoomRect.size.height=zoomRect.size.height+yDiff;
     
-
-   // NSLog(@"height: %f",zoomRect.size.height);
+    
+    // NSLog(@"height: %f",zoomRect.size.height);
     //NSLog(@"width: %f",zoomRect.size.width);
-
+    
     int tooBig=90000000;
     if(zoomRect.size.height>tooBig || zoomRect.size.width>tooBig){
         //reset rect to fit only pin
         MKMapPoint annotationPoint;
         annotationPoint = MKMapPointForCoordinate(currentAnnotation.coordinate);
-
+        
         zoomRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 1,1);
         
         //add padding to map
-        float xDiff=zoomRect.size.width*(tooBig*.5)-zoomRect.size.width;
-        float yDiff=zoomRect.size.height*(tooBig*.5)-zoomRect.size.height;
+        //        float xDiff=zoomRect.size.width*(tooBig*.5)-zoomRect.size.width;
+        //        float yDiff=zoomRect.size.height*(tooBig*.5)-zoomRect.size.height;
+        
+        float xDiff=zoomRect.size.width*(tooBig*.0001)-zoomRect.size.width;
+        float yDiff=zoomRect.size.height*(tooBig*.0001)-zoomRect.size.height;
         
         //shift origin of map
         zoomRect.origin.x-=xDiff*.5;
@@ -208,16 +229,16 @@
         zoomRect.size.height=zoomRect.size.height+yDiff;
         
     }
-
-
     
-    [mapView setVisibleMapRect:zoomRect animated:NO];
+    
+    
+    [self.mapView setVisibleMapRect:zoomRect animated:YES];
     
     [self.mapView selectAnnotation:currentAnnotation animated:YES];
     
     
     //[self.mapView setUserTrackingMode:MKUserTrackingModeFollowWithHeading animated:YES];
-
+    
     //[[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"mapInstructions"];
     
     //if no default, set default to true
@@ -225,40 +246,37 @@
     
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"enable_mapInstructions"]==TRUE){
         
-            int instructionN=(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"mapInstructions"];
-            
-            //first launch
-            if(instructionN==0){
-                //instructionN=1;
-                [[NSUserDefaults standardUserDefaults] setInteger:instructionN forKey:@"mapInstructions"];
-            }
-            
-            NSLog(@"show map inst %i",instructionN);
-
-            if((wasSearchView==TRUE && instructionN==0) || (wasSearchView==FALSE && instructionN==1)){
-                [self.instructions setImage:[UIImage imageNamed:[NSString stringWithFormat:@"Crowsflight_mapInstructions_006-%02i",instructionN]]];
-                [self.instructions setHidden:FALSE];
-
-            }else{
-                
-                [self.instructions setHidden:TRUE];
-
-            }
-
+        int instructionN=(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"mapInstructions"];
+        
+        //first launch
+        if(instructionN==0){
+            //instructionN=1;
+            [[NSUserDefaults standardUserDefaults] setInteger:instructionN forKey:@"mapInstructions"];
+        }
+        
+        NSLog(@"show map inst %i",instructionN);
+        
+        if((wasSearchView==TRUE && instructionN==0) || (wasSearchView==FALSE && instructionN==1)){
+            [self.instructions setImage:[UIImage imageNamed:[NSString stringWithFormat:@"Crowsflight_mapInstructions_006-%02i",instructionN]]];
+            [self.instructions setHidden:FALSE];
             
         }else{
             
             [self.instructions setHidden:TRUE];
-           [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"mapInstructions"];
             
         }
-
-
+        
+        
+    }else{
+        
+        [self.instructions setHidden:TRUE];
+        [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"mapInstructions"];
+        
+    }
+    
     
 
-
 }
-
 
 -(void)nextInstruction:(int)n{
     
