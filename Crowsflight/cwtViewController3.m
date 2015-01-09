@@ -1163,7 +1163,7 @@
     //hit done on keyboard after pin current location
     else if(textField.tag==4){
         AudioServicesPlaySystemSound(audioCreate);
-
+        
         [self addNewDestination:textField.text newlat:dele.myLat newlng:dele.myLng];
         [addLocAlert dismissAnimated:YES];
         [self nextInstruction:2];

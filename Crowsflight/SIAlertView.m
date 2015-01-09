@@ -9,6 +9,8 @@
 #import "SIAlertView.h"
 #import <QuartzCore/QuartzCore.h>
 #import "cwtAppDelegate.h"
+#import <W3wSDK/W3wSDK.h>
+#import "cwtViewController3.h"
 
 
 NSString *const SIAlertViewWillShowNotification = @"SIAlertViewWillShowNotification";
@@ -951,7 +953,11 @@ static SIAlertView *__si_alert_current_view;
         }
     
         else{
-            self.textField.text=[NSString stringWithFormat:@"%f,%f",dele.myLat,dele.myLng];
+            
+            cwtAppDelegate * dele = [[UIApplication sharedApplication] delegate];
+            W3wPosition *tPosition = [dele.viewController.w3wSDK convertPositionToW3W:kW3wLanguageEnglish lat:dele.myLat lng:dele.myLng];
+            
+            self.textField.text=[NSString stringWithFormat:@"%f,%f %@",dele.myLat,dele.myLng,tPosition.getW3w];
         }
         
 
