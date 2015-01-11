@@ -9,6 +9,7 @@
 #import "cwtMapViewController.h"
 #import "cwtViewController3.h"
 #import "SIAlertView.h"
+#include <math.h>
 
 #define DEGREES_TO_RADIANS(angle) (angle / 180.0 * M_PI)
 #define RADIANS_TO_DEGREES(radians) ((radians) * (180.0 / M_PI))
@@ -229,6 +230,7 @@
         zoomRect.size.height=zoomRect.size.height+yDiff;
         
     }
+
     
     
     
@@ -274,9 +276,52 @@
         
     }
     
+    [self drawCone];
     
 
 }
+
+
+
+
+- (void)drawCone {
+    dele = [[UIApplication sharedApplication] delegate];
+
+    //float bearing=dele.viewController.locationViewController.locBearing;
+    float heading=-DEGREES_TO_RADIANS(dele.heading)+M_PI*.5;
+    float spread=DEGREES_TO_RADIANS(dele.viewController.locationViewController.spread);
+    
+    // remove polyline if one exists
+    if(cone)[self.mapView removeOverlay:cone];
+
+    // create an array of coordinates from allPins
+    CLLocationCoordinate2D coordinates[3];
+    
+    coordinates[0] =self.mapView.userLocation.coordinate;
+    coordinates[1] =CLLocationCoordinate2DMake(self.mapView.userLocation.coordinate.latitude+30.0f*sin(heading+spread), self.mapView.userLocation.coordinate.longitude+cos(heading+spread)*30.0f);
+    coordinates[2] =CLLocationCoordinate2DMake(self.mapView.userLocation.coordinate.latitude+30.0f*sin(heading-spread), self.mapView.userLocation.coordinate.longitude+cos(heading-spread)*30.0f );
+    
+    cone = [MKPolygon polygonWithCoordinates:coordinates count:3];
+    
+    [self.mapView addOverlay:cone];
+    
+}
+
+
+- (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id < MKOverlay >)overlay
+{
+
+    MKPolygonRenderer *renderer = [[MKPolygonRenderer alloc] initWithPolygon:overlay];
+
+    renderer.fillColor   = [[UIColor yellowColor] colorWithAlphaComponent:0.3];
+    renderer.strokeColor = [UIColor clearColor];
+    renderer.lineWidth   = 1.0;
+    
+    return renderer;
+    
+    
+}
+
 
 -(void)nextInstruction:(int)n{
     

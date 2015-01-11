@@ -16,6 +16,7 @@
 #import "cwtToolBar.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import <W3wSDK/W3wSDK.h>
+#import "cwtMapViewController.h"
 
 @interface cwtViewController3 : UIViewController <UITextFieldDelegate>{
     
@@ -42,6 +43,7 @@
 @property (nonatomic,strong) UIPageViewController *pageView;
 @property (nonatomic,strong) cfLocationViewController2* locationViewController;
 @property (nonatomic,strong) cwtListViewController * listViewController;
+@property (nonatomic, strong) cwtMapViewController *mapViewController;
 
 @property (nonatomic,strong)  cwtToolbar *toolBar;
 

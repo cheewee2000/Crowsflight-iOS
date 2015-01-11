@@ -30,7 +30,6 @@
 
 @interface cwtViewController3 ()<UIPageViewControllerDataSource, UIPageViewControllerDelegate>
 
-@property (nonatomic, strong) cwtMapViewController *mapViewController;
 
 @end
 

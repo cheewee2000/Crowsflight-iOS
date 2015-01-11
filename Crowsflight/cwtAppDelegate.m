@@ -11,10 +11,11 @@
 #import "cwtViewController3.h"
 #import "cwtUITableViewController.h"
 #import "cwtIAP.h"
-
+#import "cwtMapViewController.h"
 #import "Reachability.h"
 //#import "NVSlideMenuController.h"
 #import "QuartzCore/CALayer.h"
+#import "cwtMapViewController.h"
 
 @interface cwtAppDelegate ()<UIAlertViewDelegate,CLLocationManagerDelegate,UIAppearanceContainer,MTStatusBarOverlayDelegate>
 
@@ -313,6 +314,9 @@
 
     [(cwtViewController3*)self.window.rootViewController updateViewControllersWithHeading:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"]];
     
+    [self.viewController.mapViewController drawCone];
+    //[(cwtMapViewController*)self.viewController.mapViewController drawCone];
+     
     
     if(self.lastHeadingAccuracy!=self.headingAccuracy){
         if( (self.headingAccuracy <=22 && self.headingAccuracy>-1) || self.headingAccuracy==-2)
