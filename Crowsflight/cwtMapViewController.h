@@ -33,12 +33,17 @@
     //SystemSoundID audioSelect3;
 
     BOOL locationLoaded;
-    MKPolygon *cone;
+    CAShapeLayer *beam;
+    CGPoint startPosition;
+    MKCoordinateRegion region;
 
     
 }
 - (void)drawCone;
 -(void) updateCone;
+-(void)centerDeviceLocation;
+
+@property (strong, nonatomic)  MKPolygon *cone;
 
 @property (strong, nonatomic)  UIButton *overlayButton;
 @property (strong, nonatomic)  UIButton *mapButton;

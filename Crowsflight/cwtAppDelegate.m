@@ -303,6 +303,10 @@
 
     [(cwtViewController3*)self.window.rootViewController updateViewControllersWithLatLng: (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"]];
     
+    //[(cwtMapViewController*)self.viewController.mapViewController centerDeviceLocation];
+    //[(cwtMapViewController*)self.viewController.mapViewController.mapView setCenterCoordinate:newLocation.coordinate animated:YES];
+
+    
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading {
@@ -314,7 +318,9 @@
 
     [(cwtViewController3*)self.window.rootViewController updateViewControllersWithHeading:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"]];
     
-    [self.viewController.mapViewController drawCone];
+    //[self.viewController.mapViewController updateCone];
+    //[self.viewController.mapViewController mapView:self.viewController.mapViewController.mapView rendererForOverlay:self.viewController.mapViewController.cone];
+
     //[(cwtMapViewController*)self.viewController.mapViewController drawCone];
      
     

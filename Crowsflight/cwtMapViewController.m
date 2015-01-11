@@ -232,14 +232,13 @@
     }
 
     
-    
-    
-    [self.mapView setVisibleMapRect:zoomRect animated:YES];
-    
+    [self.mapView setVisibleMapRect:zoomRect animated:NO];
     [self.mapView selectAnnotation:currentAnnotation animated:YES];
-    
-    
-    //[self.mapView setUserTrackingMode:MKUserTrackingModeFollowWithHeading animated:YES];
+    if(zoomRect.size.height<9000 || zoomRect.size.width<9000){
+//        /[self drawCone];
+        [self.mapView setUserTrackingMode:MKUserTrackingModeFollowWithHeading animated:YES];
+    }
+
     
     //[[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"mapInstructions"];
     
@@ -276,24 +275,153 @@
         
     }
     
-    [self drawCone];
     
 
 }
 
+-(void)centerDeviceLocation{
+    //CGFloat currentZoom = self.mapView.camera.;
+    region=self.mapView.region;
 
+    //turn on user location it wasn't already
+//    if(!self.mapView.showsUserLocation){
+//        [self.mapView setShowsUserLocation:TRUE];
+//    }
+    [self.mapView setUserTrackingMode:MKUserTrackingModeFollowWithHeading];
+//    
+    //we may not have a device location... (ignore simulator values, their bogus!)
+    if(self.mapView.userLocation){
+
+                
+                //center on location
+               // CLLocationCoordinate2D tmpLocation;
+               // tmpLocation.latitude = self.mapView.userLocation.coordinate.latitude;
+               // tmpLocation.longitude = self.mapView.userLocation.coordinate.longitude;
+               // [self.mapView setCenterCoordinate:tmpLocation animated:TRUE];
+                
+                //select the one and only annotation so the bubble shows
+                //[self.mapView selectAnnotation:self.mapView.userLocation animated:TRUE];
+                
+                //zoom in 
+                //[self setCenterCoordinate:tmpLocation zoomLevel:currentZoom animated:YES];
+
+                // Make a region using our current zoom level
+                //CLLocationDistance latitude = region.span.latitudeDelta*100.0;
+                //CLLocationDistance longitude = region.span.longitudeDelta*100.0;
+                //MKCoordinateRegion newRegion = MKCoordinateRegionMakeWithDistance(mapView.userLocation.coordinate, latitude, longitude);
+                //[self.mapView setRegion:newRegion animated:YES];
+                
+                
+        
+        
+    } 
+    
+}
+
+- (void)setCenterCoordinate:(CLLocationCoordinate2D)coordinate
+                  zoomLevel:(NSUInteger)zoom animated:(BOOL)animated
+{
+    MKCoordinateSpan span = MKCoordinateSpanMake(180 / pow(2, zoom) *
+                                                 self.mapView.frame.size.height / 256, 0);
+    [self.mapView setRegion:MKCoordinateRegionMake(coordinate, span) animated:animated];
+}
 
 
 - (void)drawCone {
     dele = [[UIApplication sharedApplication] delegate];
 
     //float bearing=dele.viewController.locationViewController.locBearing;
+    //float heading=-DEGREES_TO_RADIANS(dele.heading)+M_PI*.5;
+    float spread=DEGREES_TO_RADIANS(dele.viewController.locationViewController.spread);
+ 
+    // create an array of coordinates from allPins
+    CLLocationCoordinate2D coordinates[3];
+    
+//    coordinates[0] =self.mapView.userLocation.coordinate;
+//    coordinates[1] =CLLocationCoordinate2DMake(self.mapView.userLocation.coordinate.latitude+30.0f*sin(heading+spread), self.mapView.userLocation.coordinate.longitude+cos(heading+spread)*30.0f);
+//    coordinates[2] =CLLocationCoordinate2DMake(self.mapView.userLocation.coordinate.latitude+30.0f*sin(heading-spread), self.mapView.userLocation.coordinate.longitude+cos(heading-spread)*30.0f );
+    float heading=180;
+    coordinates[0] =self.mapView.userLocation.coordinate;
+    coordinates[1] =CLLocationCoordinate2DMake(self.mapView.userLocation.coordinate.latitude+30.0f*sin(heading+spread), self.mapView.userLocation.coordinate.longitude+cos(heading+spread)*30.0f);
+    coordinates[2] =CLLocationCoordinate2DMake(self.mapView.userLocation.coordinate.latitude+30.0f*sin(heading-spread), self.mapView.userLocation.coordinate.longitude+cos(heading-spread)*30.0f );
+    
+    
+    
+    MKPolygon *oldCone = self.cone;
+    MKPolygon* newCone = [MKPolygon polygonWithCoordinates:coordinates count:3];
+    
+    [self.mapView addOverlay:newCone];
+    
+    // remove polyline if one exists
+    self.cone=newCone;
+    if(oldCone)[self.mapView removeOverlay:oldCone];
+
+    
+    
+    
+//    //caanimation
+//    
+//    int radius = 10;
+//    beam = [CAShapeLayer layer];
+//    
+//    CGPoint myPos = [self.mapView convertCoordinate:self.mapView.userLocation.coordinate toPointToView:self.view];
+//
+//    beam.path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(myPos.x, myPos.y, 2.0*radius, 2.0*radius)
+//                                             cornerRadius:radius].CGPath;
+//    
+//    
+//    beam.fillColor = [UIColor clearColor].CGColor;
+//    beam.strokeColor = [UIColor blackColor].CGColor;
+//    beam.lineWidth = radius*2;
+//    beam.opacity = 0.5;
+//    
+//    [self.mapView.layer addSublayer:beam];
+//    
+//    CABasicAnimation *drawAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+//    drawAnimation.duration            = 2.5; // "animate over 10 seconds or so.."
+//    drawAnimation.repeatCount         = 1;  // Animate only once..
+//    drawAnimation.removedOnCompletion = YES;   // Remain stroked after the animation..
+//    
+//    drawAnimation.fromValue = [NSNumber numberWithFloat:0.0f];
+//    drawAnimation.toValue   = [NSNumber numberWithFloat:1.0f];
+//    
+//    [beam addAnimation:drawAnimation forKey:@"drawCircleAnimation"];
+//    
+    
+}
+
+-(void)updateCone{
+
+    
+    CGPoint lastPostion = [self.mapView convertCoordinate:self.mapView.userLocation.coordinate toPointToView:self.mapView];
+    
+    
+    //beam.position=CGPointMake(myPos.x, myPos.y);
+    
+    //lastPostion=CGPointMake(lastPostion.x-self.mapView.frame.size.width, lastPostion.y-self.mapView.frame.size.height*.5);
+    
+    lastPostion=CGPointMake(lastPostion.x, lastPostion.y);
+
+    
+    CABasicAnimation *drawAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
+    drawAnimation.duration          = .1;
+    drawAnimation.fromValue         = [NSValue valueWithCGPoint:startPosition];
+    drawAnimation.toValue = [NSValue valueWithCGPoint:lastPostion];
+    [beam addAnimation:drawAnimation forKey:@"position"];
+    beam.position=lastPostion;
+    //beam.position = CGPointMake(CGRectGetMidX(self.view.frame)-10, CGRectGetMidY(self.view.frame)-10);
+
+    startPosition=lastPostion;
+    
+    
+    
+    
+    dele = [[UIApplication sharedApplication] delegate];
+    
+    //float bearing=dele.viewController.locationViewController.locBearing;
     float heading=-DEGREES_TO_RADIANS(dele.heading)+M_PI*.5;
     float spread=DEGREES_TO_RADIANS(dele.viewController.locationViewController.spread);
     
-    // remove polyline if one exists
-    if(cone)[self.mapView removeOverlay:cone];
-
     // create an array of coordinates from allPins
     CLLocationCoordinate2D coordinates[3];
     
@@ -301,19 +429,27 @@
     coordinates[1] =CLLocationCoordinate2DMake(self.mapView.userLocation.coordinate.latitude+30.0f*sin(heading+spread), self.mapView.userLocation.coordinate.longitude+cos(heading+spread)*30.0f);
     coordinates[2] =CLLocationCoordinate2DMake(self.mapView.userLocation.coordinate.latitude+30.0f*sin(heading-spread), self.mapView.userLocation.coordinate.longitude+cos(heading-spread)*30.0f );
     
-    cone = [MKPolygon polygonWithCoordinates:coordinates count:3];
+   // MKPolygon *oldCone = self.cone;
+    MKPolygon* newCone = [MKPolygon polygonWithCoordinates:coordinates count:3];
     
-    [self.mapView addOverlay:cone];
+    //[self.mapView addOverlay:newCone];
+    
+    // remove polyline if one exists
+    //if(oldCone)[self.mapView removeOverlay:oldCone];
+    
+    [self.mapView exchangeOverlay:self.cone withOverlay:newCone];
+    self.cone=newCone;
+
+    
     
 }
-
 
 - (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id < MKOverlay >)overlay
 {
 
     MKPolygonRenderer *renderer = [[MKPolygonRenderer alloc] initWithPolygon:overlay];
 
-    renderer.fillColor   = [[UIColor yellowColor] colorWithAlphaComponent:0.3];
+    renderer.fillColor   = [[UIColor yellowColor] colorWithAlphaComponent:.4];
     renderer.strokeColor = [UIColor clearColor];
     renderer.lineWidth   = 1.0;
     
@@ -484,6 +620,7 @@
 {
     self.circleLayer.opacity=0;
     [self.circleLayer removeFromSuperlayer];
+
 }
 
 - (void)handleLongPress:(UIGestureRecognizer *)gestureRecognizer
