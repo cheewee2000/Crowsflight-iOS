@@ -76,7 +76,6 @@ NSString *const IAPHelperProductPurchasedNotification = @"IAPHelperProductPurcha
 - (void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response {
     
     NSLog(@"Loaded list of products...");
-    //_productsRequest = nil;
     
     NSArray * skProducts = response.products;
     
@@ -88,9 +87,13 @@ NSString *const IAPHelperProductPurchasedNotification = @"IAPHelperProductPurcha
 //              skProduct.price.floatValue);
 //    }
     
-    _completionHandler(YES, skProducts);
-    _completionHandler = nil;
+    if([skProducts count]>0){
+        _completionHandler(YES, skProducts);
+        _completionHandler = nil;
+    }
     
+    _productsRequest = nil;
+
 
 }
 
