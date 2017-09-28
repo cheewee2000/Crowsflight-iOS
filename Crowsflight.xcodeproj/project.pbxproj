@@ -130,7 +130,6 @@
 		447965CD175008C300A45031 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447965CC175008C300A45031 /* MessageUI.framework */; };
 		448AC1A817BD685B00281208 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 448AC1A717BD685B00281208 /* Reachability.m */; };
 		448AC1AA17BD687700281208 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 448AC1A917BD687700281208 /* SystemConfiguration.framework */; };
-		4491D8AD1A33775F00C56401 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4491D8AC1A33775F00C56401 /* Crashlytics.framework */; };
 		4491D8B41A34F25900C56401 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4491D8B31A34F25900C56401 /* Images.xcassets */; };
 		449758FF1783CE3000341552 /* EarthandLinesBLUE.png in Resources */ = {isa = PBXBuildFile; fileRef = 449758BB1783CE3000341552 /* EarthandLinesBLUE.png */; };
 		449759001783CE3000341552 /* EarthandLinesBLUE@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 449758BC1783CE3000341552 /* EarthandLinesBLUE@2x.png */; };
@@ -383,7 +382,6 @@
 		448AC1A617BD685B00281208 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		448AC1A717BD685B00281208 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		448AC1A917BD687700281208 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		4491D8AC1A33775F00C56401 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		4491D8B31A34F25900C56401 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		4491D8B51A35032800C56401 /* Crowsflight.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Crowsflight.entitlements; sourceTree = "<group>"; };
 		449758BB1783CE3000341552 /* EarthandLinesBLUE.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EarthandLinesBLUE.png; sourceTree = "<group>"; };
@@ -547,7 +545,6 @@
 				44DAE0601735A08C00C17F07 /* CoreLocation.framework in Frameworks */,
 				44DAE01C17359AC900C17F07 /* UIKit.framework in Frameworks */,
 				44DAE01E17359AC900C17F07 /* Foundation.framework in Frameworks */,
-				4491D8AD1A33775F00C56401 /* Crashlytics.framework in Frameworks */,
 				444023FF1A39F08D0022D80B /* W3wSDK.framework in Frameworks */,
 				44DAE02017359AC900C17F07 /* CoreGraphics.framework in Frameworks */,
 			);
@@ -894,7 +891,6 @@
 				448AC1A717BD685B00281208 /* Reachability.m */,
 				442F15DC17A6FF0700571D19 /* AudioToolbox.framework */,
 				44C1D1431759A0CE007798A6 /* QuartzCore.framework */,
-				4491D8AC1A33775F00C56401 /* Crashlytics.framework */,
 				44DAE02117359AC900C17F07 /* Crowsflight */,
 				44DAE04817359ACA00C17F07 /* CrowsflightTests */,
 				44DAE01A17359AC900C17F07 /* Frameworks */,
@@ -1030,7 +1026,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = cwt;
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = CWandT;
 				TargetAttributes = {
 					44DAE01717359AC900C17F07 = {
@@ -1296,7 +1292,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "./Crashlytics.framework/run 1eb6d15737d50f2df4316cb5b8b073da76a42b67 40bebb4237c785f5c3141f6294d24b895adf9fb4479d323fc36741241d8da9a8";
+			shellScript = "";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1374,7 +1370,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1399,7 +1395,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1426,7 +1422,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Crowsflight/Crowsflight-Prefix.pch";
 				INFOPLIST_FILE = "Crowsflight/Crowsflight-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Crowsflight\"",
@@ -1458,7 +1454,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Crowsflight/Crowsflight-Prefix.pch";
 				INFOPLIST_FILE = "Crowsflight/Crowsflight-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Crowsflight\"",

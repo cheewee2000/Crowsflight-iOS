@@ -4,8 +4,7 @@
 //
 //  Created by Che-Wei Wang on 5/4/13.
 //  Copyright (c) 2013 CW&T. All rights reserved.
-//
-#import <Crashlytics/Crashlytics.h>
+////#import <Crashlytics/Crashlytics.h>
 
 #import "cwtAppDelegate.h"
 #import "cwtViewController3.h"
@@ -28,7 +27,7 @@
 
     
     
-    [Crashlytics startWithAPIKey:@"1eb6d15737d50f2df4316cb5b8b073da76a42b67"];
+    //[Crashlytics startWithAPIKey:@"1eb6d15737d50f2df4316cb5b8b073da76a42b67"];
 
     [cwtIAP sharedInstance];
 
