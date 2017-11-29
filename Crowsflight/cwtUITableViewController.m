@@ -394,6 +394,7 @@
     }
     if(h>10 && animationFrame>=maxWalkFrames+6){
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://shop.cwandt.com"]];
+
     }
     
     }

@@ -328,7 +328,7 @@
 
 
 - (void)drawCone {
-    dele = [[UIApplication sharedApplication] delegate];
+    dele = (cwtAppDelegate*)[[UIApplication sharedApplication] delegate];
 
     //float bearing=dele.viewController.locationViewController.locBearing;
     //float heading=-DEGREES_TO_RADIANS(dele.heading)+M_PI*.5;
@@ -416,7 +416,7 @@
     
     
     
-    dele = [[UIApplication sharedApplication] delegate];
+    dele = (cwtAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     //float bearing=dele.viewController.locationViewController.locBearing;
     float heading=-DEGREES_TO_RADIANS(dele.heading)+M_PI*.5;
@@ -520,7 +520,7 @@
     
     [self.view addSubview:self.mapButton];
     
-    dele=[[UIApplication sharedApplication] delegate];
+    dele=(cwtAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     
 
@@ -802,7 +802,7 @@
         pin.draggable = FALSE;
         pin.canShowCallout=TRUE;
         pin.animatesDrop=NO;
-        pin.pinColor=MKPinAnnotationColorGreen;
+        pin.pinTintColor=[UIColor greenColor];
         UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
         [rightButton setTitle:@"" forState:UIControlStateNormal];
         pin.rightCalloutAccessoryView = rightButton;
@@ -814,7 +814,7 @@
         pin.draggable = false;
         pin.canShowCallout=true;
         pin.animatesDrop=NO;
-        pin.pinColor=MKPinAnnotationColorPurple;
+        pin.pinTintColor=[UIColor purpleColor];
         
         UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
         [rightButton setTitle:@"" forState:UIControlStateNormal];
@@ -824,7 +824,7 @@
         pin.draggable = true;
         pin.canShowCallout=true;
         pin.animatesDrop=NO;
-        pin.pinColor=MKPinAnnotationColorRed;
+        pin.pinTintColor=[UIColor redColor];
     }
     
     

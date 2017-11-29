@@ -59,7 +59,7 @@
       xbutton.frame = CGRectMake(cellWidth*.75-imgH*.5, 30-imgH/2, imgH, imgH);
       [defaultBackgroundView addSubview:xbutton];
       
-      dele=[[UIApplication sharedApplication] delegate];
+      dele=(cwtAppDelegate*)[[UIApplication sharedApplication] delegate];
   }
   
   return self;
