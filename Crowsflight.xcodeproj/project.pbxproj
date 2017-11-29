@@ -23,7 +23,6 @@
 		444023FC1A39F08D0022D80B /* w3w_en_words in Resources */ = {isa = PBXBuildFile; fileRef = 444023F81A39F08D0022D80B /* w3w_en_words */; };
 		444023FD1A39F08D0022D80B /* w3w_master.dat in Resources */ = {isa = PBXBuildFile; fileRef = 444023F91A39F08D0022D80B /* w3w_master.dat */; };
 		444023FE1A39F08D0022D80B /* w3w_ybuckets.dat in Resources */ = {isa = PBXBuildFile; fileRef = 444023FA1A39F08D0022D80B /* w3w_ybuckets.dat */; };
-		444023FF1A39F08D0022D80B /* W3wSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 444023FB1A39F08D0022D80B /* W3wSDK.framework */; };
 		44471C8A17AC4E6F008413B7 /* walk-d1.png in Resources */ = {isa = PBXBuildFile; fileRef = 44471C3617AC4E6F008413B7 /* walk-d1.png */; };
 		44471C8B17AC4E6F008413B7 /* walk-d2.png in Resources */ = {isa = PBXBuildFile; fileRef = 44471C3717AC4E6F008413B7 /* walk-d2.png */; };
 		44471C8C17AC4E6F008413B7 /* walk-d3.png in Resources */ = {isa = PBXBuildFile; fileRef = 44471C3817AC4E6F008413B7 /* walk-d3.png */; };
@@ -228,7 +227,6 @@
 		44C1D14017599F8C007798A6 /* SIAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C1D13F17599F8B007798A6 /* SIAlertView.m */; };
 		44C1D14217599FC3007798A6 /* SIAlertView.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 44C1D14117599FC3007798A6 /* SIAlertView.bundle */; };
 		44C1D1441759A0CE007798A6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44C1D1431759A0CE007798A6 /* QuartzCore.framework */; };
-		44C1D147175CF95F007798A6 /* MTStatusBarOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C1D146175CF95F007798A6 /* MTStatusBarOverlay.m */; };
 		44C7F757174F3BC600112096 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44C7F756174F3BC500112096 /* MapKit.framework */; };
 		44CDC4F417AB185E006ABAA4 /* teeth-02.png in Resources */ = {isa = PBXBuildFile; fileRef = 44CDC4F317AB185E006ABAA4 /* teeth-02.png */; };
 		44D4D195178B78C800E5937A /* cwtViewController3.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D4D193178B763100E5937A /* cwtViewController3.m */; };
@@ -249,9 +247,7 @@
 		44E7D33D17524F3700BF8433 /* cwtListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E7D33B17524F3700BF8433 /* cwtListViewController.m */; };
 		44E7EBD917A701AA0054E1BB /* Crowsflight_Create_001.wav in Resources */ = {isa = PBXBuildFile; fileRef = 44E7EBD017A701AA0054E1BB /* Crowsflight_Create_001.wav */; };
 		44ECCC4E1752D5D100857F57 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 44ECCC4D1752D5D100857F57 /* main.m */; };
-		44ECCC511753999E00857F57 /* IAPHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 44ECCC501753999E00857F57 /* IAPHelper.m */; };
 		44ECCC5317539A0600857F57 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44ECCC5217539A0500857F57 /* StoreKit.framework */; };
-		44ECCC5617539C0D00857F57 /* cwtIAP.m in Sources */ = {isa = PBXBuildFile; fileRef = 44ECCC5517539C0D00857F57 /* cwtIAP.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -274,7 +270,6 @@
 		444023F81A39F08D0022D80B /* w3w_en_words */ = {isa = PBXFileReference; lastKnownFileType = file; path = w3w_en_words; sourceTree = "<group>"; };
 		444023F91A39F08D0022D80B /* w3w_master.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = w3w_master.dat; sourceTree = "<group>"; };
 		444023FA1A39F08D0022D80B /* w3w_ybuckets.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = w3w_ybuckets.dat; sourceTree = "<group>"; };
-		444023FB1A39F08D0022D80B /* W3wSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = W3wSDK.framework; sourceTree = "<group>"; };
 		44471C3617AC4E6F008413B7 /* walk-d1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "walk-d1.png"; sourceTree = "<group>"; };
 		44471C3717AC4E6F008413B7 /* walk-d2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "walk-d2.png"; sourceTree = "<group>"; };
 		44471C3817AC4E6F008413B7 /* walk-d3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "walk-d3.png"; sourceTree = "<group>"; };
@@ -484,8 +479,6 @@
 		44C1D13F17599F8B007798A6 /* SIAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIAlertView.m; sourceTree = "<group>"; };
 		44C1D14117599FC3007798A6 /* SIAlertView.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SIAlertView.bundle; sourceTree = "<group>"; };
 		44C1D1431759A0CE007798A6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		44C1D145175CF95E007798A6 /* MTStatusBarOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTStatusBarOverlay.h; sourceTree = "<group>"; };
-		44C1D146175CF95F007798A6 /* MTStatusBarOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTStatusBarOverlay.m; sourceTree = "<group>"; };
 		44C7F756174F3BC500112096 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		44C97DE817A433F300974240 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		44CDC4F317AB185E006ABAA4 /* teeth-02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "teeth-02.png"; sourceTree = "<group>"; };
@@ -523,11 +516,7 @@
 		44E7EBD017A701AA0054E1BB /* Crowsflight_Create_001.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Crowsflight_Create_001.wav; sourceTree = "<group>"; };
 		44ECCC4C1752D5D100857F57 /* Crowsflight-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Crowsflight-Prefix.pch"; sourceTree = "<group>"; };
 		44ECCC4D1752D5D100857F57 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		44ECCC4F1753999E00857F57 /* IAPHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAPHelper.h; sourceTree = "<group>"; };
-		44ECCC501753999E00857F57 /* IAPHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAPHelper.m; sourceTree = "<group>"; };
 		44ECCC5217539A0500857F57 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
-		44ECCC5417539C0D00857F57 /* cwtIAP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cwtIAP.h; sourceTree = "<group>"; };
-		44ECCC5517539C0D00857F57 /* cwtIAP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = cwtIAP.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -545,7 +534,6 @@
 				44DAE0601735A08C00C17F07 /* CoreLocation.framework in Frameworks */,
 				44DAE01C17359AC900C17F07 /* UIKit.framework in Frameworks */,
 				44DAE01E17359AC900C17F07 /* Foundation.framework in Frameworks */,
-				444023FF1A39F08D0022D80B /* W3wSDK.framework in Frameworks */,
 				44DAE02017359AC900C17F07 /* CoreGraphics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -672,7 +660,6 @@
 			isa = PBXGroup;
 			children = (
 				444023F71A39F08D0022D80B /* raw */,
-				444023FB1A39F08D0022D80B /* W3wSDK.framework */,
 			);
 			name = what3words;
 			sourceTree = "<group>";
@@ -696,8 +683,6 @@
 				44DA559C176EAF7D004A4C1F /* cwtArrow.m */,
 				44C1D13E17599F8B007798A6 /* SIAlertView.h */,
 				44C1D13F17599F8B007798A6 /* SIAlertView.m */,
-				44C1D145175CF95E007798A6 /* MTStatusBarOverlay.h */,
-				44C1D146175CF95F007798A6 /* MTStatusBarOverlay.m */,
 				441CAA3917552656003131F8 /* UINavigationController+GZDrawer.h */,
 				441CAA3A17552656003131F8 /* UINavigationController+GZDrawer.m */,
 			);
@@ -856,17 +841,6 @@
 			name = MapView;
 			sourceTree = "<group>";
 		};
-		449759411783D0B900341552 /* IAP */ = {
-			isa = PBXGroup;
-			children = (
-				44ECCC4F1753999E00857F57 /* IAPHelper.h */,
-				44ECCC501753999E00857F57 /* IAPHelper.m */,
-				44ECCC5417539C0D00857F57 /* cwtIAP.h */,
-				44ECCC5517539C0D00857F57 /* cwtIAP.m */,
-			);
-			name = IAP;
-			sourceTree = "<group>";
-		};
 		44C1D130175956BA007798A6 /* tableviewicons */ = {
 			isa = PBXGroup;
 			children = (
@@ -945,7 +919,6 @@
 				44DAE02217359AC900C17F07 /* Supporting Files */,
 				4497593F1783D08900341552 /* TableView */,
 				449759401783D0A200341552 /* MapView */,
-				449759411783D0B900341552 /* IAP */,
 			);
 			path = Crowsflight;
 			sourceTree = "<group>";
@@ -1307,11 +1280,8 @@
 				44DAE09B17369C9B00C17F07 /* cwtUITableViewController.m in Sources */,
 				44E7D33D17524F3700BF8433 /* cwtListViewController.m in Sources */,
 				44ECCC4E1752D5D100857F57 /* main.m in Sources */,
-				44ECCC511753999E00857F57 /* IAPHelper.m in Sources */,
-				44ECCC5617539C0D00857F57 /* cwtIAP.m in Sources */,
 				441CAA3B17552656003131F8 /* UINavigationController+GZDrawer.m in Sources */,
 				44C1D14017599F8C007798A6 /* SIAlertView.m in Sources */,
-				44C1D147175CF95F007798A6 /* MTStatusBarOverlay.m in Sources */,
 				44E6D09B1760FB21003344CA /* LRSlidingTableViewCell.m in Sources */,
 				449A1E021765938000EF78B5 /* ATSDragToReorderTableViewController.m in Sources */,
 				44795DBD176988EB00921101 /* cwtToolbar.m in Sources */,
@@ -1416,8 +1386,6 @@
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Crowsflight",
-					"$(PROJECT_DIR)/Crowsflight/W3wFramework",
-					"$(PROJECT_DIR)/W3wFramework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Crowsflight/Crowsflight-Prefix.pch";
@@ -1448,8 +1416,6 @@
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Crowsflight",
-					"$(PROJECT_DIR)/Crowsflight/W3wFramework",
-					"$(PROJECT_DIR)/W3wFramework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Crowsflight/Crowsflight-Prefix.pch";

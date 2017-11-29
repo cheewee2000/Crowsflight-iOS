@@ -29,7 +29,7 @@
         [self.tableView setSeparatorStyle:(UITableViewCellSeparatorStyleNone)];
         [self.tableView setBackgroundColor:[UIColor colorWithRed:1.0 green:78/255.0f blue:36/255.0f alpha:1]];
         
-        dele = [[UIApplication sharedApplication] delegate];
+        dele = (cwtAppDelegate*) [[UIApplication sharedApplication] delegate];
         
         self.filterBar = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, screenBounds.size.width-40, 44)];
         self.filterBar.delegate=self;
@@ -55,7 +55,7 @@
         self.filterBar.borderStyle = UITextBorderStyleNone;
         self.filterBar.returnKeyType=UIReturnKeySearch;
 
-        UIView * statusBackground=[[UIView alloc] initWithFrame:CGRectMake(0, -20, [[UIScreen mainScreen] bounds].size.width, 20)];
+        UIView * statusBackground=[[UIView alloc] initWithFrame:CGRectMake(0, -60, [[UIScreen mainScreen] bounds].size.width, 60)];
         [statusBackground setBackgroundColor:[UIColor whiteColor]];
         [self.filterBar addSubview:statusBackground];
     
@@ -932,10 +932,10 @@
 
             return;
         }
-        else if(indexPath.row==4){
-            [dele.viewController purchase];
-            return;
-        }
+//        else if(indexPath.row==4){
+//            [dele.viewController purchase];
+//            return;
+//        }
 
          if(self.isFiltered==FALSE)return;
         

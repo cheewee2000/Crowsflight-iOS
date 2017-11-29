@@ -53,7 +53,8 @@
     
     
     //stats
-    self.displayText=[[UILabel alloc] initWithFrame:CGRectMake(10, screen.size.height-44-80, screen.size.width, 80)];
+    self.displayText=[[UILabel alloc] initWithFrame:CGRectMake(10, screen.size.height-64-80, screen.size.width, 80)];
+    
     self.displayText.numberOfLines=8;
     self.displayText.backgroundColor=[UIColor clearColor];
     self.displayText.textColor=[UIColor colorWithWhite:.3 alpha:1];
@@ -523,8 +524,8 @@
         currentString=[NSString stringWithFormat:@"%f,%f ±%im",dele.myLat,dele.myLng, (int)dele.accuracy];
     }
 
-    W3wPosition *cPosition = [dele.viewController.w3wSDK convertPositionToW3W:kW3wLanguageEnglish lat:dele.myLat lng:dele.myLng];
-    W3wPosition *tPosition = [dele.viewController.w3wSDK convertPositionToW3W:kW3wLanguageEnglish lat:self.dlat lng:self.dlng];
+//    W3wPosition *cPosition = [dele.viewController.w3wSDK convertPositionToW3W:kW3wLanguageEnglish lat:dele.myLat lng:dele.myLng];
+//    W3wPosition *tPosition = [dele.viewController.w3wSDK convertPositionToW3W:kW3wLanguageEnglish lat:self.dlat lng:self.dlng];
 
     if(headingAccuracy<0)headingAccuracy=0;
     statusString= [NSString stringWithFormat:@
@@ -533,16 +534,16 @@
                    "bearing : %i° ±%i°\n"
                    "altitude: %@\n"
                    "target  : %f,%f\n"
-                   "          %@\n"
+                   //"          %@\n"
                    "current : %@\n"
-                   "          %@"
+                   //"          %@"
                    ,
                    speedString,
                    (int)dele.heading,(int)headingAccuracy,
                    (int)self.locBearing,(int)bearingAccuracy,
                    altitudeString,
-                   self.dlat , self.dlng, tPosition.getW3w,
-                   currentString, cPosition.getW3w
+                   self.dlat , self.dlng,// tPosition.getW3w,
+                   currentString//, //cPosition.getW3w
                    ];
     
     self.displayText.text=statusString;

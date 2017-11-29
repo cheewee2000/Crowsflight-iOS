@@ -9,14 +9,14 @@
 #import "cwtAppDelegate.h"
 #import "cwtViewController3.h"
 #import "cwtUITableViewController.h"
-#import "cwtIAP.h"
+//#import "cwtIAP.h"
 #import "cwtMapViewController.h"
 #import "Reachability.h"
 //#import "NVSlideMenuController.h"
 #import "QuartzCore/CALayer.h"
 #import "cwtMapViewController.h"
 
-@interface cwtAppDelegate ()<UIAlertViewDelegate,CLLocationManagerDelegate,UIAppearanceContainer,MTStatusBarOverlayDelegate>
+@interface cwtAppDelegate ()<UIAlertViewDelegate,CLLocationManagerDelegate,UIAppearanceContainer>//,MTStatusBarOverlayDelegate>
 
 @end
 
@@ -29,7 +29,7 @@
     
     //[Crashlytics startWithAPIKey:@"1eb6d15737d50f2df4316cb5b8b073da76a42b67"];
 
-    [cwtIAP sharedInstance];
+    //[cwtIAP sharedInstance];
 
     
     [self loadmyLocations];
@@ -66,13 +66,13 @@
     //[[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:255.0/255 green:255.0/255 blue:255.0/255 alpha:1.0]];
 
     
-    self.overlay = [MTStatusBarOverlay sharedInstance];
-    self.overlay.animation = MTStatusBarOverlayAnimationNone;
-    self.overlay.detailViewMode = MTDetailViewModeHistory;
-    self.overlay.delegate = self;
-    self.overlay.backgroundColor=[UIColor colorWithWhite:.95 alpha:1];
-    //overlay.hidesActivity=TRUE;
-    
+//    self.overlay = [MTStatusBarOverlay sharedInstance];
+//    self.overlay.animation = MTStatusBarOverlayAnimationNone;
+//    self.overlay.detailViewMode = MTDetailViewModeHistory;
+//    self.overlay.delegate = self;
+//    self.overlay.backgroundColor=[UIColor colorWithWhite:.95 alpha:1];
+//    //overlay.hidesActivity=TRUE;
+//
     self.headingAccuracy=-2;
     
     
@@ -117,9 +117,12 @@
     
 	//cout<<url;
 	//NSString * urlString= [[NSString alloc] initWithUTF8String:url.c_str()];
+    //NSString *urlString = [[url host] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *urlString = [[url host] stringByRemovingPercentEncoding] ;
     
     
-    NSString *urlString = [[url host] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    
     urlString=[urlString stringByReplacingOccurrencesOfString:@"+" withString:@" "];
 
     
@@ -265,16 +268,16 @@
 }
 
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if(alertView.tag==1){
-		if(buttonIndex==1){
-			//if([store canMakePurchases]) [store unlockcrowsflight];
-		}
-		
-	}
-
-    
-}
+//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+//    if(alertView.tag==1){
+//        if(buttonIndex==1){
+//            //if([store canMakePurchases]) [store unlockcrowsflight];
+//        }
+//        
+//    }
+//
+//    
+//}
 
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
@@ -310,9 +313,12 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading {
     //if(self.headingAccuracy<0)return;
-    
-    
+    //NSLog(@"truHeading: %f", newHeading.trueHeading);
+    //NSLog(@"magHeading: %f", newHeading.magneticHeading);
+
     self.heading=newHeading.trueHeading; //heading in degress
+    //self.heading=newHeading.magneticHeading; //heading in degress
+
     self.headingAccuracy=newHeading.headingAccuracy;
 
     [(cwtViewController3*)self.window.rootViewController updateViewControllersWithHeading:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"]];
@@ -323,30 +329,30 @@
     //[(cwtMapViewController*)self.viewController.mapViewController drawCone];
      
     
-    if(self.lastHeadingAccuracy!=self.headingAccuracy){
-        if( (self.headingAccuracy <=22 && self.headingAccuracy>-1) || self.headingAccuracy==-2)
-            
-            //testing
-         //   if( (self.headingAccuracy <=5 && self.headingAccuracy>-1) || self.headingAccuracy==-2)
-
-        {
-            [self.overlay hideTemporary];
-        }
-        else
-        {
-            [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(shrink) object:nil];
-            [self.overlay show];
-            if(self.overlay.isShrinked==YES) [self.overlay setShrinked:NO animated:YES ];
-            [self.overlay postImmediateMessage:[NSString stringWithFormat:@"Compass Accuracy: ±%i°",(int)(self.headingAccuracy)]  duration:3.0 ];
-            [self.overlay postErrorMessage:@"move away from interference" duration:3.0 ];
-            [self.overlay postErrorMessage:@"wave in ∞ motion to calibrate compass" duration:0];
-            
-            //[overlay setShrinked:YES animated:YES];
-            //if(self.overlay.isShrinked==NO) [self performSelector:@selector(shrink) withObject:nil afterDelay:12.0];
-        }
-        self.lastHeadingAccuracy=self.headingAccuracy;
-    }
-    
+//    if(self.lastHeadingAccuracy!=self.headingAccuracy){
+//        if( (self.headingAccuracy <=22 && self.headingAccuracy>-1) || self.headingAccuracy==-2)
+//
+//            //testing
+//        //if( (self.headingAccuracy <=5 && self.headingAccuracy>-1) || self.headingAccuracy==-2)
+//
+//        {
+//            [self.overlay hideTemporary];
+//        }
+//        else
+//        {
+//            [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(shrink) object:nil];
+//            [self.overlay show];
+//            if(self.overlay.isShrinked==YES) [self.overlay setShrinked:NO animated:YES ];
+//            [self.overlay postImmediateMessage:[NSString stringWithFormat:@"Compass Accuracy: ±%i°",(int)(self.headingAccuracy)]  duration:3.0 ];
+//            [self.overlay postErrorMessage:@"move away from interference" duration:3.0 ];
+//            [self.overlay postErrorMessage:@"wave in ∞ motion to calibrate compass" duration:0];
+//
+//            //[overlay setShrinked:YES animated:YES];
+//            //if(self.overlay.isShrinked==NO) [self performSelector:@selector(shrink) withObject:nil afterDelay:12.0];
+//        }
+//        self.lastHeadingAccuracy=self.headingAccuracy;
+//    }
+//
     
 
     
@@ -354,9 +360,9 @@
 }
 
 
--(void) shrink{
-        [self.overlay setShrinked:YES animated:YES];
-}
+//-(void) shrink{
+//        [self.overlay setShrinked:YES animated:YES];
+//}
 
 -(void)addNewDestination:(NSString *)name newlat:(double)_lat newlng:(double)_lng{
 	

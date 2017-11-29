@@ -12,7 +12,7 @@
 
 #import "cwtListViewController.h"
 
-#import "cwtIAP.h"
+//#import "cwtIAP.h"
 #import <StoreKit/StoreKit.h>
 
 #import "QuartzCore/CALayer.h"
@@ -49,7 +49,7 @@
 {
     [super viewDidLoad];
     
-    dele = [[UIApplication sharedApplication] delegate];
+    dele = (cwtAppDelegate*)[[UIApplication sharedApplication] delegate];
     
 	// Do any additional setup after loading the view.
     self.view.backgroundColor=[UIColor colorWithWhite:.95 alpha:1];
@@ -93,6 +93,12 @@
     
     //custom toolbar
     UIView* buttonBar=[[UIView alloc ]initWithFrame:CGRectMake(0, screen.size.height-44, screen.size.width, 44)];
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone && UIScreen.mainScreen.nativeBounds.size.height == 2436)  {
+        //iPhone X
+        buttonBar=[[UIView alloc ]initWithFrame:CGRectMake(0, screen.size.height-64, screen.size.width, 64)];
+        
+    }
+    
     
     buttonBar.layer.masksToBounds = NO;
     buttonBar.layer.shadowOffset = CGSizeMake(0, -1);
@@ -141,7 +147,7 @@
     //more info button
     iconWidth=50;
     moreInfo = [UIButton buttonWithType:UIButtonTypeCustom];
-    moreInfo.frame=CGRectMake(screen.size.width*.5-iconWidth*.5, screen.size.height-60.0-iconWidth, iconWidth,iconWidth);    
+    moreInfo.frame=CGRectMake(screen.size.width*.5-iconWidth*.5, screen.size.height-80.0-iconWidth, iconWidth,iconWidth);    
     [moreInfo addTarget:self action:@selector(setShowInfo) forControlEvents:UIControlEventTouchUpInside];
     [moreInfo setImage:[UIImage imageNamed:@"more-info2"] forState:UIControlStateNormal];
     [moreInfo setImage:[UIImage imageNamed:@"less-info"] forState:UIControlStateSelected];
@@ -155,27 +161,27 @@
     [self.instructions setAlpha:.98];
     [self.view addSubview:self.instructions];
     
-    [self initW3wSDK];
+    //[self initW3wSDK];
 
     
 }
 
 
-- (void)initW3wSDK
-{
-    // Get w3w files
-    NSString *masterFilePath = [[NSBundle mainBundle] pathForResource:@"w3w_master" ofType:@"dat"];
-    NSString *yBucketsFilePath = [[NSBundle mainBundle] pathForResource:@"w3w_ybuckets" ofType:@"dat"];
-    NSString *englishFilePath = [[NSBundle mainBundle] pathForResource:@"w3w_en_words" ofType:nil];
-    
-    // Setup sdk
-    W3wSDKFactory *factory = [[W3wSDKFactory alloc] initWithMasterFilePath:masterFilePath
-                                                          yBucketsFilePath:yBucketsFilePath
-                                                       englishWordListPath:englishFilePath];
-    [factory addEnglish];
-    
-    self.w3wSDK = [factory build];
-}
+//- (void)initW3wSDK
+//{
+//    // Get w3w files
+//    NSString *masterFilePath = [[NSBundle mainBundle] pathForResource:@"w3w_master" ofType:@"dat"];
+//    NSString *yBucketsFilePath = [[NSBundle mainBundle] pathForResource:@"w3w_ybuckets" ofType:@"dat"];
+//    NSString *englishFilePath = [[NSBundle mainBundle] pathForResource:@"w3w_en_words" ofType:nil];
+//
+//    // Setup sdk
+//    W3wSDKFactory *factory = [[W3wSDKFactory alloc] initWithMasterFilePath:masterFilePath
+//                                                          yBucketsFilePath:yBucketsFilePath
+//                                                       englishWordListPath:englishFilePath];
+//    [factory addEnglish];
+//
+//    self.w3wSDK = [factory build];
+//}
 
 
 
@@ -362,12 +368,33 @@
     {
         NSString *alertMessage = [NSString stringWithFormat:@"You currently have location services disabled for this %@. Please refer to \"Settings\" app to turn on Location Services.", causeStr];
         
-        UIAlertView *servicesDisabledAlert = [[UIAlertView alloc] initWithTitle:@"Location Services Disabled"
-                                                                        message:alertMessage
-                                                                       delegate:nil
-                                                              cancelButtonTitle:@"OK"
-                                                              otherButtonTitles:nil];
-        [servicesDisabledAlert show];
+
+        UIAlertController* servicesDisabledAlert = [UIAlertController
+                                alertControllerWithTitle:@"No Location"
+                                message:alertMessage
+                                preferredStyle:UIAlertControllerStyleAlert];
+
+//        UIAlertAction* yesButton = [UIAlertAction
+//                                    actionWithTitle:@"Yes, please"
+//                                    style:UIAlertActionStyleDefault
+//                                    handler:^(UIAlertAction * action) {
+//                                        //Handle your yes please button action here
+//                                    }];
+        
+        UIAlertAction* noButton = [UIAlertAction
+                                   actionWithTitle:@"OK"
+                                   style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction * action) {
+                                       //Handle no, thanks button
+                                       [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+
+                                   }];
+        //[servicesDisabledAlert addAction:yesButton];
+        [servicesDisabledAlert addAction:noButton];
+        
+        
+        [self presentViewController:servicesDisabledAlert animated:YES completion:nil];
+
         
         
     }
@@ -402,7 +429,8 @@
     NSArray* viewC = [self.pageView viewControllers];
     [[viewC objectAtIndex:0] updateHeading];
     [self rotateCompass:.1 degrees:-dele.heading];
-    
+    //NSLog(@"dele.heading: %f", dele.heading);
+
 }
 
 
@@ -411,7 +439,7 @@
     
     CGAffineTransform transformCompass = CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(degrees));
     
-    [UIView animateWithDuration:0.3f
+    [UIView animateWithDuration:0.0f
                           delay:0.0f
                         options: UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState
                      animations: ^(void){
@@ -568,12 +596,12 @@
 #pragma mark - Add Location'
 //coming from longpress
 -(void)addLocation:(CLLocationCoordinate2D)coordinate title:(NSString *)name{
-    if([[NSUserDefaults standardUserDefaults] boolForKey:@"unlockcrowsflight"]==NO && [dele.locationDictionaryArray count]>=5){
-		[self checkPurchased];
-	}
-    else
-	{
-        
+//    if([[NSUserDefaults standardUserDefaults] boolForKey:@"unlockcrowsflight"]==NO && [dele.locationDictionaryArray count]>=5){
+//        [self checkPurchased];
+//    }
+//    else
+//    {
+    
 //        if([name isEqual:@""] || name==NULL){
 //            
 //            [self addNewDestination:[NSString stringWithFormat:@"%f,%f",coordinate.latitude,coordinate.longitude] newlat:coordinate.latitude newlng:coordinate.longitude];
@@ -584,7 +612,7 @@
 
         
         //[dele.viewController showLocationEditAlert];
-    }
+ //   }
 
 }
 
@@ -594,12 +622,12 @@
     //AudioServicesPlaySystemSound(audioSelect1);
 
     
-	if([[NSUserDefaults standardUserDefaults] boolForKey:@"unlockcrowsflight"]==NO && [dele.locationDictionaryArray count]>=5){
-		[self checkPurchased];
-	}
-    else
-	{
-        
+//    if([[NSUserDefaults standardUserDefaults] boolForKey:@"unlockcrowsflight"]==NO && [dele.locationDictionaryArray count]>=5){
+//        [self checkPurchased];
+//    }
+//    else
+//    {
+//
         NSString *mess;
         
         if([dele.units isEqual:@"m"]){
@@ -624,7 +652,7 @@
         
         
         // [self addNewDestination:[NSString stringWithFormat:@"%f,%f",dele.myLat,dele.myLng] newlat:dele.myLat newlng:dele.myLng];
-    }
+  //  }
 }
 
 
@@ -706,12 +734,12 @@
 
 -(void) showSearchBar{
     
-	if([[NSUserDefaults standardUserDefaults] boolForKey:@"unlockcrowsflight"]==NO && [dele.locationDictionaryArray count]>=5){
-		[self checkPurchased];
-	}
-	else
-	{
-        
+//    if([[NSUserDefaults standardUserDefaults] boolForKey:@"unlockcrowsflight"]==NO && [dele.locationDictionaryArray count]>=5){
+//        [self checkPurchased];
+//    }
+//    else
+//    {
+//
         searchAlert= [[SIAlertView alloc] initWithTitle:@"SEARCH" andMessage:@"Enter an address, placename, or lat,lng \n(e.g. 40.729,-73.993)"];
         //        [searchAlert addButtonWithTitle:@"X"
         //                                   type:SIAlertViewButtonTypeCancel
@@ -724,7 +752,7 @@
         searchAlert.keyboardGo=@"SEARCH";
         [searchAlert show];
         
-	}
+//	}
     
 }
 
@@ -740,11 +768,11 @@
         [self.localSearch cancel];
     }
     
-    if([[NSUserDefaults standardUserDefaults] boolForKey:@"unlockcrowsflight"]==NO && [dele.locationDictionaryArray count]>=5){
-		[self checkPurchased];
-	}
-	else
-    {
+//    if([[NSUserDefaults standardUserDefaults] boolForKey:@"unlockcrowsflight"]==NO && [dele.locationDictionaryArray count]>=5){
+//        [self checkPurchased];
+//    }
+//    else
+//    {
         BOOL isAddress=TRUE;
         NSMutableArray *slatlng = [[NSMutableArray alloc] init];
         [slatlng setArray:[searchField.text componentsSeparatedByString:@","]];
@@ -758,14 +786,14 @@
         //            /^\*[\p{L}\-0-9]{6,31}$/u
         
         //NSLog(@"match=%@", matches );
-        NSMutableArray *threeWords = [[NSMutableArray alloc] init];
-        [threeWords setArray:[[searchField.text lowercaseString] componentsSeparatedByString:@"."]];
+//        NSMutableArray *threeWords = [[NSMutableArray alloc] init];
+//        [threeWords setArray:[[searchField.text lowercaseString] componentsSeparatedByString:@"."]];
 
 
-        NSRegularExpression* oneWordRegex = [[NSRegularExpression alloc] initWithPattern:@"^\\*[\\p{L}\\-0-9]{6,31}" options:NSRegularExpressionCaseInsensitive error:nil];
-        
-        NSArray* oneWordMatches = [oneWordRegex matchesInString:searchField.text options:0 range:NSMakeRange(0, [searchField.text length])];
-        
+//        NSRegularExpression* oneWordRegex = [[NSRegularExpression alloc] initWithPattern:@"^\\*[\\p{L}\\-0-9]{6,31}" options:NSRegularExpressionCaseInsensitive error:nil];
+//        
+//        NSArray* oneWordMatches = [oneWordRegex matchesInString:searchField.text options:0 range:NSMakeRange(0, [searchField.text length])];
+//        
         NSRegularExpression* regex = [[NSRegularExpression alloc] initWithPattern:@"-?\\d+\\.\\d+" options:NSRegularExpressionCaseInsensitive error:nil];
         NSArray* matches = [regex matchesInString:searchField.text options:0 range:NSMakeRange(0, [searchField.text length])];
         
@@ -785,135 +813,149 @@
             isAddress=FALSE;
         }
         //}
-        else if([threeWords count]==3 )
-        {
-            isAddress=FALSE;
-
-            W3wPosition *position = [self.w3wSDK convertW3WToPosition:threeWords];
-
-            if (position==nil)
-            {
-                
-                NSString *errorMessage=@"NO RESULTS";
-                SIAlertView* alert = [ [SIAlertView alloc] initWithTitle:errorMessage andMessage:@""];
-                [alert addButtonWithTitle:@"OK"
-                                     type:SIAlertViewButtonTypeDefault
-                                  handler:^(SIAlertView *alertView) {
-                                      [self showList];
-                                  }];
-                
-                alert.showTextField=FALSE;
-                [alert show];
-                
-            }else{
-                
-                AudioServicesPlaySystemSound(audioCreate);
-                CLLocationCoordinate2D coord;
-                coord = CLLocationCoordinate2DMake(position.lat, position.lng);
-                [dele.viewController addLocation:coord title:searchField.text];
-                
-            }
-            
-            
-            
-            
-        }
-            else if([oneWordMatches count]==1)
-            {
-            
-                isAddress=FALSE;
-
-                //show progress
-                NSString* mess=[NSString stringWithFormat:@"%@\n\n\n\n",searchField.text];
-                SIAlertView * progressAlert = [ [SIAlertView alloc] initWithTitle: @"LOOKING UP..." andMessage:mess];
-                progressAlert.showSpinner=TRUE;
-                progressAlert.showTextField=FALSE;
-                [progressAlert show];
-                
-                [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-            
-
-                NSString *postString = [NSString stringWithFormat:@"key=%@&string=%@&corners=%i",@"9TQ1TY3J",searchField.text,false];
-                //NSString *urlString = @"http://api.what3words.com/w3w";
-
-                // Create the request.
-                NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString: @"http://api.what3words.com/w3w"] ];
-                
-                // Specify that it will be a POST request
-                request.HTTPMethod = @"POST";
-
-                // Convert your data and set your request's HTTPBody property
-                NSData *requestBodyData = [postString dataUsingEncoding:NSUTF8StringEncoding];
-                request.HTTPBody = requestBodyData;
-                
-                
-                //NSString *requestString = @"your url here";
-                [NSURLConnection sendAsynchronousRequest:request
-                                                   queue:[NSOperationQueue mainQueue]
-                                       completionHandler:
-                 ^(NSURLResponse *response, NSData *data, NSError *error) {
-                   //  NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-                     
-                     //user forced cancel
-                     if(progressAlert.visible==NO)return;
-                     [progressAlert dismissAnimated:YES];
-     
-                     
-                     //if (!error && httpResponse.statusCode >= 200 && httpResponse.statusCode <300) {
-                     if (!error) {
-
-                         //Error checking
-                         
-                         NSError *derror;
-                         NSMutableDictionary *returnedDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&derror];
-                         
-                         float lat=[[[returnedDict objectForKey:@"position"] objectAtIndex:0] floatValue];
-                         float lng=[[[returnedDict objectForKey:@"position"] objectAtIndex:1] floatValue];
-                         
- 
-                         if (derror != nil || (lat==0 && lng==0))
-                         {
-                             
-                             NSString *errorMessage=@"NO RESULTS";
-                             if(dele.hasInternet==FALSE){
-                                 errorMessage=@"NO INTERNET CONNECTION";
-                             }
-                             SIAlertView* alert = [ [SIAlertView alloc] initWithTitle:errorMessage andMessage:@""];
-                             [alert addButtonWithTitle:@"OK"
-                                                  type:SIAlertViewButtonTypeDefault
-                                               handler:^(SIAlertView *alertView) {
-                                                   [self showList];
-                                               }];
-                             
-                             alert.showTextField=FALSE;
-                             [alert show];
-                             
-                         }
-                         else
-                         {
-                             AudioServicesPlaySystemSound(audioCreate);
-
-                             CLLocationCoordinate2D coord;
-                             coord = CLLocationCoordinate2DMake(lat, lng);
-                             [dele.viewController addLocation:coord title:searchField.text];
-                             //[self.navigationController pushDrawerViewController:self.mapViewController  withStyle:DrawerLayoutStyleRightAnchored animated:YES];
-
-                         }
-    
-                         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-
-                         
-                         
-                     }
-                     
-        
-
-
-                 }];
-                
-            
-                
-            }
+//        else if([threeWords count]==3 )
+//        {
+//            isAddress=FALSE;
+//
+//            //W3wPosition *position = [self.w3wSDK convertW3WToPosition:threeWords];
+//
+////            if (position==nil)
+////            {
+////
+////                NSString *errorMessage=@"NO RESULTS";
+////                SIAlertView* alert = [ [SIAlertView alloc] initWithTitle:errorMessage andMessage:@""];
+////                [alert addButtonWithTitle:@"OK"
+////                                     type:SIAlertViewButtonTypeDefault
+////                                  handler:^(SIAlertView *alertView) {
+////                                      [self showList];
+////                                  }];
+////
+////                alert.showTextField=FALSE;
+////                [alert show];
+////
+////            }else{
+//            
+//                AudioServicesPlaySystemSound(audioCreate);
+//                CLLocationCoordinate2D coord;
+//                coord = CLLocationCoordinate2DMake(position.lat, position.lng);
+//                [dele.viewController addLocation:coord title:searchField.text];
+//                
+//            //}
+//            
+//            
+//            
+//            
+//        }
+       //     else if([oneWordMatches count]==1)
+//            {
+//
+//                isAddress=FALSE;
+//
+//                //show progress
+//                NSString* mess=[NSString stringWithFormat:@"%@\n\n\n\n",searchField.text];
+//                SIAlertView * progressAlert = [ [SIAlertView alloc] initWithTitle: @"LOOKING UP..." andMessage:mess];
+//                progressAlert.showSpinner=TRUE;
+//                progressAlert.showTextField=FALSE;
+//                [progressAlert show];
+//
+//                [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+//
+//
+//                NSString *postString = [NSString stringWithFormat:@"key=%@&string=%@&corners=%i",@"9TQ1TY3J",searchField.text,false];
+//                //NSString *urlString = @"http://api.what3words.com/w3w";
+//
+//                // Create the request.
+//                NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString: @"http://api.what3words.com/w3w"] ];
+//
+//                // Specify that it will be a POST request
+//                request.HTTPMethod = @"POST";
+//
+//                // Convert your data and set your request's HTTPBody property
+//                NSData *requestBodyData = [postString dataUsingEncoding:NSUTF8StringEncoding];
+//                request.HTTPBody = requestBodyData;
+//
+//
+//                //NSString *requestString = @"your url here";
+//
+//                NSURLSession *session = [NSURLSession sharedSession];
+//                [[session dataTaskWithURL:[NSURL URLWithString:londonWeatherUrl]
+//                        completionHandler:^(NSData *data,
+//                                            NSURLResponse *response,
+//                                            NSError *error) {
+//                            // handle response
+//
+//                        }] resume];
+//
+//
+//
+//
+//
+//                [NSURLConnection sendAsynchronousRequest:request
+//                                                   queue:[NSOperationQueue mainQueue]
+//                                       completionHandler:
+//                 ^(NSURLResponse *response, NSData *data, NSError *error) {
+//                   //  NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+//
+//                     //user forced cancel
+//                     if(progressAlert.visible==NO)return;
+//                     [progressAlert dismissAnimated:YES];
+//
+//
+//                     //if (!error && httpResponse.statusCode >= 200 && httpResponse.statusCode <300) {
+//                     if (!error) {
+//
+//                         //Error checking
+//
+//                         NSError *derror;
+//                         NSMutableDictionary *returnedDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&derror];
+//
+//                         float lat=[[[returnedDict objectForKey:@"position"] objectAtIndex:0] floatValue];
+//                         float lng=[[[returnedDict objectForKey:@"position"] objectAtIndex:1] floatValue];
+//
+//
+//                         if (derror != nil || (lat==0 && lng==0))
+//                         {
+//
+//                             NSString *errorMessage=@"NO RESULTS";
+//                             if(dele.hasInternet==FALSE){
+//                                 errorMessage=@"NO INTERNET CONNECTION";
+//                             }
+//                             SIAlertView* alert = [ [SIAlertView alloc] initWithTitle:errorMessage andMessage:@""];
+//                             [alert addButtonWithTitle:@"OK"
+//                                                  type:SIAlertViewButtonTypeDefault
+//                                               handler:^(SIAlertView *alertView) {
+//                                                   [self showList];
+//                                               }];
+//
+//                             alert.showTextField=FALSE;
+//                             [alert show];
+//
+//                         }
+//                         else
+//                         {
+//                             AudioServicesPlaySystemSound(audioCreate);
+//
+//                             CLLocationCoordinate2D coord;
+//                             coord = CLLocationCoordinate2DMake(lat, lng);
+//                             [dele.viewController addLocation:coord title:searchField.text];
+//                             //[self.navigationController pushDrawerViewController:self.mapViewController  withStyle:DrawerLayoutStyleRightAnchored animated:YES];
+//
+//                         }
+//
+//                         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+//
+//
+//
+//                     }
+//
+//
+//
+//
+//                 }];
+//
+//
+//
+//            }
 
         
         if(isAddress){
@@ -1008,7 +1050,7 @@
             
             
         }
-    }
+    //}
 }
 
 
@@ -1068,12 +1110,36 @@
                 break;
         }
         
-        UIAlertView *alert =  [[UIAlertView alloc] initWithTitle:@"An error occurred."
-                                                         message:message
-                                                        delegate:nil
-                                               cancelButtonTitle:@"OK"
-                                               otherButtonTitles:nil];;
-        [alert show];
+//        UIAlertView *alert =  [[UIAlertView alloc] initWithTitle:@"An error occurred."
+//                                                         message:message
+//                                                        delegate:nil
+//                                               cancelButtonTitle:@"OK"
+//                                               otherButtonTitles:nil];;
+//        [alert show];
+        
+        
+
+        
+        
+        UIAlertController* alert = [UIAlertController
+                                                    alertControllerWithTitle:@"Error"
+                                                    message:@"An error occured"
+                                                    preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* noButton = [UIAlertAction
+                                   actionWithTitle:@"OK"
+                                   style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction * action) {
+                                       //Handle no, thanks button
+                                   }];
+        [alert addAction:noButton];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+        
+        
+        
+        
+        
     });
 }
 
@@ -1184,59 +1250,36 @@
 
 #pragma mark - alertview
 
-- (void) alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-	//add new location
-	if(alertView.tag==3){
-		
-		if(buttonIndex==1){
-			//[self addNewDestination:nameField.text newlat:dele.myLat newlng:dele.myLng ];
-		}
-	}
-    
-    //iap
-    if(alertView.tag==6){
-		//[inappAlert dismissWithClickedButtonIndex:0 animated:YES];
-		
-		if(buttonIndex==1){
-            
-            [self purchase];
-            
-		}
-		
-	}
-    
-    
-    
-}
+
 
 
 
 #pragma mark - inapp
--(void)purchase{
-    [[cwtIAP sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products) {
-        if (success) {
-            
-            //NSLog(@"%i",products.count);
-            if(products.count>0){
-                SKProduct * product = (SKProduct *) products[0];
-                NSLog(@"%@",product.localizedTitle);
-                [[cwtIAP sharedInstance]  buyProduct:product];
-                
-            }
-            
-        }
-    }];
-    
-}
--(void)checkPurchased{
-	if([[NSUserDefaults standardUserDefaults] boolForKey:@"unlockcrowsflight"]==NO )
-	{
-        //purchased=true;
-        inappAlert = [[UIAlertView alloc] initWithTitle:@"Unlock Crowsflight" message:@"You are currently limited to saving 5 locations. By unlocking the app, you'll be able to save unlimited locations and help us continue working on this app. If you've already paid for an unlock on any iOS device, unlocking again is free. <3 CW&T" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
-        [inappAlert addButtonWithTitle:@"Unlock"];
-        inappAlert.tag=6;
-        [inappAlert show];
-	}
-}
+//-(void)purchase{
+//    [[cwtIAP sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products) {
+//        if (success) {
+//            
+//            //NSLog(@"%i",products.count);
+//            if(products.count>0){
+//                SKProduct * product = (SKProduct *) products[0];
+//                NSLog(@"%@",product.localizedTitle);
+//                [[cwtIAP sharedInstance]  buyProduct:product];
+//                
+//            }
+//            
+//        }
+//    }];
+//    
+//}
+//-(void)checkPurchased{
+//    if([[NSUserDefaults standardUserDefaults] boolForKey:@"unlockcrowsflight"]==NO )
+//    {
+//        //purchased=true;
+//        inappAlert = [[UIAlertView alloc] initWithTitle:@"Unlock Crowsflight" message:@"You are currently limited to saving 5 locations. By unlocking the app, you'll be able to save unlimited locations and help us continue working on this app. If you've already paid for an unlock on any iOS device, unlocking again is free. <3 CW&T" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+//        [inappAlert addButtonWithTitle:@"Unlock"];
+//        inappAlert.tag=6;
+//        [inappAlert show];
+//    }
+//}
 
 @end

@@ -9,7 +9,7 @@
 #import "SIAlertView.h"
 #import <QuartzCore/QuartzCore.h>
 #import "cwtAppDelegate.h"
-#import <W3wSDK/W3wSDK.h>
+//#import <W3wSDK/W3wSDK.h>
 #import "cwtViewController3.h"
 
 
@@ -25,7 +25,7 @@ NSString *const SIAlertViewDidDismissNotification = @"SIAlertViewDidDismissNotif
 #define GAP -5
 #define CANCEL_BUTTON_PADDING_TOP 0
 #define CONTENT_PADDING_LEFT 0
-#define CONTENT_PADDING_TOP 25
+#define CONTENT_PADDING_TOP 45
 #define CONTENT_PADDING_BOTTOM 0
 #define BUTTON_HEIGHT 44
 #define CONTAINER_WIDTH 320 //replaced with [[UIScreen mainScreen] bounds].size.width
@@ -862,8 +862,8 @@ static SIAlertView *__si_alert_current_view;
          forControlEvents:UIControlEventTouchDown];
         [button setTitle:@"" forState:UIControlStateNormal];
     
-        CGRect screen = [[UIScreen mainScreen] applicationFrame];
-
+        CGRect screen = [[UIScreen mainScreen] bounds];
+        
         button.frame = CGRectMake(0,0,screen.size.width,screen.size.height);
         
         [self addSubview:button];
@@ -955,9 +955,10 @@ static SIAlertView *__si_alert_current_view;
         else{
             
             cwtAppDelegate * dele = [[UIApplication sharedApplication] delegate];
-            W3wPosition *tPosition = [dele.viewController.w3wSDK convertPositionToW3W:kW3wLanguageEnglish lat:dele.myLat lng:dele.myLng];
-            
-            self.textField.text=[NSString stringWithFormat:@"%f,%f %@",dele.myLat,dele.myLng,tPosition.getW3w];
+            //W3wPosition *tPosition = [dele.viewController.w3wSDK convertPositionToW3W:kW3wLanguageEnglish lat:dele.myLat lng:dele.myLng];
+            //self.textField.text=[NSString stringWithFormat:@"%f,%f %@",dele.myLat,dele.myLng,tPosition.getW3w];
+
+            self.textField.text=[NSString stringWithFormat:@"%f,%f",dele.myLat,dele.myLng];
         }
         
 

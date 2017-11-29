@@ -15,7 +15,7 @@
 #import "SIAlertView.h"
 #import "cwtToolBar.h"
 #import <AudioToolbox/AudioToolbox.h>
-#import <W3wSDK/W3wSDK.h>
+//#import <W3wSDK/W3wSDK.h>
 #import "cwtMapViewController.h"
 
 @interface cwtViewController3 : UIViewController <UITextFieldDelegate>{
@@ -23,7 +23,7 @@
     
     SIAlertView *searchAlert;
     SIAlertView *addLocAlert;
-    UIAlertView *inappAlert;
+   // UIAlertView *inappAlert;
     //SIAlertView* progressAlert;
     
     cwtAppDelegate* dele;
@@ -62,8 +62,8 @@
 @property (nonatomic,assign) BOOL showMapBool;
 @property (nonatomic,assign) BOOL showListBool;
 
--(void)checkPurchased;
--(void)purchase;
+//-(void)checkPurchased;
+//-(void)purchase;
 
 @property (nonatomic, strong) NSArray *places;
 @property (nonatomic, assign) MKCoordinateRegion boundingRegion;
@@ -74,7 +74,7 @@
 @property (nonatomic, strong) UIImageView  *instructions;
 -(void)nextInstruction:(int)n;
 
-@property (nonatomic, strong) W3wSDK *w3wSDK;
+//@property (nonatomic, strong) W3wSDK *w3wSDK;
 
 
 @end

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
-#import "MTStatusBarOverlay.h"
+//#import "MTStatusBarOverlay.h"
 //#import "TestFlight.h"
 
 
@@ -39,7 +39,7 @@
 @property (nonatomic) float accuracy;
 @property (nonatomic,strong) UINavigationController *navController;
 
-@property (nonatomic,assign)    MTStatusBarOverlay *overlay;
+//@property (nonatomic,assign)    MTStatusBarOverlay *overlay;
 
 -(void) loadmyLocations;
 - (void) copyFile;
