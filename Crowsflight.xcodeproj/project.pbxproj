@@ -127,6 +127,19 @@
 		44795DBA1767843800921101 /* Andale Mono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 44795DB91767843800921101 /* Andale Mono.ttf */; };
 		44795DBD176988EB00921101 /* cwtToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 44795DBC176988EB00921101 /* cwtToolbar.m */; };
 		447965CD175008C300A45031 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447965CC175008C300A45031 /* MessageUI.framework */; };
+		447F083828B89D4D00A5475F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 447F083728B89D4D00A5475F /* Assets.xcassets */; };
+		447F083E28B89D4D00A5475F /* CFwatch WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 447F083D28B89D4D00A5475F /* CFwatch WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		447F084328B89D4D00A5475F /* CrowsflightApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447F084228B89D4D00A5475F /* CrowsflightApp.swift */; };
+		447F084528B89D4D00A5475F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447F084428B89D4D00A5475F /* ContentView.swift */; };
+		447F084728B89D4D00A5475F /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447F084628B89D4D00A5475F /* NotificationController.swift */; };
+		447F084928B89D4D00A5475F /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447F084828B89D4D00A5475F /* NotificationView.swift */; };
+		447F084B28B89D4D00A5475F /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447F084A28B89D4D00A5475F /* ComplicationController.swift */; };
+		447F084D28B89D4E00A5475F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 447F084C28B89D4E00A5475F /* Assets.xcassets */; };
+		447F085028B89D4E00A5475F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 447F084F28B89D4E00A5475F /* Preview Assets.xcassets */; };
+		447F085C28B89D4E00A5475F /* CFwatchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447F085B28B89D4E00A5475F /* CFwatchTests.swift */; };
+		447F086628B89D4E00A5475F /* CFwatchUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447F086528B89D4E00A5475F /* CFwatchUITests.swift */; };
+		447F086828B89D4E00A5475F /* CFwatchUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447F086728B89D4E00A5475F /* CFwatchUITestsLaunchTests.swift */; };
+		447F086B28B89D4E00A5475F /* CFwatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 447F083528B89D4C00A5475F /* CFwatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		448AC1A817BD685B00281208 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 448AC1A717BD685B00281208 /* Reachability.m */; };
 		448AC1AA17BD687700281208 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 448AC1A917BD687700281208 /* SystemConfiguration.framework */; };
 		4491D8B41A34F25900C56401 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4491D8B31A34F25900C56401 /* Images.xcassets */; };
@@ -248,6 +261,62 @@
 		44E7EBD917A701AA0054E1BB /* Crowsflight_Create_001.wav in Resources */ = {isa = PBXBuildFile; fileRef = 44E7EBD017A701AA0054E1BB /* Crowsflight_Create_001.wav */; };
 		44ECCC4E1752D5D100857F57 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 44ECCC4D1752D5D100857F57 /* main.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		447F083F28B89D4D00A5475F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 44DAE01017359AC900C17F07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 447F083C28B89D4D00A5475F;
+			remoteInfo = "CFwatch WatchKit Extension";
+		};
+		447F085828B89D4E00A5475F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 44DAE01017359AC900C17F07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 447F083C28B89D4D00A5475F;
+			remoteInfo = "CFwatch WatchKit Extension";
+		};
+		447F086228B89D4E00A5475F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 44DAE01017359AC900C17F07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 447F083428B89D4C00A5475F;
+			remoteInfo = CFwatch;
+		};
+		447F086928B89D4E00A5475F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 44DAE01017359AC900C17F07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 447F083428B89D4C00A5475F;
+			remoteInfo = CFwatch;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		447F086C28B89D4E00A5475F /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				447F086B28B89D4E00A5475F /* CFwatch.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		447F086F28B89D4E00A5475F /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				447F083E28B89D4D00A5475F /* CFwatch WatchKit Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		441CAA3917552656003131F8 /* UINavigationController+GZDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+GZDrawer.h"; sourceTree = "<group>"; };
@@ -373,6 +442,23 @@
 		44795DBB176988EB00921101 /* cwtToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cwtToolbar.h; sourceTree = "<group>"; };
 		44795DBC176988EB00921101 /* cwtToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = cwtToolbar.m; sourceTree = "<group>"; };
 		447965CC175008C300A45031 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		447F083528B89D4C00A5475F /* CFwatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CFwatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		447F083728B89D4D00A5475F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		447F083D28B89D4D00A5475F /* CFwatch WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "CFwatch WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		447F084228B89D4D00A5475F /* CrowsflightApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrowsflightApp.swift; sourceTree = "<group>"; };
+		447F084428B89D4D00A5475F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		447F084628B89D4D00A5475F /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
+		447F084828B89D4D00A5475F /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
+		447F084A28B89D4D00A5475F /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
+		447F084C28B89D4E00A5475F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		447F084F28B89D4E00A5475F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		447F085128B89D4E00A5475F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		447F085228B89D4E00A5475F /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		447F085728B89D4E00A5475F /* CFwatchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CFwatchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		447F085B28B89D4E00A5475F /* CFwatchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CFwatchTests.swift; sourceTree = "<group>"; };
+		447F086128B89D4E00A5475F /* CFwatchUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CFwatchUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		447F086528B89D4E00A5475F /* CFwatchUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CFwatchUITests.swift; sourceTree = "<group>"; };
+		447F086728B89D4E00A5475F /* CFwatchUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CFwatchUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		448AC1A617BD685B00281208 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		448AC1A717BD685B00281208 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		448AC1A917BD687700281208 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -518,6 +604,27 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		447F083A28B89D4D00A5475F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		447F085428B89D4E00A5475F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		447F085E28B89D4E00A5475F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		44DAE01517359AC900C17F07 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -669,6 +776,55 @@
 				444023FA1A39F08D0022D80B /* w3w_ybuckets.dat */,
 			);
 			path = raw;
+			sourceTree = "<group>";
+		};
+		447F083628B89D4C00A5475F /* CFwatch */ = {
+			isa = PBXGroup;
+			children = (
+				447F083728B89D4D00A5475F /* Assets.xcassets */,
+			);
+			path = CFwatch;
+			sourceTree = "<group>";
+		};
+		447F084128B89D4D00A5475F /* CFwatch WatchKit Extension */ = {
+			isa = PBXGroup;
+			children = (
+				447F084228B89D4D00A5475F /* CrowsflightApp.swift */,
+				447F084428B89D4D00A5475F /* ContentView.swift */,
+				447F084628B89D4D00A5475F /* NotificationController.swift */,
+				447F084828B89D4D00A5475F /* NotificationView.swift */,
+				447F084A28B89D4D00A5475F /* ComplicationController.swift */,
+				447F084C28B89D4E00A5475F /* Assets.xcassets */,
+				447F085128B89D4E00A5475F /* Info.plist */,
+				447F085228B89D4E00A5475F /* PushNotificationPayload.apns */,
+				447F084E28B89D4E00A5475F /* Preview Content */,
+			);
+			path = "CFwatch WatchKit Extension";
+			sourceTree = "<group>";
+		};
+		447F084E28B89D4E00A5475F /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				447F084F28B89D4E00A5475F /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		447F085A28B89D4E00A5475F /* CFwatchTests */ = {
+			isa = PBXGroup;
+			children = (
+				447F085B28B89D4E00A5475F /* CFwatchTests.swift */,
+			);
+			path = CFwatchTests;
+			sourceTree = "<group>";
+		};
+		447F086428B89D4E00A5475F /* CFwatchUITests */ = {
+			isa = PBXGroup;
+			children = (
+				447F086528B89D4E00A5475F /* CFwatchUITests.swift */,
+				447F086728B89D4E00A5475F /* CFwatchUITestsLaunchTests.swift */,
+			);
+			path = CFwatchUITests;
 			sourceTree = "<group>";
 		};
 		4491D8AE1A33C1FD00C56401 /* Helpers */ = {
@@ -864,6 +1020,10 @@
 				44C1D1431759A0CE007798A6 /* QuartzCore.framework */,
 				44DAE02117359AC900C17F07 /* Crowsflight */,
 				44DAE04817359ACA00C17F07 /* CrowsflightTests */,
+				447F083628B89D4C00A5475F /* CFwatch */,
+				447F084128B89D4D00A5475F /* CFwatch WatchKit Extension */,
+				447F085A28B89D4E00A5475F /* CFwatchTests */,
+				447F086428B89D4E00A5475F /* CFwatchUITests */,
 				44DAE01A17359AC900C17F07 /* Frameworks */,
 				44DAE01917359AC900C17F07 /* Products */,
 			);
@@ -873,6 +1033,10 @@
 			isa = PBXGroup;
 			children = (
 				44DAE01817359AC900C17F07 /* Crowsflight.app */,
+				447F083528B89D4C00A5475F /* CFwatch.app */,
+				447F083D28B89D4D00A5475F /* CFwatch WatchKit Extension.appex */,
+				447F085728B89D4E00A5475F /* CFwatchTests.xctest */,
+				447F086128B89D4E00A5475F /* CFwatchUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -970,6 +1134,76 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		447F083428B89D4C00A5475F /* CFwatch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 447F087728B89D4E00A5475F /* Build configuration list for PBXNativeTarget "CFwatch" */;
+			buildPhases = (
+				447F083328B89D4C00A5475F /* Resources */,
+				447F086F28B89D4E00A5475F /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				447F084028B89D4D00A5475F /* PBXTargetDependency */,
+			);
+			name = CFwatch;
+			productName = CFwatch;
+			productReference = 447F083528B89D4C00A5475F /* CFwatch.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		447F083C28B89D4D00A5475F /* CFwatch WatchKit Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 447F087628B89D4E00A5475F /* Build configuration list for PBXNativeTarget "CFwatch WatchKit Extension" */;
+			buildPhases = (
+				447F083928B89D4D00A5475F /* Sources */,
+				447F083A28B89D4D00A5475F /* Frameworks */,
+				447F083B28B89D4D00A5475F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "CFwatch WatchKit Extension";
+			productName = "CFwatch WatchKit Extension";
+			productReference = 447F083D28B89D4D00A5475F /* CFwatch WatchKit Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
+		447F085628B89D4E00A5475F /* CFwatchTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 447F087828B89D4E00A5475F /* Build configuration list for PBXNativeTarget "CFwatchTests" */;
+			buildPhases = (
+				447F085328B89D4E00A5475F /* Sources */,
+				447F085428B89D4E00A5475F /* Frameworks */,
+				447F085528B89D4E00A5475F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				447F085928B89D4E00A5475F /* PBXTargetDependency */,
+			);
+			name = CFwatchTests;
+			productName = CFwatchTests;
+			productReference = 447F085728B89D4E00A5475F /* CFwatchTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		447F086028B89D4E00A5475F /* CFwatchUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 447F087928B89D4E00A5475F /* Build configuration list for PBXNativeTarget "CFwatchUITests" */;
+			buildPhases = (
+				447F085D28B89D4E00A5475F /* Sources */,
+				447F085E28B89D4E00A5475F /* Frameworks */,
+				447F085F28B89D4E00A5475F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				447F086328B89D4E00A5475F /* PBXTargetDependency */,
+			);
+			name = CFwatchUITests;
+			productName = CFwatchUITests;
+			productReference = 447F086128B89D4E00A5475F /* CFwatchUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		44DAE01717359AC900C17F07 /* Crowsflight */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 44DAE05317359ACA00C17F07 /* Build configuration list for PBXNativeTarget "Crowsflight" */;
@@ -978,10 +1212,12 @@
 				44DAE01517359AC900C17F07 /* Frameworks */,
 				44DAE01617359AC900C17F07 /* Resources */,
 				44E7D33F1752A53A00BF8433 /* ShellScript */,
+				447F086C28B89D4E00A5475F /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				447F086A28B89D4E00A5475F /* PBXTargetDependency */,
 			);
 			name = Crowsflight;
 			productName = Crowsflight;
@@ -995,9 +1231,32 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = cwt;
+				LastSwiftUpdateCheck = 1340;
 				LastUpgradeCheck = 0910;
 				ORGANIZATIONNAME = CWandT;
 				TargetAttributes = {
+					447F083428B89D4C00A5475F = {
+						CreatedOnToolsVersion = 13.4.1;
+						DevelopmentTeam = L6DVQR8JB9;
+						ProvisioningStyle = Automatic;
+					};
+					447F083C28B89D4D00A5475F = {
+						CreatedOnToolsVersion = 13.4.1;
+						DevelopmentTeam = L6DVQR8JB9;
+						ProvisioningStyle = Automatic;
+					};
+					447F085628B89D4E00A5475F = {
+						CreatedOnToolsVersion = 13.4.1;
+						DevelopmentTeam = L6DVQR8JB9;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 447F083C28B89D4D00A5475F;
+					};
+					447F086028B89D4E00A5475F = {
+						CreatedOnToolsVersion = 13.4.1;
+						DevelopmentTeam = L6DVQR8JB9;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 447F083428B89D4C00A5475F;
+					};
 					44DAE01717359AC900C17F07 = {
 						DevelopmentTeam = L6DVQR8JB9;
 						SystemCapabilities = {
@@ -1016,6 +1275,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 44DAE00F17359AC900C17F07;
@@ -1024,11 +1284,46 @@
 			projectRoot = "";
 			targets = (
 				44DAE01717359AC900C17F07 /* Crowsflight */,
+				447F083428B89D4C00A5475F /* CFwatch */,
+				447F083C28B89D4D00A5475F /* CFwatch WatchKit Extension */,
+				447F085628B89D4E00A5475F /* CFwatchTests */,
+				447F086028B89D4E00A5475F /* CFwatchUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		447F083328B89D4C00A5475F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				447F083828B89D4D00A5475F /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		447F083B28B89D4D00A5475F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				447F085028B89D4E00A5475F /* Preview Assets.xcassets in Resources */,
+				447F084D28B89D4E00A5475F /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		447F085528B89D4E00A5475F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		447F085F28B89D4E00A5475F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		44DAE01617359AC900C17F07 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1269,6 +1564,35 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		447F083928B89D4D00A5475F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				447F084728B89D4D00A5475F /* NotificationController.swift in Sources */,
+				447F084528B89D4D00A5475F /* ContentView.swift in Sources */,
+				447F084B28B89D4D00A5475F /* ComplicationController.swift in Sources */,
+				447F084328B89D4D00A5475F /* CrowsflightApp.swift in Sources */,
+				447F084928B89D4D00A5475F /* NotificationView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		447F085328B89D4E00A5475F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				447F085C28B89D4E00A5475F /* CFwatchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		447F085D28B89D4E00A5475F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				447F086628B89D4E00A5475F /* CFwatchUITests.swift in Sources */,
+				447F086828B89D4E00A5475F /* CFwatchUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		44DAE01417359AC900C17F07 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1294,6 +1618,29 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		447F084028B89D4D00A5475F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 447F083C28B89D4D00A5475F /* CFwatch WatchKit Extension */;
+			targetProxy = 447F083F28B89D4D00A5475F /* PBXContainerItemProxy */;
+		};
+		447F085928B89D4E00A5475F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 447F083C28B89D4D00A5475F /* CFwatch WatchKit Extension */;
+			targetProxy = 447F085828B89D4E00A5475F /* PBXContainerItemProxy */;
+		};
+		447F086328B89D4E00A5475F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 447F083428B89D4C00A5475F /* CFwatch */;
+			targetProxy = 447F086228B89D4E00A5475F /* PBXContainerItemProxy */;
+		};
+		447F086A28B89D4E00A5475F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 447F083428B89D4C00A5475F /* CFwatch */;
+			targetProxy = 447F086928B89D4E00A5475F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		44DAE02417359AC900C17F07 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
@@ -1314,6 +1661,360 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		447F086D28B89D4E00A5475F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1.7.2;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = L6DVQR8JB9;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				IBSC_MODULE = CFwatch_WatchKit_Extension;
+				INFOPLIST_KEY_CFBundleDisplayName = CFwatch;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.cwandt.crowsflight;
+				MARKETING_VERSION = 1.7;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cwandt.crowsflight.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 8.5;
+			};
+			name = Debug;
+		};
+		447F086E28B89D4E00A5475F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1.7.2;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = L6DVQR8JB9;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				IBSC_MODULE = CFwatch_WatchKit_Extension;
+				INFOPLIST_KEY_CFBundleDisplayName = CFwatch;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.cwandt.crowsflight;
+				MARKETING_VERSION = 1.7;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cwandt.crowsflight.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 8.5;
+			};
+			name = Release;
+		};
+		447F087028B89D4E00A5475F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_ASSET_PATHS = "\"CFwatch WatchKit Extension/Preview Content\"";
+				DEVELOPMENT_TEAM = L6DVQR8JB9;
+				ENABLE_PREVIEWS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "CFwatch WatchKit Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "CFwatch WatchKit Extension";
+				INFOPLIST_KEY_CLKComplicationPrincipalClass = "$(PRODUCT_MODULE_NAME).ComplicationController";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 CWandT. All rights reserved.";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cwandt.crowsflight.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 8.5;
+			};
+			name = Debug;
+		};
+		447F087128B89D4E00A5475F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_ASSET_PATHS = "\"CFwatch WatchKit Extension/Preview Content\"";
+				DEVELOPMENT_TEAM = L6DVQR8JB9;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_PREVIEWS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "CFwatch WatchKit Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "CFwatch WatchKit Extension";
+				INFOPLIST_KEY_CLKComplicationPrincipalClass = "$(PRODUCT_MODULE_NAME).ComplicationController";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 CWandT. All rights reserved.";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cwandt.crowsflight.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 8.5;
+			};
+			name = Release;
+		};
+		447F087228B89D4E00A5475F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = L6DVQR8JB9;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cwandt.crowsflight.CFwatchTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CFwatch WatchKit Extension.appex/CFwatch WatchKit Extension";
+				WATCHOS_DEPLOYMENT_TARGET = 8.5;
+			};
+			name = Debug;
+		};
+		447F087328B89D4E00A5475F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = L6DVQR8JB9;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cwandt.crowsflight.CFwatchTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CFwatch WatchKit Extension.appex/CFwatch WatchKit Extension";
+				WATCHOS_DEPLOYMENT_TARGET = 8.5;
+			};
+			name = Release;
+		};
+		447F087428B89D4E00A5475F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = L6DVQR8JB9;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cwandt.crowsflight.CFwatchUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = CFwatch;
+				WATCHOS_DEPLOYMENT_TARGET = 8.5;
+			};
+			name = Debug;
+		};
+		447F087528B89D4E00A5475F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = L6DVQR8JB9;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cwandt.crowsflight.CFwatchUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = CFwatch;
+				WATCHOS_DEPLOYMENT_TARGET = 8.5;
+			};
+			name = Release;
+		};
 		44DAE05117359ACA00C17F07 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1468,6 +2169,42 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		447F087628B89D4E00A5475F /* Build configuration list for PBXNativeTarget "CFwatch WatchKit Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				447F087028B89D4E00A5475F /* Debug */,
+				447F087128B89D4E00A5475F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		447F087728B89D4E00A5475F /* Build configuration list for PBXNativeTarget "CFwatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				447F086D28B89D4E00A5475F /* Debug */,
+				447F086E28B89D4E00A5475F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		447F087828B89D4E00A5475F /* Build configuration list for PBXNativeTarget "CFwatchTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				447F087228B89D4E00A5475F /* Debug */,
+				447F087328B89D4E00A5475F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		447F087928B89D4E00A5475F /* Build configuration list for PBXNativeTarget "CFwatchUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				447F087428B89D4E00A5475F /* Debug */,
+				447F087528B89D4E00A5475F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		44DAE01317359AC900C17F07 /* Build configuration list for PBXProject "Crowsflight" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
