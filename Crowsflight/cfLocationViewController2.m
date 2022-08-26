@@ -53,7 +53,7 @@
     
     
     //stats
-    self.displayText=[[UILabel alloc] initWithFrame:CGRectMake(10, screen.size.height-64-80, screen.size.width, 80)];
+    self.displayText=[[UILabel alloc] initWithFrame:CGRectMake(10, screen.size.height-55-80, screen.size.width, 80)];
     
     self.displayText.numberOfLines=8;
     self.displayText.backgroundColor=[UIColor clearColor];
@@ -63,7 +63,7 @@
     
     
     //page number
-    self.pageNText=[[UILabel alloc] initWithFrame:CGRectMake(screen.size.width-160, screen.size.height-44-25, 150, 25)];
+    self.pageNText=[[UILabel alloc] initWithFrame:CGRectMake(screen.size.width-160, screen.size.height-55-25, 150, 25)];
     self.pageNText.backgroundColor=[UIColor clearColor];
     self.pageNText.textColor=[UIColor colorWithWhite:.3 alpha:1];
     [self.pageNText setFont:[UIFont fontWithName:@"Andale Mono" size:7.0]];

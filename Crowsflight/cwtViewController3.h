@@ -13,7 +13,7 @@
 #import "UINavigationController+GZDrawer.h"
 #import "cwtAppDelegate.h"
 #import "SIAlertView.h"
-#import "cwtToolBar.h"
+#import "cwtToolbar.h"
 #import <AudioToolbox/AudioToolbox.h>
 //#import <W3wSDK/W3wSDK.h>
 #import "cwtMapViewController.h"

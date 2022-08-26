@@ -92,7 +92,7 @@
     
     
     //custom toolbar
-    UIView* buttonBar=[[UIView alloc ]initWithFrame:CGRectMake(0, screen.size.height-44, screen.size.width, 44)];
+    UIView* buttonBar=[[UIView alloc ]initWithFrame:CGRectMake(0, screen.size.height-55, screen.size.width, 55)];
     if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone && UIScreen.mainScreen.nativeBounds.size.height == 2436)  {
         //iPhone X
         buttonBar=[[UIView alloc ]initWithFrame:CGRectMake(0, screen.size.height-64, screen.size.width, 64)];
