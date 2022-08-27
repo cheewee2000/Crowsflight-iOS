@@ -101,6 +101,8 @@
     [self.unitText setCenter:CGPointMake(screen.size.width*.5, screen.size.height*.5+30)];
     self.unitText.backgroundColor=[UIColor clearColor];
     self.unitText.textAlignment=NSTextAlignmentCenter;
+    self.unitText.textColor=[UIColor colorWithWhite:.1 alpha:1];
+
     [self.view addSubview:self.unitText];
     
     //main dist
@@ -110,6 +112,8 @@
     self.distanceText.textAlignment=NSTextAlignmentCenter;
     [self.distanceText setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:25.0]];
     //self.distanceText.adjustsFontSizeToFitWidth = YES;
+    self.distanceText.textColor=[UIColor colorWithWhite:.1 alpha:1];
+
     self.distanceText.backgroundColor=[UIColor clearColor];
     [self.view addSubview:self.distanceText];
     
