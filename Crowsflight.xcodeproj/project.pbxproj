@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		441BF38828BBEA4F00032F99 /* CompassHeading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441BF38728BBEA4E00032F99 /* CompassHeading.swift */; };
 		441CAA3B17552656003131F8 /* UINavigationController+GZDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 441CAA3A17552656003131F8 /* UINavigationController+GZDrawer.m */; };
 		4424DA1217BE8502005FBBC6 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4424DA1117BE8502005FBBC6 /* Settings.bundle */; };
 		4426D34C17972F9300F69A1C /* cwtMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4426D34B17972F9300F69A1C /* cwtMapViewController.m */; };
@@ -319,6 +320,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		441BF38728BBEA4E00032F99 /* CompassHeading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompassHeading.swift; sourceTree = "<group>"; };
 		441CAA3917552656003131F8 /* UINavigationController+GZDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+GZDrawer.h"; sourceTree = "<group>"; };
 		441CAA3A17552656003131F8 /* UINavigationController+GZDrawer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+GZDrawer.m"; sourceTree = "<group>"; };
 		4424DA1117BE8502005FBBC6 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -789,6 +791,7 @@
 		447F084128B89D4D00A5475F /* CFwatch WatchKit Extension */ = {
 			isa = PBXGroup;
 			children = (
+				441BF38728BBEA4E00032F99 /* CompassHeading.swift */,
 				447F084228B89D4D00A5475F /* CrowsflightApp.swift */,
 				447F084428B89D4D00A5475F /* ContentView.swift */,
 				447F084628B89D4D00A5475F /* NotificationController.swift */,
@@ -1571,6 +1574,7 @@
 				447F084728B89D4D00A5475F /* NotificationController.swift in Sources */,
 				447F084528B89D4D00A5475F /* ContentView.swift in Sources */,
 				447F084B28B89D4D00A5475F /* ComplicationController.swift in Sources */,
+				441BF38828BBEA4F00032F99 /* CompassHeading.swift in Sources */,
 				447F084328B89D4D00A5475F /* CrowsflightApp.swift in Sources */,
 				447F084928B89D4D00A5475F /* NotificationView.swift in Sources */,
 			);
