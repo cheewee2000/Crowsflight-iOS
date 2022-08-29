@@ -65,7 +65,7 @@ struct CompassMarkerView: View {
 //                .fontWeight(.bold)
 //                .rotationEffect(self.textAngle())
 //                .padding(.bottom, 130)
-        }.rotationEffect(Angle(degrees: marker.degrees+180))
+        }.rotationEffect(Angle(degrees: marker.degrees))
         
         
         
@@ -109,6 +109,7 @@ struct Triangle: Shape {
 
 struct ContentView : View {
     @ObservedObject var compassHeading = CompassHeading()
+    
 
     var body: some View {
         VStack {
