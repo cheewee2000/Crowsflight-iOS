@@ -1,14 +1,14 @@
 //
-//  CFwatchUITestsLaunchTests.swift
-//  CFwatchUITests
+//  CF_WatchUITestsLaunchTests.swift
+//  CF-WatchUITests
 //
-//  Created by Che-Wei Wang on 8/26/22.
+//  Created by Che-Wei Wang on 8/29/22.
 //  Copyright © 2022 CWandT. All rights reserved.
 //
 
 import XCTest
 
-class CFwatchUITestsLaunchTests: XCTestCase {
+class CF_WatchUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

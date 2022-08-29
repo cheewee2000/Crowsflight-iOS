@@ -1,8 +1,8 @@
 //
 //  NotificationController.swift
-//  CFwatch WatchKit Extension
+//  CF-Watch WatchKit Extension
 //
-//  Created by Che-Wei Wang on 8/26/22.
+//  Created by Che-Wei Wang on 8/29/22.
 //  Copyright © 2022 CWandT. All rights reserved.
 //
 

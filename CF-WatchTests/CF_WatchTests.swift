@@ -1,15 +1,15 @@
 //
-//  CFwatchTests.swift
-//  CFwatchTests
+//  CF_WatchTests.swift
+//  CF-WatchTests
 //
-//  Created by Che-Wei Wang on 8/26/22.
+//  Created by Che-Wei Wang on 8/29/22.
 //  Copyright © 2022 CWandT. All rights reserved.
 //
 
 import XCTest
-@testable import CFwatch_WatchKit_Extension
+@testable import CF_Watch_WatchKit_Extension
 
-class CFwatchTests: XCTestCase {
+class CF_WatchTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
