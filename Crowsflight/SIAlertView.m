@@ -130,7 +130,7 @@ static SIAlertView *__si_alert_current_view;
         }
         case SIAlertViewBackgroundStyleSolid:
         {
-            [[UIColor colorWithWhite:0 alpha:0.5] set];
+            [[UIColor colorWithWhite:0.1 alpha:0.5] set];
             CGContextFillRect(context, self.bounds);
             break;
         }
@@ -200,8 +200,8 @@ static SIAlertView *__si_alert_current_view;
         return;
     
     SIAlertView *appearance = [self appearance];
-    appearance.titleColor = [UIColor colorWithWhite:1 alpha:1];
-    appearance.messageColor = [UIColor colorWithWhite:1 alpha:1];
+    appearance.titleColor = [UIColor colorWithWhite:.9 alpha:1];
+    appearance.messageColor = [UIColor colorWithWhite:.9 alpha:1];
     appearance.titleFont = [UIFont fontWithName:@"HelveticaNeue-Light" size:18.0f];
     appearance.messageFont = [UIFont fontWithName:@"HelveticaNeue-Light" size:8.0f];
     appearance.buttonFont = [UIFont fontWithName:@"HelveticaNeue-Light" size:18.0f];
@@ -896,6 +896,7 @@ static SIAlertView *__si_alert_current_view;
     [ self.textField  setBackgroundColor:[UIColor colorWithWhite:.9 alpha:1]];
     self.textField .autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
     self.textField .autocorrectionType = UITextAutocorrectionTypeNo;	// no auto correction support
+    
 
     if([self.keyboardGo isEqual:@"DONE"]){
         self.textField .returnKeyType=UIReturnKeyDone;
@@ -973,6 +974,8 @@ static SIAlertView *__si_alert_current_view;
     
      self.textField .delegate=(id)dele.viewController;
      self.textField .tag=self.textFieldTag;
+
+    [self.textField setTextColor:[UIColor colorWithWhite:.1 alpha:1]];
 
     [self.textField  becomeFirstResponder];
     [self.containerView addSubview: self.textField ];
@@ -1106,8 +1109,8 @@ static SIAlertView *__si_alert_current_view;
 		case SIAlertViewButtonTypeCancel:
 			normalImage = [UIImage imageNamed:@"SIAlertView.bundle/button-cancel"];
 			highlightedImage = [UIImage imageNamed:@"SIAlertView.bundle/button-cancel-d"];
-			[button setTitleColor:[UIColor colorWithWhite:0.9 alpha:1] forState:UIControlStateNormal];
-            [button setTitleColor:[UIColor colorWithWhite:0.9 alpha:1] forState:UIControlStateHighlighted];
+			[button setTitleColor:[UIColor colorWithWhite:0.1 alpha:1] forState:UIControlStateNormal];
+            [button setTitleColor:[UIColor colorWithWhite:0.1 alpha:1] forState:UIControlStateHighlighted];
             
             button.titleLabel.font = [UIFont fontWithName: @"Helvetica" size: 20.0f];
 			break;
@@ -1115,14 +1118,14 @@ static SIAlertView *__si_alert_current_view;
 			normalImage = [UIImage imageNamed:@"SIAlertView.bundle/button-destructive"];
 			highlightedImage = [UIImage imageNamed:@"SIAlertView.bundle/button-destructive-d"];
             [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            [button setTitleColor:[UIColor colorWithWhite:.1 alpha:1] forState:UIControlStateHighlighted];
+            [button setTitleColor:[UIColor colorWithWhite:0.1 alpha:1] forState:UIControlStateHighlighted];
 			break;
 		case SIAlertViewButtonTypeDefault:
 		default:
 			normalImage = [UIImage imageNamed:@"SIAlertView.bundle/button-default"];
 			highlightedImage = [UIImage imageNamed:@"SIAlertView.bundle/button-default-d"];
-			[button setTitleColor:[UIColor colorWithWhite:0.4 alpha:1] forState:UIControlStateNormal];
-            [button setTitleColor:[UIColor colorWithWhite:0.4 alpha:1] forState:UIControlStateHighlighted];
+			[button setTitleColor:[UIColor colorWithWhite:0.1 alpha:1] forState:UIControlStateNormal];
+            [button setTitleColor:[UIColor colorWithWhite:0.1 alpha:1] forState:UIControlStateHighlighted];
 			break;
 	}
     

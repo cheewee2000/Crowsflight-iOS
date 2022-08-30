@@ -746,10 +746,15 @@
         //                                handler:^(SIAlertView *alertView) {
         //                                    NSLog(@"x");
         //                                }];
-        
+
         searchAlert.showTextField=TRUE;
         searchAlert.textFieldTag=0;
         searchAlert.keyboardGo=@"SEARCH";
+    
+    //searchAlert.titleColor=UIColor.blackColor;
+    searchAlert.textField.textColor=  [UIColor colorWithWhite:.1 alpha:1];
+
+    
         [searchAlert show];
         
 //	}
@@ -1075,6 +1080,7 @@
         
         addLocAlert= [[SIAlertView alloc] initWithTitle:@"LOCATION NAME" andMessage:@"\n"];
         
+        //addLocAlert.textField.textColor=UIColor.blackColor;
         addLocAlert.showTextField=TRUE;
         addLocAlert.textFieldTag=3;
         addLocAlert.keyboardGo=@"DONE";
