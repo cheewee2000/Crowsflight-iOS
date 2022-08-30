@@ -88,32 +88,35 @@ struct CompassMarkerView: View {
 
 
 
+
 struct Arrow: Shape {
     var spread : Double
-
+    
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        let thickness: Double
-        let r: Double
         var _start: Double
         var _end: Double
 
         //self.spread = self.compassHeading.accuracy;
         
 
+        print("spread: \(self.spread)")
 
 
-        thickness=15;
-        
-        r=70.0+thickness * 0.5;
-        
-        _start = -90.0-self.spread;
-        _end = -90+self.spread;
+        let thickness = 15.0;
 
-       path.move(to: CGPoint(x: 250, y: 250))
+        let r = 70.0 + thickness * 0.5;
+
+        //        _start = -90.0 - self.spread;
+        //        _end = -90.0 + self.spread;
+
+        _start =  -self.spread / 2.0 - 90.0;
+        _end = self.spread / 2.0 - 90.0;
+
+        path.move(to: CGPoint(x: 250, y: 250))
         path.addArc(center: CGPoint(x:250,y:250), radius: r, startAngle: Angle(degrees:_start), endAngle: Angle(degrees:_end), clockwise: false)
         path.closeSubpath()
-        
+
         return path
     }
 
@@ -123,9 +126,9 @@ struct Circle: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
 
-        path.move(to: CGPoint(x: 30, y: 30))
+        path.move(to: CGPoint(x: 35, y: 35))
 
-        path.addEllipse(in: CGRect(x: 0, y: 0, width: 60, height: 60))
+        path.addEllipse(in: CGRect(x: 0, y: 0, width: 70, height: 70))
         path.closeSubpath()
         
 
@@ -137,7 +140,6 @@ struct Circle: Shape {
 
 struct ContentView : View {
     @ObservedObject var compassHeading = CompassHeading()
-    
 
     var body: some View {
 
@@ -173,17 +175,19 @@ struct ContentView : View {
             //distance background
             Circle()
                 .fill(.cyan)
-                .frame(width: 60, height: 60)
-            
+                .frame(width: 70, height: 70)
+
             
             //distance
-            Text(" \(String(format:"%.0f", self.compassHeading.distance))")
+            Text(self.compassHeading.distanceText)
                 .font(.system(size: 20))
                 .frame(width:300)
                 .monospacedDigit()
             
+            
+            
             //units
-            Text("m")
+            Text(self.compassHeading.unitText)
                 .baselineOffset(-30)
                     .font(.system(size: 10))
                     .frame(width:60)
@@ -191,6 +195,19 @@ struct ContentView : View {
             
         }.frame(width: 500,
                 height: 500)
+            
+            ZStack {
+                
+                //targetname
+                Text(self.compassHeading.targetName)
+                    .font(.system(size: 16))
+                    .frame(width:280)
+                    .monospacedDigit()
+                    
+                
+            }.frame(width: 500,
+                    height: 500)
+            .offset(x:0, y: 90)
         
         }
     }

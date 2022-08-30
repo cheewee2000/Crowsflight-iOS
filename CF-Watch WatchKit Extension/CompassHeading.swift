@@ -39,6 +39,18 @@ class CompassHeading: NSObject, ObservableObject, CLLocationManagerDelegate {
             objectWillChange.send()
         }
     }
+    
+    var distanceText: String = "" {
+        didSet {
+            objectWillChange.send()
+        }
+    }
+    
+    var unitText: String = "" {
+        didSet {
+            objectWillChange.send()
+        }
+    }
    
     var headingAccuracy: Double = .zero {
         didSet {
@@ -62,6 +74,13 @@ class CompassHeading: NSObject, ObservableObject, CLLocationManagerDelegate {
             objectWillChange.send()
         }
     }
+    
+    var targetName: String = "PSATHI" {
+        didSet {
+            objectWillChange.send()
+        }
+    }
+    
     
     private let locationManager: CLLocationManager
     
@@ -94,7 +113,7 @@ class CompassHeading: NSObject, ObservableObject, CLLocationManagerDelegate {
     
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-      print("LocationManager didUpdateLocations: numberOfLocation: \(locations.count)")
+      //print("LocationManager didUpdateLocations: numberOfLocation: \(locations.count)")
       let dateFormatter = DateFormatter()
       dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
       
@@ -105,23 +124,63 @@ class CompassHeading: NSObject, ObservableObject, CLLocationManagerDelegate {
         print("LocationManager horizontalAccuracy: \(location.horizontalAccuracy)")
 
 
-          
+          self.lat = location.coordinate.latitude
+          self.lng = location.coordinate.longitude
           
           if(self.lat != 0 && self.lng != 0){
               self.here = CLLocation(latitude:self.lat, longitude: self.lng)
           }
-          self.target = CLLocation(latitude: 36.774181, longitude: 24.548975) //kimolos house
+          //self.target = CLLocation(latitude: 36.774181, longitude: 24.548975) //kimolos house
           //let target = CLLocation(latitude: 36.8091440, longitude: 24.5392309) //rock
           //self.target = CLLocation(latitude: 36.774635, longitude: 24.641630) //poliegos
+          self.target = CLLocation(latitude: 36.7860759, longitude: 24.5792749) //kimolos ferry
 
           //measure distance
           self.distance = here.distance(from: target)
 
+          //always update distance
+//            if([dele.units isEqual:@"m"]){
+//
+//                if(self.distance<402.336){ //.25 miles in meters
+//                    self.distanceText.text= [NSString stringWithFormat:@"%i",(int)(self.distance*3.28084)];
+//                    self.unitText.text=@"FEET";
+//
+//                }else{
+//                    self.distanceText.text= [NSString stringWithFormat:@"%.2f",self.distance*0.000621371];
+//                    self.unitText.text=@"MILES";
+//                }
+//
+//            }
+//            else {
+
+          
+          if(self.distance<1000){
+              self.distanceText = String(format:"%.0f", self.distance)
+              self.unitText = "M";
+                  
+                  
+              }else if(self.distance<9000){
+                  self.distanceText = String(format:"%.02f", self.distance/1000.0)
+                  self.unitText="KM";
+                  
+              }
+          else if(self.distance<99000){
+              self.distanceText = String(format:"%.01f", self.distance/1000.0)
+              self.unitText="KM";
+              
+          }
+          else if(self.distance<999000){
+              self.distanceText = String(format:"%.0f", self.distance/1000.0)
+              self.unitText="KM";
+              
+          }
+//            }
+          
+          
           
           //measure bearing
           self.bearing = getBearing(L1: here, L2: target)
           //print("bearing: \(self.bearing)")
-
           
           //bearing accuracy
           let offset = self.bearing+90.0;
@@ -138,20 +197,13 @@ class CompassHeading: NSObject, ObservableObject, CLLocationManagerDelegate {
 
           let bearingAccuracy = Int(bearing-altBearing + 360) % 360;
           
-          
-          
-          // get bearing accuracy
           self.bearingAccuracy=self.headingAccuracy + Double(bearingAccuracy)
           
           if(self.bearingAccuracy <= 1.0){self.bearingAccuracy = 60.0};
           if(self.bearingAccuracy > 180.0){self.bearingAccuracy = 180.0};
           
-          //print("accuracy: \(self.bearingAccuracy)")
+          print("accuracy: \(self.bearingAccuracy)")
 
-          
-          self.lat = location.coordinate.latitude
-          self.lng = location.coordinate.longitude
-          
           
 //        print("LocationManager verticalAccuracy: \(location.verticalAccuracy)")
 //        print("LocationManager speedAccuracy: \(location.speedAccuracy)")
