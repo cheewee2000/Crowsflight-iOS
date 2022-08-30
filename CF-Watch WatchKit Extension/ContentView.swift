@@ -147,7 +147,7 @@ struct ContentView : View {
                 
 
                 //pointer
-                Arrow(spread: self.compassHeading.accuracy)
+                Arrow(spread: self.compassHeading.bearingAccuracy)
                     .fill(.yellow)
                     //.stroke(lineWidth: 40)
                     //.fill(style: noFill)

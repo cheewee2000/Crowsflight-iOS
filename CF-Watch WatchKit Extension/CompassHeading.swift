@@ -39,14 +39,25 @@ class CompassHeading: NSObject, ObservableObject, CLLocationManagerDelegate {
             objectWillChange.send()
         }
     }
-    
-    var accuracy: Double = .zero {
+   
+    var headingAccuracy: Double = .zero {
+        didSet {
+            objectWillChange.send()
+        }
+    }
+    var bearingAccuracy: Double = .zero {
         didSet {
             objectWillChange.send()
         }
     }
     
     var here: CLLocation = .init(latitude: 0, longitude: 0) {
+        didSet {
+            objectWillChange.send()
+        }
+    }
+    
+    var target: CLLocation = .init(latitude: 0, longitude: 0) {
         didSet {
             objectWillChange.send()
         }
@@ -75,6 +86,8 @@ class CompassHeading: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
         self.heading = -1 * newHeading.trueHeading
+        
+        self.headingAccuracy = newHeading.headingAccuracy
         print("heading: \(self.heading)")
 
     }
@@ -87,7 +100,7 @@ class CompassHeading: NSObject, ObservableObject, CLLocationManagerDelegate {
       
         
       locations.forEach { (location) in
-        print("LocationManager didUpdateLocations: \(dateFormatter.string(from: location.timestamp)); \(location.coordinate.latitude), \(location.coordinate.longitude)")
+        //print("LocationManager didUpdateLocations: \(dateFormatter.string(from: location.timestamp)); \(location.coordinate.latitude), \(location.coordinate.longitude)")
 //        print("LocationManager altitude: \(location.altitude)")
         print("LocationManager horizontalAccuracy: \(location.horizontalAccuracy)")
 
@@ -97,9 +110,9 @@ class CompassHeading: NSObject, ObservableObject, CLLocationManagerDelegate {
           if(self.lat != 0 && self.lng != 0){
               self.here = CLLocation(latitude:self.lat, longitude: self.lng)
           }
-          //let target = CLLocation(latitude: 36.774181, longitude: 24.548975)
+          self.target = CLLocation(latitude: 36.774181, longitude: 24.548975) //kimolos house
           //let target = CLLocation(latitude: 36.8091440, longitude: 24.5392309) //rock
-          let target = CLLocation(latitude: 36.774635, longitude: 24.641630) //poliegos
+          //self.target = CLLocation(latitude: 36.774635, longitude: 24.641630) //poliegos
 
           //measure distance
           self.distance = here.distance(from: target)
@@ -107,7 +120,7 @@ class CompassHeading: NSObject, ObservableObject, CLLocationManagerDelegate {
           
           //measure bearing
           self.bearing = getBearing(L1: here, L2: target)
-          print("bearing: \(self.bearing)")
+          //print("bearing: \(self.bearing)")
 
           
           //bearing accuracy
@@ -128,12 +141,13 @@ class CompassHeading: NSObject, ObservableObject, CLLocationManagerDelegate {
           
           
           // get bearing accuracy
-          self.accuracy=location.courseAccuracy + Double(bearingAccuracy)
+          self.bearingAccuracy=self.headingAccuracy + Double(bearingAccuracy)
           
-           if(self.accuracy <= 1.0){self.accuracy = 60.0};
-           if(self.accuracy > 180.0){self.accuracy = 180.0};
+          if(self.bearingAccuracy <= 1.0){self.bearingAccuracy = 60.0};
+          if(self.bearingAccuracy > 180.0){self.bearingAccuracy = 180.0};
           
-          
+          //print("accuracy: \(self.bearingAccuracy)")
+
           
           self.lat = location.coordinate.latitude
           self.lng = location.coordinate.longitude
