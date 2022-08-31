@@ -19,7 +19,7 @@
 		441BF40928BC844100032F99 /* CF_WatchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441BF40828BC844100032F99 /* CF_WatchTests.swift */; };
 		441BF41328BC844100032F99 /* CF_WatchUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441BF41228BC844100032F99 /* CF_WatchUITests.swift */; };
 		441BF41528BC844100032F99 /* CF_WatchUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441BF41428BC844100032F99 /* CF_WatchUITestsLaunchTests.swift */; };
-		441BF41828BC844100032F99 /* CF-Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 441BF3E228BC843F00032F99 /* CF-Watch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		441BF41828BC844100032F99 /* Crowsflight.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 441BF3E228BC843F00032F99 /* Crowsflight.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		441BF42628BC845800032F99 /* CompassHeading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441BF38728BBEA4E00032F99 /* CompassHeading.swift */; };
 		441CAA3B17552656003131F8 /* UINavigationController+GZDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 441CAA3A17552656003131F8 /* UINavigationController+GZDrawer.m */; };
 		4424DA1217BE8502005FBBC6 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4424DA1117BE8502005FBBC6 /* Settings.bundle */; };
@@ -34,6 +34,7 @@
 		442A53AD1783CB75008A1687 /* fly@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 442A53A91783CB75008A1687 /* fly@2x.png */; };
 		442A53AE1783CB75008A1687 /* walk@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 442A53AA1783CB75008A1687 /* walk@2x.png */; };
 		442F15DD17A6FF0700571D19 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 442F15DC17A6FF0700571D19 /* AudioToolbox.framework */; };
+		443637DF28BF10A20077833D /* WatchSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443637DD28BF0F210077833D /* WatchSessionManager.swift */; };
 		444023FC1A39F08D0022D80B /* w3w_en_words in Resources */ = {isa = PBXBuildFile; fileRef = 444023F81A39F08D0022D80B /* w3w_en_words */; };
 		444023FD1A39F08D0022D80B /* w3w_master.dat in Resources */ = {isa = PBXBuildFile; fileRef = 444023F91A39F08D0022D80B /* w3w_master.dat */; };
 		444023FE1A39F08D0022D80B /* w3w_ybuckets.dat in Resources */ = {isa = PBXBuildFile; fileRef = 444023FA1A39F08D0022D80B /* w3w_ybuckets.dat */; };
@@ -312,7 +313,7 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
-				441BF41828BC844100032F99 /* CF-Watch.app in Embed Watch Content */,
+				441BF41828BC844100032F99 /* Crowsflight.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -322,7 +323,7 @@
 /* Begin PBXFileReference section */
 		441BF38728BBEA4E00032F99 /* CompassHeading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompassHeading.swift; sourceTree = "<group>"; };
 		441BF38928BC75AE00032F99 /* Crowsflight-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Crowsflight-Bridging-Header.h"; sourceTree = "<group>"; };
-		441BF3E228BC843F00032F99 /* CF-Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CF-Watch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		441BF3E228BC843F00032F99 /* Crowsflight.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Crowsflight.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		441BF3E428BC844000032F99 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		441BF3EA28BC844000032F99 /* CF-Watch WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "CF-Watch WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		441BF3EF28BC844000032F99 /* CrowsflightApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrowsflightApp.swift; sourceTree = "<group>"; };
@@ -355,6 +356,7 @@
 		442A53A91783CB75008A1687 /* fly@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fly@2x.png"; sourceTree = "<group>"; };
 		442A53AA1783CB75008A1687 /* walk@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "walk@2x.png"; sourceTree = "<group>"; };
 		442F15DC17A6FF0700571D19 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		443637DD28BF0F210077833D /* WatchSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSessionManager.swift; sourceTree = "<group>"; };
 		444023F81A39F08D0022D80B /* w3w_en_words */ = {isa = PBXFileReference; lastKnownFileType = file; path = w3w_en_words; sourceTree = "<group>"; };
 		444023F91A39F08D0022D80B /* w3w_master.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = w3w_master.dat; sourceTree = "<group>"; };
 		444023FA1A39F08D0022D80B /* w3w_ybuckets.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = w3w_ybuckets.dat; sourceTree = "<group>"; };
@@ -767,8 +769,8 @@
 			isa = PBXGroup;
 			children = (
 				441BF38728BBEA4E00032F99 /* CompassHeading.swift */,
-				441BF3EF28BC844000032F99 /* CrowsflightApp.swift */,
 				441BF3F128BC844000032F99 /* ContentView.swift */,
+				441BF3EF28BC844000032F99 /* CrowsflightApp.swift */,
 				441BF3F328BC844000032F99 /* NotificationController.swift */,
 				441BF3F528BC844000032F99 /* NotificationView.swift */,
 				441BF3F728BC844000032F99 /* ComplicationController.swift */,
@@ -1017,6 +1019,7 @@
 			isa = PBXGroup;
 			children = (
 				448AC1A917BD687700281208 /* SystemConfiguration.framework */,
+				443637DD28BF0F210077833D /* WatchSessionManager.swift */,
 				444023F61A388D710022D80B /* what3words */,
 				448AC1A617BD685B00281208 /* Reachability.h */,
 				448AC1A717BD685B00281208 /* Reachability.m */,
@@ -1038,7 +1041,7 @@
 			isa = PBXGroup;
 			children = (
 				44DAE01817359AC900C17F07 /* Crowsflight.app */,
-				441BF3E228BC843F00032F99 /* CF-Watch.app */,
+				441BF3E228BC843F00032F99 /* Crowsflight.app */,
 				441BF3EA28BC844000032F99 /* CF-Watch WatchKit Extension.appex */,
 				441BF40428BC844100032F99 /* CF-WatchTests.xctest */,
 				441BF40E28BC844100032F99 /* CF-WatchUITests.xctest */,
@@ -1153,7 +1156,7 @@
 			);
 			name = "CF-Watch";
 			productName = "CF-Watch";
-			productReference = 441BF3E228BC843F00032F99 /* CF-Watch.app */;
+			productReference = 441BF3E228BC843F00032F99 /* Crowsflight.app */;
 			productType = "com.apple.product-type.application.watchapp2";
 		};
 		441BF3E928BC844000032F99 /* CF-Watch WatchKit Extension */ = {
@@ -1613,6 +1616,7 @@
 				441CAA3B17552656003131F8 /* UINavigationController+GZDrawer.m in Sources */,
 				44C1D14017599F8C007798A6 /* SIAlertView.m in Sources */,
 				44E6D09B1760FB21003344CA /* LRSlidingTableViewCell.m in Sources */,
+				443637DF28BF10A20077833D /* WatchSessionManager.swift in Sources */,
 				449A1E021765938000EF78B5 /* ATSDragToReorderTableViewController.m in Sources */,
 				44795DBD176988EB00921101 /* cwtToolbar.m in Sources */,
 				44DA559D176EAF7D004A4C1F /* cwtArrow.m in Sources */,
@@ -1783,14 +1787,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GENERATE_INFOPLIST_FILE = YES;
 				IBSC_MODULE = CF_Watch_WatchKit_Extension;
-				INFOPLIST_KEY_CFBundleDisplayName = "CF-Watch";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.cwandt.crowsflight;
 				MARKETING_VERSION = 1.7;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cwandt.crowsflight.watchkitapp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Crowsflight;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -1830,14 +1833,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GENERATE_INFOPLIST_FILE = YES;
 				IBSC_MODULE = CF_Watch_WatchKit_Extension;
-				INFOPLIST_KEY_CFBundleDisplayName = "CF-Watch";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.cwandt.crowsflight;
 				MARKETING_VERSION = 1.7;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cwandt.crowsflight.watchkitapp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Crowsflight;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -2116,7 +2118,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Crowsflight/Crowsflight-Prefix.pch";
 				INFOPLIST_FILE = "Crowsflight/Crowsflight-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2152,7 +2154,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Crowsflight/Crowsflight-Prefix.pch";
 				INFOPLIST_FILE = "Crowsflight/Crowsflight-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

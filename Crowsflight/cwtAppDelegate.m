@@ -15,6 +15,8 @@
 //#import "NVSlideMenuController.h"
 #import "QuartzCore/CALayer.h"
 #import "cwtMapViewController.h"
+#import "Crowsflight-Swift.h"
+
 
 @interface cwtAppDelegate ()<UIAlertViewDelegate,CLLocationManagerDelegate,UIAppearanceContainer>//,MTStatusBarOverlayDelegate>
 
@@ -80,6 +82,15 @@
     // Allocate a reachability object
     Reachability* reach = [Reachability reachabilityWithHostname:@"www.google.com"];
     
+    
+    //watchsesssion sync
+    WatchSessionManager* watchSession = [WatchSessionManager init];
+    
+    //watchSession.
+    
+
+    
+    
     // Set the blocks
     reach.reachableBlock = ^(Reachability*reach)
     {
@@ -104,7 +115,7 @@
     
     // Synchronize Store
     [store synchronize];
-
+    
 
     
     return YES;

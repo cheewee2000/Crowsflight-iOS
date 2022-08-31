@@ -82,6 +82,13 @@ class CompassHeading: NSObject, ObservableObject, CLLocationManagerDelegate {
     }
     
     
+    var unitsMetric: Bool = true {
+        didSet {
+            objectWillChange.send()
+        }
+    }
+    
+    
     private let locationManager: CLLocationManager
     
     override init() {
@@ -139,42 +146,50 @@ class CompassHeading: NSObject, ObservableObject, CLLocationManagerDelegate {
           self.distance = here.distance(from: target)
 
           //always update distance
-//            if([dele.units isEqual:@"m"]){
-//
-//                if(self.distance<402.336){ //.25 miles in meters
-//                    self.distanceText.text= [NSString stringWithFormat:@"%i",(int)(self.distance*3.28084)];
-//                    self.unitText.text=@"FEET";
-//
-//                }else{
-//                    self.distanceText.text= [NSString stringWithFormat:@"%.2f",self.distance*0.000621371];
-//                    self.unitText.text=@"MILES";
-//                }
-//
-//            }
-//            else {
+          if(self.unitsMetric == false){
+              let miles = self.distance*0.000621371
+              let feet = self.distance*3.28084
+                if(feet<1000){ //.25 miles in meters
+                    self.distanceText = String (format:"%0f",feet);
+                    self.unitText="FEET";
+
+                }else if(miles<1000){
+                    self.distanceText = String (format:"%.02f",miles);
+                    self.unitText="MILES";
+                }
+              else if(miles<10000){
+                  self.distanceText = String (format:"%.01f",miles);
+                  self.unitText="MILES";
+              }
+              else {
+                  self.distanceText = String (format:"%.0f",miles);
+                  self.unitText="MILES";
+              }
+            }
+            else {
 
           
           if(self.distance<1000){
               self.distanceText = String(format:"%.0f", self.distance)
-              self.unitText = "M";
+              self.unitText = "METERS";
                   
                   
-              }else if(self.distance<9000){
+              }else if(self.distance<10000){
                   self.distanceText = String(format:"%.02f", self.distance/1000.0)
                   self.unitText="KM";
                   
               }
-          else if(self.distance<99000){
+          else  if(self.distance<100000) {
               self.distanceText = String(format:"%.01f", self.distance/1000.0)
               self.unitText="KM";
               
           }
-          else if(self.distance<999000){
+          else{
               self.distanceText = String(format:"%.0f", self.distance/1000.0)
               self.unitText="KM";
               
           }
-//            }
+          }
           
           
           

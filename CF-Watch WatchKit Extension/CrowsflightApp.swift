@@ -18,5 +18,6 @@ struct CrowsflightApp: App {
         }
 
         WKNotificationScene(controller: NotificationController.self, category: "myCategory")
+            
     }
 }

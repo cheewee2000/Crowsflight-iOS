@@ -11,7 +11,6 @@ import Foundation
 import SwiftUI
 
 
-
 struct Marker: Hashable {
     let degrees: Double
     let label: String
@@ -140,7 +139,8 @@ struct Circle: Shape {
 
 struct ContentView : View {
     @ObservedObject var compassHeading = CompassHeading()
-
+    //@ObservedObject private var connectivityManager = WatchSessionManager.shared
+    
     var body: some View {
 
         ZStack {
@@ -176,6 +176,10 @@ struct ContentView : View {
             Circle()
                 .fill(.cyan)
                 .frame(width: 70, height: 70)
+                .onTapGesture {
+                        self.compassHeading.unitsMetric = !self.compassHeading.unitsMetric
+                   
+                }
 
             
             //distance
