@@ -840,15 +840,15 @@
                 [label setBackgroundColor:[UIColor clearColor]];
                 [cell.contentView setBackgroundColor:[UIColor colorWithRed:1.0 green:78/255.0f blue:36/255.0f alpha:1]];
 
-                NSString * text=@"You're currently limited to saving 5 locations. UNLOCK CROWSFLIGHT to save as many locations as you want. If you've already purchased Crowsflight on any iOS device, re-unlocking is free.";
+                //NSString * text=@"You're currently limited to saving 5 locations. UNLOCK CROWSFLIGHT to save as many locations as you want. If you've already purchased Crowsflight on any iOS device, re-unlocking is free.";
                 
-                UIFont *regularFont = [UIFont fontWithName: @"AndaleMono" size: 11.0f];
-                [label setFont:regularFont];
-                label.textColor=[UIColor colorWithWhite:1 alpha:1];
-                label.numberOfLines=6;
-                [label setText:text];
-                [cell addSubview:label];
-                
+//                UIFont *regularFont = [UIFont fontWithName: @"AndaleMono" size: 11.0f];
+//                [label setFont:regularFont];
+//                label.textColor=[UIColor colorWithWhite:1 alpha:1];
+//                label.numberOfLines=6;
+//                [label setText:text];
+//                [cell addSubview:label];
+//                
                 //top border
                 UIView *bar=[[UIView alloc] initWithFrame:CGRectMake(0,  0, lineWidth, 1)];
                 bar.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"dotted-line.png"]];

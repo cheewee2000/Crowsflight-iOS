@@ -96,18 +96,12 @@ struct Arrow: Shape {
         var _start: Double
         var _end: Double
 
-        //self.spread = self.compassHeading.accuracy;
-        
-
-        print("spread: \(self.spread)")
+//        print("spread: \(self.spread)")
 
 
         let thickness = 15.0;
 
         let r = 70.0 + thickness * 0.5;
-
-        //        _start = -90.0 - self.spread;
-        //        _end = -90.0 + self.spread;
 
         _start =  -self.spread / 2.0 - 90.0;
         _end = self.spread / 2.0 - 90.0;
@@ -121,16 +115,43 @@ struct Arrow: Shape {
 
 }
 
+
+struct ProgressArc: Shape {
+    
+    var arcLength : Double
+
+    
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        var _start: Double
+        var _end: Double
+
+
+
+        let r = 45.0
+
+        _start =  270.0;
+        _end = _start - arcLength;
+
+        path.move(to: CGPoint(x: 50, y: 50))
+        path.addArc(center: CGPoint(x:50,y:50), radius: r, startAngle: Angle(degrees:_start), endAngle: Angle(degrees:_end), clockwise: true)
+        path.closeSubpath()
+
+        return path
+    }
+    
+    
+    
+}
+
+
 struct Circle: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
 
         path.move(to: CGPoint(x: 35, y: 35))
-
         path.addEllipse(in: CGRect(x: 0, y: 0, width: 70, height: 70))
         path.closeSubpath()
-        
-
         
         return path
     }
@@ -138,16 +159,13 @@ struct Circle: Shape {
 }
 
 struct ContentView : View {
-    @ObservedObject var compassHeading = CompassHeading()
-    //@ObservedObject private var connectivityManager = WatchSessionManager.shared
-    
+    @ObservedObject var compassHeading = CompassHeading();
+//    @ObservedObject var extensionDelegate = ExtensionDelegate();
+
     var body: some View {
 
         ZStack {
             ZStack {
-        
-                
-
                 //pointer
                 Arrow(spread: self.compassHeading.bearingAccuracy)
                     .fill(.yellow)
@@ -172,19 +190,23 @@ struct ContentView : View {
 
         ZStack {
             
+            //cyan arc
+            ProgressArc(arcLength:  self.compassHeading.progress)
+                .fill(.cyan)
+                .frame(width: 100, height: 100)
+            
+            
             //distance background
             Circle()
-                .fill(.cyan)
+                .fill(.white)
                 .frame(width: 70, height: 70)
-                .onTapGesture {
-                        self.compassHeading.unitsMetric = !self.compassHeading.unitsMetric
-                   
-                }
+    
 
             
             //distance
             Text(self.compassHeading.distanceText)
-                .font(.system(size: 20))
+                .font(.system(size: 20, weight: .light))
+                .foregroundColor(.black)
                 .frame(width:300)
                 .monospacedDigit()
             
@@ -192,14 +214,16 @@ struct ContentView : View {
             
             //units
             Text(self.compassHeading.unitText)
-                .baselineOffset(-30)
-                    .font(.system(size: 10))
+                .baselineOffset(-40)
+                .font(.system(size: 10, weight: .light))
+                    .foregroundColor(.black)
+
                     .frame(width:60)
                     .monospacedDigit()
             
         }.frame(width: 500,
                 height: 500)
-            
+
             ZStack {
                 
                 //targetname
@@ -214,10 +238,26 @@ struct ContentView : View {
             .offset(x:0, y: 90)
         
         }
+        .onTapGesture(count: 1){
+            //next location. testing
+            self.compassHeading.targetIndex += 1
+            if(self.compassHeading.targetIndex >= self.compassHeading.targetMax){
+                self.compassHeading.targetIndex = 0
+            }
+            
+
+        }
+        .onLongPressGesture(){
+
+            //switch units
+                self.compassHeading.unitsMetric = !self.compassHeading.unitsMetric
+            
+        }
     }
+
+        
         
 }
-
 
 
 

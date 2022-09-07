@@ -18,6 +18,9 @@
 //#import <W3wSDK/W3wSDK.h>
 #import "cwtMapViewController.h"
 
+#import <WatchConnectivity/WatchConnectivity.h>
+
+
 @interface cwtViewController3 : UIViewController <UITextFieldDelegate>{
     
     

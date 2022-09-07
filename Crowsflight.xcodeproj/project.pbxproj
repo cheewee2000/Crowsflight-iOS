@@ -7,22 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		441BF3E528BC844000032F99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 441BF3E428BC844000032F99 /* Assets.xcassets */; };
-		441BF3EB28BC844000032F99 /* CF-Watch WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 441BF3EA28BC844000032F99 /* CF-Watch WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		441BF3F028BC844000032F99 /* CrowsflightApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441BF3EF28BC844000032F99 /* CrowsflightApp.swift */; };
-		441BF3F228BC844000032F99 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441BF3F128BC844000032F99 /* ContentView.swift */; };
-		441BF3F428BC844000032F99 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441BF3F328BC844000032F99 /* NotificationController.swift */; };
-		441BF3F628BC844000032F99 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441BF3F528BC844000032F99 /* NotificationView.swift */; };
-		441BF3F828BC844000032F99 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441BF3F728BC844000032F99 /* ComplicationController.swift */; };
-		441BF3FA28BC844100032F99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 441BF3F928BC844100032F99 /* Assets.xcassets */; };
-		441BF3FD28BC844100032F99 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 441BF3FC28BC844100032F99 /* Preview Assets.xcassets */; };
-		441BF40928BC844100032F99 /* CF_WatchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441BF40828BC844100032F99 /* CF_WatchTests.swift */; };
-		441BF41328BC844100032F99 /* CF_WatchUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441BF41228BC844100032F99 /* CF_WatchUITests.swift */; };
-		441BF41528BC844100032F99 /* CF_WatchUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441BF41428BC844100032F99 /* CF_WatchUITestsLaunchTests.swift */; };
-		441BF41828BC844100032F99 /* Crowsflight.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 441BF3E228BC843F00032F99 /* Crowsflight.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		441BF42628BC845800032F99 /* CompassHeading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441BF38728BBEA4E00032F99 /* CompassHeading.swift */; };
 		441CAA3B17552656003131F8 /* UINavigationController+GZDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 441CAA3A17552656003131F8 /* UINavigationController+GZDrawer.m */; };
 		4424DA1217BE8502005FBBC6 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4424DA1117BE8502005FBBC6 /* Settings.bundle */; };
+		4426BF5F28C76D1600485FF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4426BF5E28C76D1600485FF2 /* Assets.xcassets */; };
+		4426BF6528C76D1600485FF2 /* Crowsflight-Watchj WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4426BF6428C76D1600485FF2 /* Crowsflight-Watchj WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		4426BF6A28C76D1600485FF2 /* CrowsflightApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4426BF6928C76D1600485FF2 /* CrowsflightApp.swift */; };
+		4426BF6C28C76D1600485FF2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4426BF6B28C76D1600485FF2 /* ContentView.swift */; };
+		4426BF6E28C76D1600485FF2 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4426BF6D28C76D1600485FF2 /* NotificationController.swift */; };
+		4426BF7028C76D1600485FF2 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4426BF6F28C76D1600485FF2 /* NotificationView.swift */; };
+		4426BF7228C76D1600485FF2 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4426BF7128C76D1600485FF2 /* ComplicationController.swift */; };
+		4426BF7428C76D1700485FF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4426BF7328C76D1700485FF2 /* Assets.xcassets */; };
+		4426BF7728C76D1700485FF2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4426BF7628C76D1700485FF2 /* Preview Assets.xcassets */; };
+		4426BF8328C76D1700485FF2 /* Crowsflight_WatchjTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4426BF8228C76D1700485FF2 /* Crowsflight_WatchjTests.swift */; };
+		4426BF8D28C76D1700485FF2 /* Crowsflight_WatchjUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4426BF8C28C76D1700485FF2 /* Crowsflight_WatchjUITests.swift */; };
+		4426BF8F28C76D1700485FF2 /* Crowsflight_WatchjUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4426BF8E28C76D1700485FF2 /* Crowsflight_WatchjUITestsLaunchTests.swift */; };
+		4426BF9328C76D1700485FF2 /* Crowsflight-Watchj.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 4426BF5C28C76D1500485FF2 /* Crowsflight-Watchj.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		4426BFA228C76D7C00485FF2 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4426BFA128C76D7C00485FF2 /* ExtensionDelegate.swift */; };
+		4426BFA428C76DA500485FF2 /* CompassHeading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4426BFA328C76DA500485FF2 /* CompassHeading.swift */; };
 		4426D34C17972F9300F69A1C /* cwtMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4426D34B17972F9300F69A1C /* cwtMapViewController.m */; };
 		442A531317821B2A008A1687 /* less-info@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 442A52E217821B0D008A1687 /* less-info@2x.png */; };
 		442A533117821B2A008A1687 /* more-info2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 442A530017821B1D008A1687 /* more-info2@2x.png */; };
@@ -265,84 +266,87 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		441BF3EC28BC844000032F99 /* PBXContainerItemProxy */ = {
+		4426BF6628C76D1600485FF2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 44DAE01017359AC900C17F07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 441BF3E928BC844000032F99;
-			remoteInfo = "CF-Watch WatchKit Extension";
+			remoteGlobalIDString = 4426BF6328C76D1600485FF2;
+			remoteInfo = "Crowsflight-Watchj WatchKit Extension";
 		};
-		441BF40528BC844100032F99 /* PBXContainerItemProxy */ = {
+		4426BF7F28C76D1700485FF2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 44DAE01017359AC900C17F07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 441BF3E928BC844000032F99;
-			remoteInfo = "CF-Watch WatchKit Extension";
+			remoteGlobalIDString = 4426BF6328C76D1600485FF2;
+			remoteInfo = "Crowsflight-Watchj WatchKit Extension";
 		};
-		441BF40F28BC844100032F99 /* PBXContainerItemProxy */ = {
+		4426BF8928C76D1700485FF2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 44DAE01017359AC900C17F07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 441BF3E128BC843F00032F99;
-			remoteInfo = "CF-Watch";
+			remoteGlobalIDString = 4426BF5B28C76D1500485FF2;
+			remoteInfo = "Crowsflight-Watchj";
 		};
-		441BF41628BC844100032F99 /* PBXContainerItemProxy */ = {
+		4426BF9028C76D1700485FF2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 44DAE01017359AC900C17F07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 441BF3E128BC843F00032F99;
-			remoteInfo = "CF-Watch";
+			remoteGlobalIDString = 4426BF5B28C76D1500485FF2;
+			remoteInfo = "Crowsflight-Watchj";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		441BF41C28BC844100032F99 /* Embed App Extensions */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				441BF3EB28BC844000032F99 /* CF-Watch WatchKit Extension.appex in Embed App Extensions */,
-			);
-			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		447F086C28B89D4E00A5475F /* Embed Watch Content */ = {
+		4426BF9228C76D1700485FF2 /* Embed Watch Content */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
-				441BF41828BC844100032F99 /* Crowsflight.app in Embed Watch Content */,
+				4426BF9328C76D1700485FF2 /* Crowsflight-Watchj.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4426BF9728C76D1700485FF2 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				4426BF6528C76D1600485FF2 /* Crowsflight-Watchj WatchKit Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		441BF38728BBEA4E00032F99 /* CompassHeading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompassHeading.swift; sourceTree = "<group>"; };
 		441BF38928BC75AE00032F99 /* Crowsflight-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Crowsflight-Bridging-Header.h"; sourceTree = "<group>"; };
-		441BF3E228BC843F00032F99 /* Crowsflight.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Crowsflight.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		441BF3E428BC844000032F99 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		441BF3EA28BC844000032F99 /* CF-Watch WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "CF-Watch WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
-		441BF3EF28BC844000032F99 /* CrowsflightApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrowsflightApp.swift; sourceTree = "<group>"; };
-		441BF3F128BC844000032F99 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		441BF3F328BC844000032F99 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
-		441BF3F528BC844000032F99 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
-		441BF3F728BC844000032F99 /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
-		441BF3F928BC844100032F99 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		441BF3FC28BC844100032F99 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		441BF3FE28BC844100032F99 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		441BF3FF28BC844100032F99 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
-		441BF40428BC844100032F99 /* CF-WatchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CF-WatchTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		441BF40828BC844100032F99 /* CF_WatchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CF_WatchTests.swift; sourceTree = "<group>"; };
-		441BF40E28BC844100032F99 /* CF-WatchUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CF-WatchUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		441BF41228BC844100032F99 /* CF_WatchUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CF_WatchUITests.swift; sourceTree = "<group>"; };
-		441BF41428BC844100032F99 /* CF_WatchUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CF_WatchUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		441CAA3917552656003131F8 /* UINavigationController+GZDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+GZDrawer.h"; sourceTree = "<group>"; };
 		441CAA3A17552656003131F8 /* UINavigationController+GZDrawer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+GZDrawer.m"; sourceTree = "<group>"; };
 		4424DA1117BE8502005FBBC6 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		4426BF5C28C76D1500485FF2 /* Crowsflight-Watchj.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Crowsflight-Watchj.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4426BF5E28C76D1600485FF2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4426BF6428C76D1600485FF2 /* Crowsflight-Watchj WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Crowsflight-Watchj WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4426BF6928C76D1600485FF2 /* CrowsflightApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrowsflightApp.swift; sourceTree = "<group>"; };
+		4426BF6B28C76D1600485FF2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		4426BF6D28C76D1600485FF2 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
+		4426BF6F28C76D1600485FF2 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
+		4426BF7128C76D1600485FF2 /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
+		4426BF7328C76D1700485FF2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4426BF7628C76D1700485FF2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		4426BF7828C76D1700485FF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4426BF7928C76D1700485FF2 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		4426BF7E28C76D1700485FF2 /* Crowsflight-WatchjTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Crowsflight-WatchjTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4426BF8228C76D1700485FF2 /* Crowsflight_WatchjTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crowsflight_WatchjTests.swift; sourceTree = "<group>"; };
+		4426BF8828C76D1700485FF2 /* Crowsflight-WatchjUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Crowsflight-WatchjUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4426BF8C28C76D1700485FF2 /* Crowsflight_WatchjUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crowsflight_WatchjUITests.swift; sourceTree = "<group>"; };
+		4426BF8E28C76D1700485FF2 /* Crowsflight_WatchjUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crowsflight_WatchjUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		4426BFA128C76D7C00485FF2 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
+		4426BFA328C76DA500485FF2 /* CompassHeading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompassHeading.swift; sourceTree = "<group>"; };
+		4426BFA528C76DFD00485FF2 /* Crowsflight-Watchj.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Crowsflight-Watchj.entitlements"; sourceTree = "<group>"; };
+		4426BFA628C76E0700485FF2 /* Crowsflight-Watchj WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Crowsflight-Watchj WatchKit Extension.entitlements"; sourceTree = "<group>"; };
 		4426D34A17972F9300F69A1C /* cwtMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cwtMapViewController.h; sourceTree = "<group>"; };
 		4426D34B17972F9300F69A1C /* cwtMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = cwtMapViewController.m; sourceTree = "<group>"; };
 		442A52E217821B0D008A1687 /* less-info@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "less-info@2x.png"; path = "Images/less-info@2x.png"; sourceTree = "<group>"; };
@@ -609,21 +613,21 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		441BF3E728BC844000032F99 /* Frameworks */ = {
+		4426BF6128C76D1600485FF2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		441BF40128BC844100032F99 /* Frameworks */ = {
+		4426BF7B28C76D1700485FF2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		441BF40B28BC844100032F99 /* Frameworks */ = {
+		4426BF8528C76D1700485FF2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -757,54 +761,57 @@
 			path = "Images/walk-anim";
 			sourceTree = "<group>";
 		};
-		441BF3E328BC843F00032F99 /* CF-Watch */ = {
+		4426BF5D28C76D1500485FF2 /* Crowsflight-Watchj */ = {
 			isa = PBXGroup;
 			children = (
-				441BF3E428BC844000032F99 /* Assets.xcassets */,
+				4426BFA528C76DFD00485FF2 /* Crowsflight-Watchj.entitlements */,
+				4426BF5E28C76D1600485FF2 /* Assets.xcassets */,
 			);
-			path = "CF-Watch";
+			path = "Crowsflight-Watchj";
 			sourceTree = "<group>";
 		};
-		441BF3EE28BC844000032F99 /* CF-Watch WatchKit Extension */ = {
+		4426BF6828C76D1600485FF2 /* Crowsflight-Watchj WatchKit Extension */ = {
 			isa = PBXGroup;
 			children = (
-				441BF38728BBEA4E00032F99 /* CompassHeading.swift */,
-				441BF3F128BC844000032F99 /* ContentView.swift */,
-				441BF3EF28BC844000032F99 /* CrowsflightApp.swift */,
-				441BF3F328BC844000032F99 /* NotificationController.swift */,
-				441BF3F528BC844000032F99 /* NotificationView.swift */,
-				441BF3F728BC844000032F99 /* ComplicationController.swift */,
-				441BF3F928BC844100032F99 /* Assets.xcassets */,
-				441BF3FE28BC844100032F99 /* Info.plist */,
-				441BF3FF28BC844100032F99 /* PushNotificationPayload.apns */,
-				441BF3FB28BC844100032F99 /* Preview Content */,
+				4426BFA628C76E0700485FF2 /* Crowsflight-Watchj WatchKit Extension.entitlements */,
+				4426BFA128C76D7C00485FF2 /* ExtensionDelegate.swift */,
+				4426BFA328C76DA500485FF2 /* CompassHeading.swift */,
+				4426BF6B28C76D1600485FF2 /* ContentView.swift */,
+				4426BF6928C76D1600485FF2 /* CrowsflightApp.swift */,
+				4426BF6D28C76D1600485FF2 /* NotificationController.swift */,
+				4426BF6F28C76D1600485FF2 /* NotificationView.swift */,
+				4426BF7128C76D1600485FF2 /* ComplicationController.swift */,
+				4426BF7328C76D1700485FF2 /* Assets.xcassets */,
+				4426BF7828C76D1700485FF2 /* Info.plist */,
+				4426BF7928C76D1700485FF2 /* PushNotificationPayload.apns */,
+				4426BF7528C76D1700485FF2 /* Preview Content */,
 			);
-			path = "CF-Watch WatchKit Extension";
+			path = "Crowsflight-Watchj WatchKit Extension";
 			sourceTree = "<group>";
 		};
-		441BF3FB28BC844100032F99 /* Preview Content */ = {
+		4426BF7528C76D1700485FF2 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
-				441BF3FC28BC844100032F99 /* Preview Assets.xcassets */,
+				4426BF7628C76D1700485FF2 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		441BF40728BC844100032F99 /* CF-WatchTests */ = {
+		4426BF8128C76D1700485FF2 /* Crowsflight-WatchjTests */ = {
 			isa = PBXGroup;
 			children = (
-				441BF40828BC844100032F99 /* CF_WatchTests.swift */,
+				4426BF8228C76D1700485FF2 /* Crowsflight_WatchjTests.swift */,
 			);
-			path = "CF-WatchTests";
+			path = "Crowsflight-WatchjTests";
 			sourceTree = "<group>";
 		};
-		441BF41128BC844100032F99 /* CF-WatchUITests */ = {
+		4426BF8B28C76D1700485FF2 /* Crowsflight-WatchjUITests */ = {
 			isa = PBXGroup;
 			children = (
-				441BF41228BC844100032F99 /* CF_WatchUITests.swift */,
-				441BF41428BC844100032F99 /* CF_WatchUITestsLaunchTests.swift */,
+				4426BF8C28C76D1700485FF2 /* Crowsflight_WatchjUITests.swift */,
+				4426BF8E28C76D1700485FF2 /* Crowsflight_WatchjUITestsLaunchTests.swift */,
 			);
-			path = "CF-WatchUITests";
+			path = "Crowsflight-WatchjUITests";
 			sourceTree = "<group>";
 		};
 		442F15D917A6FAEA00571D19 /* Sounds */ = {
@@ -1027,10 +1034,10 @@
 				44C1D1431759A0CE007798A6 /* QuartzCore.framework */,
 				44DAE02117359AC900C17F07 /* Crowsflight */,
 				44DAE04817359ACA00C17F07 /* CrowsflightTests */,
-				441BF3E328BC843F00032F99 /* CF-Watch */,
-				441BF3EE28BC844000032F99 /* CF-Watch WatchKit Extension */,
-				441BF40728BC844100032F99 /* CF-WatchTests */,
-				441BF41128BC844100032F99 /* CF-WatchUITests */,
+				4426BF5D28C76D1500485FF2 /* Crowsflight-Watchj */,
+				4426BF6828C76D1600485FF2 /* Crowsflight-Watchj WatchKit Extension */,
+				4426BF8128C76D1700485FF2 /* Crowsflight-WatchjTests */,
+				4426BF8B28C76D1700485FF2 /* Crowsflight-WatchjUITests */,
 				44DAE01A17359AC900C17F07 /* Frameworks */,
 				44DAE01917359AC900C17F07 /* Products */,
 				441BF38928BC75AE00032F99 /* Crowsflight-Bridging-Header.h */,
@@ -1041,10 +1048,10 @@
 			isa = PBXGroup;
 			children = (
 				44DAE01817359AC900C17F07 /* Crowsflight.app */,
-				441BF3E228BC843F00032F99 /* Crowsflight.app */,
-				441BF3EA28BC844000032F99 /* CF-Watch WatchKit Extension.appex */,
-				441BF40428BC844100032F99 /* CF-WatchTests.xctest */,
-				441BF40E28BC844100032F99 /* CF-WatchUITests.xctest */,
+				4426BF5C28C76D1500485FF2 /* Crowsflight-Watchj.app */,
+				4426BF6428C76D1600485FF2 /* Crowsflight-Watchj WatchKit Extension.appex */,
+				4426BF7E28C76D1700485FF2 /* Crowsflight-WatchjTests.xctest */,
+				4426BF8828C76D1700485FF2 /* Crowsflight-WatchjUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1142,74 +1149,74 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		441BF3E128BC843F00032F99 /* CF-Watch */ = {
+		4426BF5B28C76D1500485FF2 /* Crowsflight-Watchj */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 441BF41D28BC844100032F99 /* Build configuration list for PBXNativeTarget "CF-Watch" */;
+			buildConfigurationList = 4426BF9828C76D1700485FF2 /* Build configuration list for PBXNativeTarget "Crowsflight-Watchj" */;
 			buildPhases = (
-				441BF3E028BC843F00032F99 /* Resources */,
-				441BF41C28BC844100032F99 /* Embed App Extensions */,
+				4426BF5A28C76D1500485FF2 /* Resources */,
+				4426BF9728C76D1700485FF2 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				441BF3ED28BC844000032F99 /* PBXTargetDependency */,
+				4426BF6728C76D1600485FF2 /* PBXTargetDependency */,
 			);
-			name = "CF-Watch";
-			productName = "CF-Watch";
-			productReference = 441BF3E228BC843F00032F99 /* Crowsflight.app */;
+			name = "Crowsflight-Watchj";
+			productName = "Crowsflight-Watchj";
+			productReference = 4426BF5C28C76D1500485FF2 /* Crowsflight-Watchj.app */;
 			productType = "com.apple.product-type.application.watchapp2";
 		};
-		441BF3E928BC844000032F99 /* CF-Watch WatchKit Extension */ = {
+		4426BF6328C76D1600485FF2 /* Crowsflight-Watchj WatchKit Extension */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 441BF41928BC844100032F99 /* Build configuration list for PBXNativeTarget "CF-Watch WatchKit Extension" */;
+			buildConfigurationList = 4426BF9428C76D1700485FF2 /* Build configuration list for PBXNativeTarget "Crowsflight-Watchj WatchKit Extension" */;
 			buildPhases = (
-				441BF3E628BC844000032F99 /* Sources */,
-				441BF3E728BC844000032F99 /* Frameworks */,
-				441BF3E828BC844000032F99 /* Resources */,
+				4426BF6028C76D1600485FF2 /* Sources */,
+				4426BF6128C76D1600485FF2 /* Frameworks */,
+				4426BF6228C76D1600485FF2 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = "CF-Watch WatchKit Extension";
-			productName = "CF-Watch WatchKit Extension";
-			productReference = 441BF3EA28BC844000032F99 /* CF-Watch WatchKit Extension.appex */;
+			name = "Crowsflight-Watchj WatchKit Extension";
+			productName = "Crowsflight-Watchj WatchKit Extension";
+			productReference = 4426BF6428C76D1600485FF2 /* Crowsflight-Watchj WatchKit Extension.appex */;
 			productType = "com.apple.product-type.watchkit2-extension";
 		};
-		441BF40328BC844100032F99 /* CF-WatchTests */ = {
+		4426BF7D28C76D1700485FF2 /* Crowsflight-WatchjTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 441BF42028BC844100032F99 /* Build configuration list for PBXNativeTarget "CF-WatchTests" */;
+			buildConfigurationList = 4426BF9B28C76D1700485FF2 /* Build configuration list for PBXNativeTarget "Crowsflight-WatchjTests" */;
 			buildPhases = (
-				441BF40028BC844100032F99 /* Sources */,
-				441BF40128BC844100032F99 /* Frameworks */,
-				441BF40228BC844100032F99 /* Resources */,
+				4426BF7A28C76D1700485FF2 /* Sources */,
+				4426BF7B28C76D1700485FF2 /* Frameworks */,
+				4426BF7C28C76D1700485FF2 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				441BF40628BC844100032F99 /* PBXTargetDependency */,
+				4426BF8028C76D1700485FF2 /* PBXTargetDependency */,
 			);
-			name = "CF-WatchTests";
-			productName = "CF-WatchTests";
-			productReference = 441BF40428BC844100032F99 /* CF-WatchTests.xctest */;
+			name = "Crowsflight-WatchjTests";
+			productName = "Crowsflight-WatchjTests";
+			productReference = 4426BF7E28C76D1700485FF2 /* Crowsflight-WatchjTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		441BF40D28BC844100032F99 /* CF-WatchUITests */ = {
+		4426BF8728C76D1700485FF2 /* Crowsflight-WatchjUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 441BF42328BC844100032F99 /* Build configuration list for PBXNativeTarget "CF-WatchUITests" */;
+			buildConfigurationList = 4426BF9E28C76D1700485FF2 /* Build configuration list for PBXNativeTarget "Crowsflight-WatchjUITests" */;
 			buildPhases = (
-				441BF40A28BC844100032F99 /* Sources */,
-				441BF40B28BC844100032F99 /* Frameworks */,
-				441BF40C28BC844100032F99 /* Resources */,
+				4426BF8428C76D1700485FF2 /* Sources */,
+				4426BF8528C76D1700485FF2 /* Frameworks */,
+				4426BF8628C76D1700485FF2 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				441BF41028BC844100032F99 /* PBXTargetDependency */,
+				4426BF8A28C76D1700485FF2 /* PBXTargetDependency */,
 			);
-			name = "CF-WatchUITests";
-			productName = "CF-WatchUITests";
-			productReference = 441BF40E28BC844100032F99 /* CF-WatchUITests.xctest */;
+			name = "Crowsflight-WatchjUITests";
+			productName = "Crowsflight-WatchjUITests";
+			productReference = 4426BF8828C76D1700485FF2 /* Crowsflight-WatchjUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 		44DAE01717359AC900C17F07 /* Crowsflight */ = {
@@ -1220,12 +1227,12 @@
 				44DAE01517359AC900C17F07 /* Frameworks */,
 				44DAE01617359AC900C17F07 /* Resources */,
 				44E7D33F1752A53A00BF8433 /* ShellScript */,
-				447F086C28B89D4E00A5475F /* Embed Watch Content */,
+				4426BF9228C76D1700485FF2 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				441BF41728BC844100032F99 /* PBXTargetDependency */,
+				4426BF9128C76D1700485FF2 /* PBXTargetDependency */,
 			);
 			name = Crowsflight;
 			productName = Crowsflight;
@@ -1243,31 +1250,32 @@
 				LastUpgradeCheck = 1340;
 				ORGANIZATIONNAME = CWandT;
 				TargetAttributes = {
-					441BF3E128BC843F00032F99 = {
+					4426BF5B28C76D1500485FF2 = {
 						CreatedOnToolsVersion = 13.4.1;
 						DevelopmentTeam = L6DVQR8JB9;
 						ProvisioningStyle = Automatic;
 					};
-					441BF3E928BC844000032F99 = {
+					4426BF6328C76D1600485FF2 = {
 						CreatedOnToolsVersion = 13.4.1;
 						DevelopmentTeam = L6DVQR8JB9;
 						ProvisioningStyle = Automatic;
 					};
-					441BF40328BC844100032F99 = {
+					4426BF7D28C76D1700485FF2 = {
 						CreatedOnToolsVersion = 13.4.1;
 						DevelopmentTeam = L6DVQR8JB9;
 						ProvisioningStyle = Automatic;
-						TestTargetID = 441BF3E928BC844000032F99;
+						TestTargetID = 4426BF6328C76D1600485FF2;
 					};
-					441BF40D28BC844100032F99 = {
+					4426BF8728C76D1700485FF2 = {
 						CreatedOnToolsVersion = 13.4.1;
 						DevelopmentTeam = L6DVQR8JB9;
 						ProvisioningStyle = Automatic;
-						TestTargetID = 441BF3E128BC843F00032F99;
+						TestTargetID = 4426BF5B28C76D1500485FF2;
 					};
 					44DAE01717359AC900C17F07 = {
 						DevelopmentTeam = L6DVQR8JB9;
 						LastSwiftMigration = 1340;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.InAppPurchase = {
 								enabled = 0;
@@ -1293,40 +1301,40 @@
 			projectRoot = "";
 			targets = (
 				44DAE01717359AC900C17F07 /* Crowsflight */,
-				441BF3E128BC843F00032F99 /* CF-Watch */,
-				441BF3E928BC844000032F99 /* CF-Watch WatchKit Extension */,
-				441BF40328BC844100032F99 /* CF-WatchTests */,
-				441BF40D28BC844100032F99 /* CF-WatchUITests */,
+				4426BF5B28C76D1500485FF2 /* Crowsflight-Watchj */,
+				4426BF6328C76D1600485FF2 /* Crowsflight-Watchj WatchKit Extension */,
+				4426BF7D28C76D1700485FF2 /* Crowsflight-WatchjTests */,
+				4426BF8728C76D1700485FF2 /* Crowsflight-WatchjUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		441BF3E028BC843F00032F99 /* Resources */ = {
+		4426BF5A28C76D1500485FF2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				441BF3E528BC844000032F99 /* Assets.xcassets in Resources */,
+				4426BF5F28C76D1600485FF2 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		441BF3E828BC844000032F99 /* Resources */ = {
+		4426BF6228C76D1600485FF2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				441BF3FD28BC844100032F99 /* Preview Assets.xcassets in Resources */,
-				441BF3FA28BC844100032F99 /* Assets.xcassets in Resources */,
+				4426BF7728C76D1700485FF2 /* Preview Assets.xcassets in Resources */,
+				4426BF7428C76D1700485FF2 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		441BF40228BC844100032F99 /* Resources */ = {
+		4426BF7C28C76D1700485FF2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		441BF40C28BC844100032F99 /* Resources */ = {
+		4426BF8628C76D1700485FF2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1573,33 +1581,34 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		441BF3E628BC844000032F99 /* Sources */ = {
+		4426BF6028C76D1600485FF2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				441BF3F428BC844000032F99 /* NotificationController.swift in Sources */,
-				441BF3F228BC844000032F99 /* ContentView.swift in Sources */,
-				441BF3F828BC844000032F99 /* ComplicationController.swift in Sources */,
-				441BF42628BC845800032F99 /* CompassHeading.swift in Sources */,
-				441BF3F028BC844000032F99 /* CrowsflightApp.swift in Sources */,
-				441BF3F628BC844000032F99 /* NotificationView.swift in Sources */,
+				4426BF6E28C76D1600485FF2 /* NotificationController.swift in Sources */,
+				4426BF6C28C76D1600485FF2 /* ContentView.swift in Sources */,
+				4426BFA228C76D7C00485FF2 /* ExtensionDelegate.swift in Sources */,
+				4426BFA428C76DA500485FF2 /* CompassHeading.swift in Sources */,
+				4426BF7228C76D1600485FF2 /* ComplicationController.swift in Sources */,
+				4426BF6A28C76D1600485FF2 /* CrowsflightApp.swift in Sources */,
+				4426BF7028C76D1600485FF2 /* NotificationView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		441BF40028BC844100032F99 /* Sources */ = {
+		4426BF7A28C76D1700485FF2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				441BF40928BC844100032F99 /* CF_WatchTests.swift in Sources */,
+				4426BF8328C76D1700485FF2 /* Crowsflight_WatchjTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		441BF40A28BC844100032F99 /* Sources */ = {
+		4426BF8428C76D1700485FF2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				441BF41528BC844100032F99 /* CF_WatchUITestsLaunchTests.swift in Sources */,
-				441BF41328BC844100032F99 /* CF_WatchUITests.swift in Sources */,
+				4426BF8F28C76D1700485FF2 /* Crowsflight_WatchjUITestsLaunchTests.swift in Sources */,
+				4426BF8D28C76D1700485FF2 /* Crowsflight_WatchjUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1630,25 +1639,25 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		441BF3ED28BC844000032F99 /* PBXTargetDependency */ = {
+		4426BF6728C76D1600485FF2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 441BF3E928BC844000032F99 /* CF-Watch WatchKit Extension */;
-			targetProxy = 441BF3EC28BC844000032F99 /* PBXContainerItemProxy */;
+			target = 4426BF6328C76D1600485FF2 /* Crowsflight-Watchj WatchKit Extension */;
+			targetProxy = 4426BF6628C76D1600485FF2 /* PBXContainerItemProxy */;
 		};
-		441BF40628BC844100032F99 /* PBXTargetDependency */ = {
+		4426BF8028C76D1700485FF2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 441BF3E928BC844000032F99 /* CF-Watch WatchKit Extension */;
-			targetProxy = 441BF40528BC844100032F99 /* PBXContainerItemProxy */;
+			target = 4426BF6328C76D1600485FF2 /* Crowsflight-Watchj WatchKit Extension */;
+			targetProxy = 4426BF7F28C76D1700485FF2 /* PBXContainerItemProxy */;
 		};
-		441BF41028BC844100032F99 /* PBXTargetDependency */ = {
+		4426BF8A28C76D1700485FF2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 441BF3E128BC843F00032F99 /* CF-Watch */;
-			targetProxy = 441BF40F28BC844100032F99 /* PBXContainerItemProxy */;
+			target = 4426BF5B28C76D1500485FF2 /* Crowsflight-Watchj */;
+			targetProxy = 4426BF8928C76D1700485FF2 /* PBXContainerItemProxy */;
 		};
-		441BF41728BC844100032F99 /* PBXTargetDependency */ = {
+		4426BF9128C76D1700485FF2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 441BF3E128BC843F00032F99 /* CF-Watch */;
-			targetProxy = 441BF41628BC844100032F99 /* PBXContainerItemProxy */;
+			target = 4426BF5B28C76D1500485FF2 /* Crowsflight-Watchj */;
+			targetProxy = 4426BF9028C76D1700485FF2 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1672,7 +1681,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		441BF41A28BC844100032F99 /* Debug */ = {
+		4426BF9528C76D1700485FF2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
@@ -1685,19 +1694,20 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "Crowsflight-Watchj WatchKit Extension/Crowsflight-Watchj WatchKit Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1.7.2;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_ASSET_PATHS = "\"CF-Watch WatchKit Extension/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Crowsflight-Watchj WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = L6DVQR8JB9;
 				ENABLE_PREVIEWS = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "CF-Watch WatchKit Extension/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "CF-Watch WatchKit Extension";
-				INFOPLIST_KEY_CLKComplicationPrincipalClass = CF_Watch_WatchKit_Extension.ComplicationController;
+				INFOPLIST_FILE = "Crowsflight-Watchj WatchKit Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Crowsflight-Watchj WatchKit Extension";
+				INFOPLIST_KEY_CLKComplicationPrincipalClass = Crowsflight_Watchj_WatchKit_Extension.ComplicationController;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 CWandT. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MARKETING_VERSION = 1.7;
@@ -1716,7 +1726,7 @@
 			};
 			name = Debug;
 		};
-		441BF41B28BC844100032F99 /* Release */ = {
+		4426BF9628C76D1700485FF2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
@@ -1729,11 +1739,12 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "Crowsflight-Watchj WatchKit Extension/Crowsflight-Watchj WatchKit Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1.7.2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_ASSET_PATHS = "\"CF-Watch WatchKit Extension/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Crowsflight-Watchj WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = L6DVQR8JB9;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_PREVIEWS = YES;
@@ -1741,9 +1752,9 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "CF-Watch WatchKit Extension/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "CF-Watch WatchKit Extension";
-				INFOPLIST_KEY_CLKComplicationPrincipalClass = CF_Watch_WatchKit_Extension.ComplicationController;
+				INFOPLIST_FILE = "Crowsflight-Watchj WatchKit Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Crowsflight-Watchj WatchKit Extension";
+				INFOPLIST_KEY_CLKComplicationPrincipalClass = Crowsflight_Watchj_WatchKit_Extension.ComplicationController;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 CWandT. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MARKETING_VERSION = 1.7;
@@ -1761,7 +1772,7 @@
 			};
 			name = Release;
 		};
-		441BF41E28BC844100032F99 /* Debug */ = {
+		4426BF9928C76D1700485FF2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
@@ -1776,7 +1787,8 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_ENTITLEMENTS = "Crowsflight-Watchj/Crowsflight-Watchj.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1.7.2;
@@ -1786,14 +1798,15 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GENERATE_INFOPLIST_FILE = YES;
-				IBSC_MODULE = CF_Watch_WatchKit_Extension;
+				IBSC_MODULE = Crowsflight_Watchj_WatchKit_Extension;
+				INFOPLIST_KEY_CFBundleDisplayName = "Crowsflight-Watchj";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.cwandt.crowsflight;
 				MARKETING_VERSION = 1.7;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cwandt.crowsflight.watchkitapp;
-				PRODUCT_NAME = Crowsflight;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -1805,7 +1818,7 @@
 			};
 			name = Debug;
 		};
-		441BF41F28BC844100032F99 /* Release */ = {
+		4426BF9A28C76D1700485FF2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
@@ -1820,7 +1833,8 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_ENTITLEMENTS = "Crowsflight-Watchj/Crowsflight-Watchj.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
@@ -1832,14 +1846,15 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GENERATE_INFOPLIST_FILE = YES;
-				IBSC_MODULE = CF_Watch_WatchKit_Extension;
+				IBSC_MODULE = Crowsflight_Watchj_WatchKit_Extension;
+				INFOPLIST_KEY_CFBundleDisplayName = "Crowsflight-Watchj";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.cwandt.crowsflight;
 				MARKETING_VERSION = 1.7;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cwandt.crowsflight.watchkitapp;
-				PRODUCT_NAME = Crowsflight;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1850,7 +1865,7 @@
 			};
 			name = Release;
 		};
-		441BF42128BC844100032F99 /* Debug */ = {
+		4426BF9C28C76D1700485FF2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
@@ -1875,7 +1890,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.cwandt.crowsflight.CF-WatchTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.cwandt.crowsflight.Crowsflight-WatchjTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -1883,12 +1898,12 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CF-Watch WatchKit Extension.appex/CF-Watch WatchKit Extension";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Crowsflight-Watchj WatchKit Extension.appex/Crowsflight-Watchj WatchKit Extension";
 				WATCHOS_DEPLOYMENT_TARGET = 8.5;
 			};
 			name = Debug;
 		};
-		441BF42228BC844100032F99 /* Release */ = {
+		4426BF9D28C76D1700485FF2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
@@ -1915,19 +1930,19 @@
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.cwandt.crowsflight.CF-WatchTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.cwandt.crowsflight.Crowsflight-WatchjTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CF-Watch WatchKit Extension.appex/CF-Watch WatchKit Extension";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Crowsflight-Watchj WatchKit Extension.appex/Crowsflight-Watchj WatchKit Extension";
 				WATCHOS_DEPLOYMENT_TARGET = 8.5;
 			};
 			name = Release;
 		};
-		441BF42428BC844100032F99 /* Debug */ = {
+		4426BF9F28C76D1700485FF2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1950,7 +1965,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.cwandt.crowsflight.CF-WatchUITests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.cwandt.crowsflight.Crowsflight-WatchjUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -1958,12 +1973,12 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				TEST_TARGET_NAME = "CF-Watch";
+				TEST_TARGET_NAME = "Crowsflight-Watchj";
 				WATCHOS_DEPLOYMENT_TARGET = 8.5;
 			};
 			name = Debug;
 		};
-		441BF42528BC844100032F99 /* Release */ = {
+		4426BFA028C76D1700485FF2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1988,14 +2003,14 @@
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.cwandt.crowsflight.CF-WatchUITests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.cwandt.crowsflight.Crowsflight-WatchjUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				TEST_TARGET_NAME = "CF-Watch";
+				TEST_TARGET_NAME = "Crowsflight-Watchj";
 				WATCHOS_DEPLOYMENT_TARGET = 8.5;
 			};
 			name = Release;
@@ -2045,11 +2060,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
-				WATCHOS_DEPLOYMENT_TARGET = 8.0;
+				WATCHOS_DEPLOYMENT_TARGET = 7.0;
 			};
 			name = Debug;
 		};
@@ -2090,13 +2105,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
-				WATCHOS_DEPLOYMENT_TARGET = 8.0;
+				WATCHOS_DEPLOYMENT_TARGET = 7.0;
 			};
 			name = Release;
 		};
@@ -2107,8 +2122,10 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Crowsflight/Crowsflight.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = L6DVQR8JB9;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2129,6 +2146,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Crowsflight-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -2143,8 +2161,10 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Crowsflight/Crowsflight.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = L6DVQR8JB9;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2165,6 +2185,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Crowsflight-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = app;
@@ -2174,38 +2195,38 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		441BF41928BC844100032F99 /* Build configuration list for PBXNativeTarget "CF-Watch WatchKit Extension" */ = {
+		4426BF9428C76D1700485FF2 /* Build configuration list for PBXNativeTarget "Crowsflight-Watchj WatchKit Extension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				441BF41A28BC844100032F99 /* Debug */,
-				441BF41B28BC844100032F99 /* Release */,
+				4426BF9528C76D1700485FF2 /* Debug */,
+				4426BF9628C76D1700485FF2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		441BF41D28BC844100032F99 /* Build configuration list for PBXNativeTarget "CF-Watch" */ = {
+		4426BF9828C76D1700485FF2 /* Build configuration list for PBXNativeTarget "Crowsflight-Watchj" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				441BF41E28BC844100032F99 /* Debug */,
-				441BF41F28BC844100032F99 /* Release */,
+				4426BF9928C76D1700485FF2 /* Debug */,
+				4426BF9A28C76D1700485FF2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		441BF42028BC844100032F99 /* Build configuration list for PBXNativeTarget "CF-WatchTests" */ = {
+		4426BF9B28C76D1700485FF2 /* Build configuration list for PBXNativeTarget "Crowsflight-WatchjTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				441BF42128BC844100032F99 /* Debug */,
-				441BF42228BC844100032F99 /* Release */,
+				4426BF9C28C76D1700485FF2 /* Debug */,
+				4426BF9D28C76D1700485FF2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		441BF42328BC844100032F99 /* Build configuration list for PBXNativeTarget "CF-WatchUITests" */ = {
+		4426BF9E28C76D1700485FF2 /* Build configuration list for PBXNativeTarget "Crowsflight-WatchjUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				441BF42428BC844100032F99 /* Debug */,
-				441BF42528BC844100032F99 /* Release */,
+				4426BF9F28C76D1700485FF2 /* Debug */,
+				4426BFA028C76D1700485FF2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

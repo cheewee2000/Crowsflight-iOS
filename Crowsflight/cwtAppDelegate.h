@@ -10,6 +10,7 @@
 #import <CoreLocation/CoreLocation.h>
 //#import "MTStatusBarOverlay.h"
 //#import "TestFlight.h"
+#import <WatchConnectivity/WatchConnectivity.h>
 
 
 

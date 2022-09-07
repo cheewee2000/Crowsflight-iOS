@@ -20,7 +20,7 @@
 
 #import "cwtMapViewController.h"
 
-
+   
 
 #define DEGREES_TO_RADIANS(angle) (angle / 180.0 * M_PI)
 
@@ -162,6 +162,12 @@
     [self.view addSubview:self.instructions];
     
     //[self initW3wSDK];
+    
+    if ([WCSession isSupported]) {
+    WCSession *session = [WCSession defaultSession];
+    session.delegate = self;
+    [session activateSession];
+    }
 
     
 }

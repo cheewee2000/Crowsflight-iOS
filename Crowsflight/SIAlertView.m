@@ -888,7 +888,7 @@ static SIAlertView *__si_alert_current_view;
 -(void)addSearchField{
     
     cwtAppDelegate* dele=[[UIApplication sharedApplication] delegate];
-    CGRect screen = [[UIScreen mainScreen] applicationFrame];
+    CGRect screen = [[UIScreen mainScreen] bounds];
 
     CGFloat height = [self preferredHeight];
 
@@ -924,7 +924,7 @@ static SIAlertView *__si_alert_current_view;
         {
             [ self.textField  setPlaceholder:@"LOADING LOCATION NAME..."];
 
-            self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
             self.spinner.frame=CGRectMake(10, 10, 44, 44);
             self.spinner.hidesWhenStopped = YES;
 

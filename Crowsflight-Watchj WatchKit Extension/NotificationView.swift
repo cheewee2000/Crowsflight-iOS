@@ -1,8 +1,8 @@
 //
 //  NotificationView.swift
-//  CF-Watch WatchKit Extension
+//  Crowsflight-Watchj WatchKit Extension
 //
-//  Created by Che-Wei Wang on 8/29/22.
+//  Created by Che-Wei Wang on 9/6/22.
 //  Copyright © 2022 CWandT. All rights reserved.
 //
 

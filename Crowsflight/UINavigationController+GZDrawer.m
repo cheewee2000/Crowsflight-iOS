@@ -36,7 +36,7 @@
 // Screencapture a view and turn it into an image
 + (UIImage *)imageByScreencapturingView:(UIView *)view {
     
-    if (UIGraphicsBeginImageContextWithOptions != NULL) {
+    if (&UIGraphicsBeginImageContextWithOptions != NULL) {
         UIGraphicsBeginImageContextWithOptions(view.bounds.size, YES, 0.0);
     } else    {
         UIGraphicsBeginImageContext(view.bounds.size);

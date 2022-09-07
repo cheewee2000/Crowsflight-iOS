@@ -1,14 +1,14 @@
 //
-//  CF_WatchUITests.swift
-//  CF-WatchUITests
+//  Crowsflight_WatchjUITests.swift
+//  Crowsflight-WatchjUITests
 //
-//  Created by Che-Wei Wang on 8/29/22.
+//  Created by Che-Wei Wang on 9/6/22.
 //  Copyright © 2022 CWandT. All rights reserved.
 //
 
 import XCTest
 
-class CF_WatchUITests: XCTestCase {
+class Crowsflight_WatchjUITests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.

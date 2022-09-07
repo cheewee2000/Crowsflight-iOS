@@ -10,6 +10,8 @@ import SwiftUI
 
 @main
 struct CrowsflightApp: App {
+    @WKExtensionDelegateAdaptor(ExtensionDelegate.self) var delegate
+
     @SceneBuilder var body: some Scene {
         WindowGroup {
             NavigationView {
@@ -17,7 +19,7 @@ struct CrowsflightApp: App {
             }
         }
 
-        WKNotificationScene(controller: NotificationController.self, category: "myCategory")
+        //WKNotificationScene(controller: NotificationController.self, category: "myCategory")
             
     }
 }

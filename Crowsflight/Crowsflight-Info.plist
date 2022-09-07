@@ -71,5 +71,7 @@
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 </dict>
 </plist>

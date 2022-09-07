@@ -15,11 +15,12 @@
 //#import "NVSlideMenuController.h"
 #import "QuartzCore/CALayer.h"
 #import "cwtMapViewController.h"
-#import "Crowsflight-Swift.h"
+//#import "Crowsflight-Swift.h"
 
 
-@interface cwtAppDelegate ()<UIAlertViewDelegate,CLLocationManagerDelegate,UIAppearanceContainer>//,MTStatusBarOverlayDelegate>
-
+@interface cwtAppDelegate ()<UIAlertViewDelegate,CLLocationManagerDelegate,UIAppearanceContainer,WCSessionDelegate>{//,MTStatusBarOverlayDelegate>
+    WCSession *session;
+}
 @end
 
 @implementation cwtAppDelegate
@@ -27,8 +28,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 
-    
-    
     //[Crashlytics startWithAPIKey:@"1eb6d15737d50f2df4316cb5b8b073da76a42b67"];
 
     //[cwtIAP sharedInstance];
@@ -82,12 +81,9 @@
     // Allocate a reachability object
     Reachability* reach = [Reachability reachabilityWithHostname:@"www.google.com"];
     
-    
-    //watchsesssion sync
-    WatchSessionManager* watchSession = [WatchSessionManager init];
-    
-    //watchSession.
-    
+    [self activateASession];
+
+
 
     
     
@@ -122,6 +118,17 @@
 }
 
 
+-(void)activateASession{
+    if ([WCSession isSupported]) {
+        session = [WCSession defaultSession];
+        session.delegate = self;
+        if([session activationState]!=WCSessionActivationStateActivated){
+               [session activateSession];
+           }
+        NSLog(@"Session on phone starting");
+    }
+    
+}
 
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
@@ -213,6 +220,38 @@
 	NSLog(@"The array count: %i", (int)[self.locationDictionaryArray count]);
 	self.nDestinations=(int)[self.locationDictionaryArray count];
         
+    
+    [self transferLocations];
+
+
+    
+
+    
+    
+    //shared appgroup
+        
+    //NSUserDefaults* myDefaults = [[NSUserDefaults alloc] initWithSuiteName:"@group.com.cwandt.crowsflight"];
+    //NSUserDefaults* userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.com.cwandt.crowsflight"];
+    //[userDefaults setObject:self.locationDictionaryArray forKey:@"locationDictionaryArray"];
+    //[userDefaults setInteger:30 forKey:@"test"];
+    //NSLog(@"saved to userDefaults");
+
+
+   // NSUserDefaults* testDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.com.cwandt.crowsflight"];
+
+    //int testing = (int)[testDefaults integerForKey:@"test"];
+    //NSLog(@"saved: %i", (int)testing);
+
+    
+
+
+    
+        //suisuiteName:"@group.com.cwandt.crowsflight"];
+        
+        
+        //myDefaults?.setObject("sterling", forKey: "currency")
+        
+
 
 }
 
@@ -589,6 +628,42 @@
 {
     return UIInterfaceOrientationMaskPortrait;
 }
+
+-(void)transferLocations{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory , NSUserDomainMask, YES);
+    NSString *documentsDir = [paths objectAtIndex:0];
+    NSString *docPath = [documentsDir stringByAppendingString:@"/locationList.plist"];
+    NSURL *url = [[NSURL alloc] initFileURLWithPath:docPath];
+            
+    //WCSessionFileTransfer *fileTransfer =
+    [[WCSession defaultSession] transferFile:url metadata:nil];
+    NSLog(@"file transfer started");
+    
+}
+
+- (void)session:(nonnull WCSession *)session activationDidCompleteWithState:(WCSessionActivationState)activationState error:(nullable NSError *)error { 
+
+    [self transferLocations];
+
+}
+
+- (void)session:(nonnull WCSession *)session didFinishFileTransfer:(nonnull WCSessionFileTransfer *)fileTransfer error:(nullable NSError *)error {
+    NSLog(@"file transfer complete");
+
+}
+
+
+- (void)sessionDidBecomeInactive:(nonnull WCSession *)session { 
+    
+}
+
+- (void)sessionDidDeactivate:(nonnull WCSession *)session { 
+    [self activateASession];
+
+}
+
+
+
 
 
 @end
