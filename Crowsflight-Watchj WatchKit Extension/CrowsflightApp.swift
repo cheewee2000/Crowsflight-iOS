@@ -14,8 +14,21 @@ struct CrowsflightApp: App {
 
     @SceneBuilder var body: some Scene {
         WindowGroup {
+//            TabView {
+//
+//                ContentView()
+//              Text("Page One")
+//              Text("Page Two")
+//              Text("Page Three")
+//            }
+//            .tabViewStyle(PageTabViewStyle())
+            
+            
             NavigationView {
                 ContentView()
+                
+    
+                
             }
         }
 

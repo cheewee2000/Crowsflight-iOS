@@ -35,7 +35,6 @@
 		442A53AD1783CB75008A1687 /* fly@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 442A53A91783CB75008A1687 /* fly@2x.png */; };
 		442A53AE1783CB75008A1687 /* walk@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 442A53AA1783CB75008A1687 /* walk@2x.png */; };
 		442F15DD17A6FF0700571D19 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 442F15DC17A6FF0700571D19 /* AudioToolbox.framework */; };
-		443637DF28BF10A20077833D /* WatchSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443637DD28BF0F210077833D /* WatchSessionManager.swift */; };
 		444023FC1A39F08D0022D80B /* w3w_en_words in Resources */ = {isa = PBXBuildFile; fileRef = 444023F81A39F08D0022D80B /* w3w_en_words */; };
 		444023FD1A39F08D0022D80B /* w3w_master.dat in Resources */ = {isa = PBXBuildFile; fileRef = 444023F91A39F08D0022D80B /* w3w_master.dat */; };
 		444023FE1A39F08D0022D80B /* w3w_ybuckets.dat in Resources */ = {isa = PBXBuildFile; fileRef = 444023FA1A39F08D0022D80B /* w3w_ybuckets.dat */; };
@@ -360,7 +359,6 @@
 		442A53A91783CB75008A1687 /* fly@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fly@2x.png"; sourceTree = "<group>"; };
 		442A53AA1783CB75008A1687 /* walk@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "walk@2x.png"; sourceTree = "<group>"; };
 		442F15DC17A6FF0700571D19 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		443637DD28BF0F210077833D /* WatchSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSessionManager.swift; sourceTree = "<group>"; };
 		444023F81A39F08D0022D80B /* w3w_en_words */ = {isa = PBXFileReference; lastKnownFileType = file; path = w3w_en_words; sourceTree = "<group>"; };
 		444023F91A39F08D0022D80B /* w3w_master.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = w3w_master.dat; sourceTree = "<group>"; };
 		444023FA1A39F08D0022D80B /* w3w_ybuckets.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = w3w_ybuckets.dat; sourceTree = "<group>"; };
@@ -1026,7 +1024,6 @@
 			isa = PBXGroup;
 			children = (
 				448AC1A917BD687700281208 /* SystemConfiguration.framework */,
-				443637DD28BF0F210077833D /* WatchSessionManager.swift */,
 				444023F61A388D710022D80B /* what3words */,
 				448AC1A617BD685B00281208 /* Reachability.h */,
 				448AC1A717BD685B00281208 /* Reachability.m */,
@@ -1625,7 +1622,6 @@
 				441CAA3B17552656003131F8 /* UINavigationController+GZDrawer.m in Sources */,
 				44C1D14017599F8C007798A6 /* SIAlertView.m in Sources */,
 				44E6D09B1760FB21003344CA /* LRSlidingTableViewCell.m in Sources */,
-				443637DF28BF10A20077833D /* WatchSessionManager.swift in Sources */,
 				449A1E021765938000EF78B5 /* ATSDragToReorderTableViewController.m in Sources */,
 				44795DBD176988EB00921101 /* cwtToolbar.m in Sources */,
 				44DA559D176EAF7D004A4C1F /* cwtArrow.m in Sources */,

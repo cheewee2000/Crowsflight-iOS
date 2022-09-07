@@ -11,6 +11,8 @@ import Foundation
 import SwiftUI
 
 
+
+
 struct Marker: Hashable {
     let degrees: Double
     let label: String
@@ -158,113 +160,178 @@ struct Circle: Shape {
 
 }
 
+
+
 struct ContentView : View {
-    @ObservedObject var compassHeading = CompassHeading();
-//    @ObservedObject var extensionDelegate = ExtensionDelegate();
+    @StateObject private var viewModel = DynamicTabViewModel()
+
 
     var body: some View {
+        //NavigationView {
 
-        ZStack {
-            ZStack {
-                //pointer
-                Arrow(spread: self.compassHeading.bearingAccuracy)
-                    .fill(.yellow)
-                    //.stroke(lineWidth: 40)
-                    //.fill(style: noFill)
-                    .frame(width: 500, height: 500)
-                    .rotationEffect(Angle(degrees: self.compassHeading.bearing))
+            TabView {
+                CFView(targetIndex: 0)
+                CFView(targetIndex: 1)
+                CFView(targetIndex: 2)
+                CFView(targetIndex: 3)
 
-                //compass
-                ForEach(Marker.markers(), id: \.self) { marker in
-                    CompassMarkerView(marker: marker,
-                                      compassDegress: self.compassHeading.heading)
-                }
-
-
-
-            }
-            .frame(width: 500,
-                   height: 500)
-            .rotationEffect(Angle(degrees: self.compassHeading.heading))
-                    
-
-        ZStack {
-            
-            //cyan arc
-            ProgressArc(arcLength:  self.compassHeading.progress)
-                .fill(.cyan)
-                .frame(width: 100, height: 100)
-            
-            
-            //distance background
-            Circle()
-                .fill(.white)
-                .frame(width: 70, height: 70)
-    
-
-            
-            //distance
-            Text(self.compassHeading.distanceText)
-                .font(.system(size: 20, weight: .light))
-                .foregroundColor(.black)
-                .frame(width:300)
-                .monospacedDigit()
-            
-            
-            
-            //units
-            Text(self.compassHeading.unitText)
-                .baselineOffset(-40)
-                .font(.system(size: 10, weight: .light))
-                    .foregroundColor(.black)
-
-                    .frame(width:60)
-                    .monospacedDigit()
-            
-        }.frame(width: 500,
-                height: 500)
-
-            ZStack {
-                
-                //targetname
-                Text(self.compassHeading.targetName)
-                    .font(.system(size: 16))
-                    .frame(width:280)
-                    .monospacedDigit()
-                    
-                
-            }.frame(width: 500,
-                    height: 500)
-            .offset(x:0, y: 90)
-        
-        }
-        .onTapGesture(count: 1){
-            //next location. testing
-            self.compassHeading.targetIndex += 1
-            if(self.compassHeading.targetIndex >= self.compassHeading.targetMax){
-                self.compassHeading.targetIndex = 0
-            }
-            
-
-        }
-        .onLongPressGesture(){
-
-            //switch units
-                self.compassHeading.unitsMetric = !self.compassHeading.unitsMetric
+//                ForEach(viewModel.tabItems ) { item in
+//                                Text(item.name)
+//                                    .font(.largeTitle)
+//                                    .tabItem {
+//                                        Label(item.name, systemImage: item.image)
+//                                    }
+//                                    .tag(item.tag)
+//
+//                                CFView()
+//
+//                            }
             
         }
     }
-
-        
-        
 }
 
 
+struct CFView : View {
+    @ObservedObject var compassHeading = CompassHeading()
+    
+    init(targetIndex : Int) {
+        self.compassHeading.targetIndex = targetIndex
+       }
+    
+    var body: some View {
+        
+        NavigationView {
 
-
+            ZStack {
+                ZStack {
+                    
+                    //pointer
+                    Arrow(spread: self.compassHeading.bearingAccuracy)
+                        .fill(.yellow)
+                        //.stroke(lineWidth: 40)
+                        //.fill(style: noFill)
+                        .frame(width: 500, height: 500)
+                        .rotationEffect(Angle(degrees: self.compassHeading.bearing))
+    
+                    
+                    //compass
+                    ForEach(Marker.markers(), id: \.self) { marker in
+                        CompassMarkerView(marker: marker,
+                                          compassDegress: self.compassHeading.heading)
+                    }
+    
+    
+    
+                }
+                .frame(width: 500,
+                       height: 500)
+                .rotationEffect(Angle(degrees: self.compassHeading.heading))
+    
+    
+    
+    
+            ZStack {
+    
+                //cyan arc
+                ProgressArc(arcLength:  self.compassHeading.progress)
+                    .fill(.cyan)
+                    .frame(width: 100, height: 100)
+    
+    
+                //distance background
+                Circle()
+                    .fill(.white)
+                    .frame(width: 70, height: 70)
+    
+    
+    
+                //distance
+                Text(self.compassHeading.distanceText)
+                    .font(.system(size: 20, weight: .light))
+                    .foregroundColor(.black)
+                    .frame(width:300)
+                    .monospacedDigit()
+    
+    
+    
+                //units
+                Text(self.compassHeading.unitText)
+                    .baselineOffset(-40)
+                    .font(.system(size: 10, weight: .light))
+                        .foregroundColor(.black)
+    
+                        .frame(width:60)
+                        .monospacedDigit()
+    
+            }.frame(width: 500,
+                    height: 500)
+    
+    
+    
+//                ZStack {
+//
+//                    //targetname
+//                    Text(self.compassHeading.targetName.uppercased())
+//                        .font(.system(size: 16))
+//                        .frame(width:280)
+//                        .monospacedDigit()
+//
+//
+//                }.frame(width: 500,
+//                        height: 500)
+//                .offset(x:0, y: 90)
+    
+            }
+            
+//            .onTapGesture(count: 1){
+//                //next location. testing
+//                self.compassHeading.targetIndex += 1
+//                if(self.compassHeading.targetIndex >= self.compassHeading.targetMax){
+//                    self.compassHeading.targetIndex = 0
+//                }
+//            }
+            .onTapGesture(){
+                //switch units
+                    self.compassHeading.unitsMetric = !self.compassHeading.unitsMetric
+            }
+    }
+        .navigationTitle(self.compassHeading.targetName.uppercased())
+        .navigationBarTitleDisplayMode(.inline)
+    }
+}
 
 struct Previews_ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
+        ContentView()
+            .preferredColorScheme(.dark)
     }
 }
+
+
+//tabs
+struct TabItem: Identifiable {
+  let id = UUID()
+  let name: String
+  let image: String
+  let tag: Int
+}
+
+final class DynamicTabViewModel: ObservableObject {
+    @Published var tabItems: [TabItem] = []
+    @Published var tabCount = 1
+    
+    func addTabItem() {
+        tabItems.append(TabItem(name: " Tab \(tabCount)", image: "0\(tabCount).square", tag: tabCount))
+        tabCount += 1
+    }
+    
+    func removeTabItem() {
+        tabItems.removeLast()
+        tabCount -= 1
+    }
+}
+
+
+
+
