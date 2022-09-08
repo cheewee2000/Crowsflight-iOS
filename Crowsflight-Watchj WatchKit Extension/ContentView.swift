@@ -163,30 +163,29 @@ struct Circle: Shape {
 
 
 struct ContentView : View {
-    @StateObject private var viewModel = DynamicTabViewModel()
+    //@StateObject private var viewModel = DynamicTabViewModel()
+    @ObservedObject var delagate = ExtensionDelegate()
 
+    
+    var compassHeading = CompassHeading()
+    init() {
+        //viewModel.addTabItem()
+        //viewModel.addTabItem()
 
+       }
     var body: some View {
         //NavigationView {
 
+        
             TabView {
-                CFView(targetIndex: 0)
-                CFView(targetIndex: 1)
-                CFView(targetIndex: 2)
-                CFView(targetIndex: 3)
+//                CFView(targetIndex: 0)
+//                CFView(targetIndex: 1)
+//                CFView(targetIndex: 2)
+//                CFView(targetIndex: 3)
 
-//                ForEach(viewModel.tabItems ) { item in
-//                                Text(item.name)
-//                                    .font(.largeTitle)
-//                                    .tabItem {
-//                                        Label(item.name, systemImage: item.image)
-//                                    }
-//                                    .tag(item.tag)
-//
-//                                CFView()
-//
-//                            }
-            
+                ForEach(( 0...self.compassHeading.targetMax-1 ), id: \.self) {i in
+                CFView(targetIndex:i)
+            }
         }
     }
 }
@@ -194,13 +193,14 @@ struct ContentView : View {
 
 struct CFView : View {
     @ObservedObject var compassHeading = CompassHeading()
-    
+//    var index = 0;
     init(targetIndex : Int) {
         self.compassHeading.targetIndex = targetIndex
+//        index = targetIndex
        }
-    
+
     var body: some View {
-        
+
         NavigationView {
 
             ZStack {
@@ -303,18 +303,20 @@ struct CFView : View {
 
 struct Previews_ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
-            .preferredColorScheme(.dark)
+        Text("hello")
+        //ContentView()
+          //  .preferredColorScheme(.dark)
     }
 }
 
 
 //tabs
 struct TabItem: Identifiable {
-  let id = UUID()
-  let name: String
-  let image: String
-  let tag: Int
+    let id = UUID()
+    let lat: String
+    let lng: String
+    let address: String
+    let searchedText: String
 }
 
 final class DynamicTabViewModel: ObservableObject {
@@ -322,7 +324,9 @@ final class DynamicTabViewModel: ObservableObject {
     @Published var tabCount = 1
     
     func addTabItem() {
-        tabItems.append(TabItem(name: " Tab \(tabCount)", image: "0\(tabCount).square", tag: tabCount))
+        tabItems.append(TabItem(lat: "55.5", lng: "44.4", address: "123", searchedText: "test"))
+        //tabItems.append(TabItem(name: " Tab \(tabCount)", image: "0\(tabCount).square", tag: tabCount))
+
         tabCount += 1
     }
     

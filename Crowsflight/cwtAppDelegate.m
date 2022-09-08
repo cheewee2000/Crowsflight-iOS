@@ -224,34 +224,6 @@
     [self transferLocations];
 
 
-    
-
-    
-    
-    //shared appgroup
-        
-    //NSUserDefaults* myDefaults = [[NSUserDefaults alloc] initWithSuiteName:"@group.com.cwandt.crowsflight"];
-    //NSUserDefaults* userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.com.cwandt.crowsflight"];
-    //[userDefaults setObject:self.locationDictionaryArray forKey:@"locationDictionaryArray"];
-    //[userDefaults setInteger:30 forKey:@"test"];
-    //NSLog(@"saved to userDefaults");
-
-
-   // NSUserDefaults* testDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.com.cwandt.crowsflight"];
-
-    //int testing = (int)[testDefaults integerForKey:@"test"];
-    //NSLog(@"saved: %i", (int)testing);
-
-    
-
-
-    
-        //suisuiteName:"@group.com.cwandt.crowsflight"];
-        
-        
-        //myDefaults?.setObject("sterling", forKey: "currency")
-        
-
 
 }
 
@@ -451,8 +423,6 @@
     
    [self iCloudSync];
     
-    
-    
 }
 
 -(void)iCloudSync{
@@ -464,6 +434,8 @@
         [store synchronize];
         NSLog(@"iCloud Sync Upload");
     }
+    [self transferLocations];
+
 }
 
 

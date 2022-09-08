@@ -8,7 +8,7 @@ class ExtensionDelegate: NSObject, ObservableObject, WKExtensionDelegate {
         print("watch launched")
     }
     
-    var fileURL: URL = URL.init(fileURLWithPath: "") {
+    var list : Array = [Any]() {
         didSet {
             objectWillChange.send()
         }
@@ -55,13 +55,13 @@ extension ExtensionDelegate : WCSessionDelegate {
         print("Has content pending: \(WCSession.default.hasContentPending)")
 
         
-        self.fileURL = file.fileURL
+        //self.fileURL = file.fileURL
         
-        let array=(NSArray(contentsOf:self.fileURL) as? [Any])!
+        let array=(NSArray(contentsOf:file.fileURL) as? [Any])!
         if(!array.isEmpty){
             print(array)
-            let list=(NSArray(contentsOf: file.fileURL) as? [Any])!
-            saveData(list);
+            self.list=(NSArray(contentsOf: file.fileURL) as? [Any])!
+            saveData(self.list);
 
         }
         
@@ -91,6 +91,9 @@ extension ExtensionDelegate : WCSessionDelegate {
         (locations as NSArray).write(to: dataFilePath(), atomically: true)
         print("saved list to file")
         print(dataFilePath())
+        
+        //restart ContentView
+        
      }
     
     

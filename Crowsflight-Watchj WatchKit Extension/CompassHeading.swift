@@ -214,18 +214,43 @@ class CompassHeading: NSObject, ObservableObject, CLLocationManagerDelegate{
         //let extensionDelegate = ExtensionDelegate();
         loadData()
 
+        loadDictionary()
+        
 
         print("setup complete")
     }
     
     
+    func loadDictionary(){
+
+         let targetDictionary = self.targetList[targetIndex]  as? [String: Any];
+
+        if(targetDictionary == nil){
+            return
+        }
+
+        self.targetName = targetDictionary?["searchedText"] as! String
+        
+        print (self.targetName)
+
+//        print (targetDictionary?["lat"])
+//        print (targetDictionary?["lng"])
+
+        
+        let lat = targetDictionary?["lat"] as? Double ?? 0.0
+        print(lat)
+        
+        let lng = targetDictionary?["lng"] as? Double ?? 0.0
+        print(lng)
+        
+
+        self.target = CLLocation(latitude: lat  , longitude: lng  )
+
+    }
     
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
         self.heading = -1 * newHeading.trueHeading
-        
         self.headingAccuracy = newHeading.headingAccuracy
-
-
     }
     
 
@@ -236,6 +261,9 @@ class CompassHeading: NSObject, ObservableObject, CLLocationManagerDelegate{
       let dateFormatter = DateFormatter()
       dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
       
+        
+    loadDictionary()
+
         
       locations.forEach { (location) in
         //print("LocationManager didUpdateLocations: \(dateFormatter.string(from: location.timestamp)); \(location.coordinate.latitude), \(location.coordinate.longitude)")
@@ -258,16 +286,9 @@ class CompassHeading: NSObject, ObservableObject, CLLocationManagerDelegate{
           }
                 
           
-          let targetDictionary = self.targetList[targetIndex]  as? [String: Any];
-          
-          
-          self.target = CLLocation(latitude: targetDictionary?["lat"] as! CLLocationDegrees, longitude: targetDictionary?["lng"] as! CLLocationDegrees )
-          
-          self.targetName = targetDictionary?["searchedText"] as! String
-          
-          
+ 
           //measure distance
-          self.distance = here.distance(from: target)
+          self.distance = here.distance(from: self.target)
 
           //always update distance
           if(self.unitsMetric == false){
@@ -318,7 +339,7 @@ class CompassHeading: NSObject, ObservableObject, CLLocationManagerDelegate{
           
           
           //measure bearing
-          self.bearing = getBearing(L1: here, L2: target)
+          self.bearing = getBearing(L1: self.here, L2: self.target)
           //print("bearing: \(self.bearing)")
           
           //bearing accuracy
@@ -332,7 +353,7 @@ class CompassHeading: NSObject, ObservableObject, CLLocationManagerDelegate{
           let olng1 = self.lng+yMeters/111111.0;
           
           let oLoc =  CLLocation.init(latitude: olat1, longitude: olng1)
-          let altBearing = getBearing(L1: oLoc, L2: target)
+          let altBearing = getBearing(L1: oLoc, L2: self.target)
 
           let bearingAccuracy = Int(bearing-altBearing + 360) % 360;
           
@@ -341,7 +362,7 @@ class CompassHeading: NSObject, ObservableObject, CLLocationManagerDelegate{
           if(self.bearingAccuracy <= 1.0){self.bearingAccuracy = 60.0};
           if(self.bearingAccuracy > 180.0){self.bearingAccuracy = 180.0};
           
-          print("accuracy: \(self.bearingAccuracy)")
+          //print("accuracy: \(self.bearingAccuracy)")
 
           //calculate progress
           self.progress = ((log(1+self.distance)/log(100)) * 0.275 - 0.2) * 360.0;
