@@ -194,45 +194,74 @@ struct Circle: Shape {
 //let tabs = tabViews()
 
 struct ContentView : View {
-    //@StateObject private var viewModel = DynamicTabViewModel()
+//    @StateObject private var viewModel = DynamicTabViewModel()
+    @StateObject private var viewModel = tabViewModel
+
+    //@ObservedObject private var viewModel = DynamicTabViewModel()
+    //@ObservedObject private var viewModel = Target()
+
     //@ObservedObject var delagate = ExtensionDelegate()
     //var locationManager = LocationManager()
     //@ObservedObject var targets = CompassHeading().targetList
-    @ObservedObject var viewModel = LocationManager()
-
+    //@StateObject private var viewModel = LocationManager()
+    
     init() {
-
+        //viewModel.addTabItem
     }
-    var body: some View {
-        NavigationView {
-            //tabViews()
-            
-            TabView {
-                //if(self.target.targetList.count>0){
-                //                ForEach(( 0...self.target.targetList.count-1 ), id: \.self) {i in
-                //                    CFTabView(targetIndex:i)
-                //                }
-                
-                
-                ForEach((0...viewModel.targetMax-1), id: \.self) {i in
-                    CFTabView(targetIndex:i)
-                }
-                
-                //}
-                TabView{
-                    VStack{
-                        Text("add locations on iPhone app")
-                        Button("Load Locations") {
-                            //self.target.loadData()
-                            //self.target.loadDictionary()
-                            //tabs.removeFromSuperview()
-                        }.buttonStyle(BorderedButtonStyle(tint: .blue))
-                    }
-                }
-            }
-            
-        }.onAppear(perform: viewAppeared)
-    }
+//    var body: some View {
+//        NavigationView {
+//            //tabViews()
+//
+//            TabView {
+//                //if(self.target.targetList.count>0){
+//                //                ForEach(( 0...self.target.targetList.count-1 ), id: \.self) {i in
+//                //                    CFTabView(targetIndex:i)
+//                //                }
+//
+//
+//                ForEach((0...viewModel.targetMax-1), id: \.self) {i in
+//                    CFTabView(targetIndex:i)
+//                }
+//
+//
+//                //                ForEach(viewModel.tabItems) { item in
+//                //                    Text(item.name)
+//                //                        .font(.largeTitle)
+//                //                        .tabItem {
+//                //                            Label(item.name, systemImage: item.image)
+//                //                        }
+//                //                        .tag(item.tag)
+//
+//                VStack{
+//                    Text("add locations on iPhone app")
+//                    Button("Load Locations") {
+//                        //self.target.loadData()
+//                        //self.target.loadDictionary()
+//                        //tabs.removeFromSuperview()
+//                    }.buttonStyle(BorderedButtonStyle(tint: .blue))
+//                }
+//            }
+//        }.onAppear(perform: viewAppeared)
+//
+//    }
+    
+    
+    
+    
+        var body: some View {
+               NavigationView {
+                   TabView {
+                       Button("Add", action: viewModel.addTabItem)
+    
+                       ForEach(viewModel.tabItems) { item in
+                           CFTabView(targetIndex:item.tag ?? 0)
+                       }
+                   }
+    
+    
+               }
+           }
+    
 }
 
 func viewAppeared(){
@@ -251,14 +280,22 @@ func viewAppeared(){
 
 struct CFTabView : View {
     //var index = 0;
-    @ObservedObject var target = Target()
+    @ObservedObject var destination = Target()
     //@ObservedObject var locationManager = LocationManager()
     //@ObservedObject var locationManager = locationInstance
     
     
     init(targetIndex : Int) {
-        self.target.targetIndex = targetIndex
-        //index = tIndex
+        //self.target.targetIndex = targetIndex
+        if(targetIndex > tabViewModel.tabItems.count){
+        return
+        }
+        self.destination.targetName = tabViewModel.tabItems[targetIndex].searchedText
+        self.destination.target = CLLocation(latitude:  tabViewModel.tabItems[targetIndex].lat, longitude: tabViewModel.tabItems[targetIndex].lng)
+//        self.destination.target.coordinate.latitude = tabViewModel.tabItems[targetIndex].lat
+//        self.destination.target.coordinate.longitude = tabViewModel.tabItems[targetIndex].lng
+
+        print("init CFTabView")
     }
     
     var body: some View {
@@ -269,18 +306,18 @@ struct CFTabView : View {
                 ZStack {
                     
                     //pointer
-                    Arrow(spread: self.target.bearingAccuracy)
+                    Arrow(spread: self.destination.bearingAccuracy)
                         .fill(.yellow)
                     //.stroke(lineWidth: 40)
                     //.fill(style: noFill)
                         .frame(width: 500, height: 500)
-                        .rotationEffect(Angle(degrees: self.target.bearing))
+                        .rotationEffect(Angle(degrees: self.destination.bearing))
                     
                     
                     //compass
                     ForEach(Marker.markers(), id: \.self) { marker in
                         CompassMarkerView(marker: marker,
-                                          compassDegress: self.target.heading)
+                                          compassDegress: self.destination.heading)
                     }
                     
                     
@@ -288,7 +325,7 @@ struct CFTabView : View {
                 }
                 .frame(width: 500,
                        height: 500)
-                .rotationEffect(Angle(degrees: self.target.heading))
+                .rotationEffect(Angle(degrees: self.destination.heading))
                 
                 
                 
@@ -296,7 +333,7 @@ struct CFTabView : View {
                 ZStack {
                     
                     //cyan arc
-                    ProgressArc(arcLength:  self.target.progress)
+                    ProgressArc(arcLength:  self.destination.progress)
                         .fill(.cyan)
                         .frame(width: 100, height: 100)
                     
@@ -309,7 +346,7 @@ struct CFTabView : View {
                     
                     
                     //distance
-                    Text(self.target.distanceText)
+                    Text(self.destination.distanceText)
                         .font(.system(size: 20, weight: .light))
                         .foregroundColor(.black)
                         .frame(width:300)
@@ -318,7 +355,7 @@ struct CFTabView : View {
                     
                     
                     //units
-                    Text(self.target.unitText)
+                    Text(self.destination.unitText)
                         .baselineOffset(-40)
                         .font(.system(size: 10, weight: .light))
                         .foregroundColor(.black)
@@ -331,7 +368,7 @@ struct CFTabView : View {
                 ZStack {
                     
                     //targetname
-                    Text(self.target.targetName.uppercased())
+                    Text(self.destination.targetName.uppercased())
                         .font(.system(size: 16))
                         .frame(width:400)
                         .monospacedDigit()
@@ -346,7 +383,7 @@ struct CFTabView : View {
             .offset(x:0, y: 5) //offset to center because of tabview dots
             .onTapGesture(){
                 //switch units
-                self.target.unitsMetric = !self.target.unitsMetric
+                self.destination.unitsMetric = !self.destination.unitsMetric
             }
             
             
@@ -366,7 +403,7 @@ struct CFTabView : View {
     }
     
     func tabAppeared(){
-        self.target.loadDictionary()
+        //self.target.loadDictionary()
         print("tabAppeared")
         
     }
@@ -385,32 +422,6 @@ struct Previews_ContentView_Previews: PreviewProvider {
     }
 }
 
-
-//tabs
-//struct TabItem: Identifiable {
-//    let id = UUID()
-//    let lat: String
-//    let lng: String
-//    let address: String
-//    let searchedText: String
-//    let tag: Int
-//
-//}
-//
-//final class DynamicTabViewModel: ObservableObject {
-//    @Published var tabItems: [TabItem] = []
-//    @Published var tabCount = 1
-//
-//    func addTabItem() {
-//        tabItems.append(TabItem(lat: "55.5", lng: "44.4", address: "123", searchedText: "test", tag: tabCount))
-//        tabCount += 1
-//    }
-//
-//    func removeTabItem() {
-//        tabItems.removeLast()
-//        tabCount -= 1
-//    }
-//}
 
 
 

@@ -25,6 +25,51 @@ import CoreLocation
 import WatchConnectivity
 import WatchKit
 
+
+//tabs
+struct TabItem: Identifiable, Decodable {
+    var id = UUID()
+    let lat: Double
+    let lng: Double
+    let address: String
+    let searchedText: String
+    let tag: Int?
+}
+
+
+var tabViewModel = DynamicTabViewModel() //global
+
+final class DynamicTabViewModel: ObservableObject {
+    @Published var tabItems: [TabItem] = []
+    @Published var tabCount = 1
+    
+    
+    func add(item : TabItem) {
+        //tabItems.append(TabItem( lat:0.0, lng:0.0, address: "",searchedText: "hello", tag: tabCount))
+        tabItems.append(item)
+        tabCount += 1
+        //print(tabCount)
+    }
+
+
+    func addTabItem() {
+        tabItems.append(TabItem( lat:0.0, lng:0.0, address: "",searchedText: "hello", tag: tabCount))
+        tabCount += 1
+        //print(tabCount)
+    }
+
+    func removeTabItem() {
+        tabItems.removeLast()
+        tabCount -= 1
+    }
+    
+}
+
+
+//var tabs = DynamicTabViewModel()
+
+
+
 class Target: NSObject, ObservableObject, CLLocationManagerDelegate{
     //var extensionDelegate = ExtensionDelegate();
     //var locationManager = LocationManager()
@@ -157,36 +202,36 @@ class Target: NSObject, ObservableObject, CLLocationManagerDelegate{
         
     ]
     
-    func loadData() {
-        let path = self.dataFilePath()
-        let defaultManager = FileManager()
-
-        //print(path)
-        if defaultManager.fileExists(atPath: path) {
-            print("path exists")
-            let url = URL(fileURLWithPath: path)
-            print (url)
-            let arr = NSArray(contentsOfFile: path) as? [Any]
-            self.targetList = arr ?? self.defaultTargetList
-        }
-    }
-    
-    func documentsDirectory()->String {
-        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-        let documentsDirectory = paths.first!
-        return documentsDirectory
-    }
-    
-    func dataFilePath ()->String{
-        return self.documentsDirectory().appendingFormat("/locationList.plist")
-    }
-    
-    func saveData(_ locations : [[String:Any]]) {
-        let archiver = NSKeyedArchiver(requiringSecureCoding: true)
-        archiver.encode(locations, forKey: "locationList")
-        let data = archiver.encodedData
-        try! data.write(to: URL(fileURLWithPath: dataFilePath()))
-    }
+//    func loadData() {
+//        let path = self.dataFilePath()
+//        let defaultManager = FileManager()
+//
+//        //print(path)
+//        if defaultManager.fileExists(atPath: path) {
+//            print("path exists")
+//            let url = URL(fileURLWithPath: path)
+//            print (url)
+//            let arr = NSArray(contentsOfFile: path) as? [Any]
+//            self.targetList = arr ?? self.defaultTargetList
+//        }
+//    }
+//    
+//    func documentsDirectory()->String {
+//        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+//        let documentsDirectory = paths.first!
+//        return documentsDirectory
+//    }
+//    
+//    func dataFilePath ()->String{
+//        return self.documentsDirectory().appendingFormat("/locationList.plist")
+//    }
+//    
+//    func saveData(_ locations : [[String:Any]]) {
+//        let archiver = NSKeyedArchiver(requiringSecureCoding: true)
+//        archiver.encode(locations, forKey: "locationList")
+//        let data = archiver.encodedData
+//        try! data.write(to: URL(fileURLWithPath: dataFilePath()))
+//    }
     
     
     private let locationManager: CLLocationManager
@@ -216,8 +261,8 @@ class Target: NSObject, ObservableObject, CLLocationManagerDelegate{
         }
         
         //let extensionDelegate = ExtensionDelegate();
-        loadData()
-        loadDictionary()
+        //loadData()
+        //loadDictionary()
         
         calculateBearing()
         calculateDistance()
@@ -227,35 +272,35 @@ class Target: NSObject, ObservableObject, CLLocationManagerDelegate{
     }
     
     
-    func loadDictionary(){
-        //let locationManager = LocationManager()
-        if(self.targetList.count<1){
-            return
-        }
-        let targetDictionary = self.targetList[targetIndex]  as? [String: Any];
-        
-        if(targetDictionary == nil){
-            return
-        }
-        
-        self.targetName = targetDictionary?["searchedText"] as! String
-        
-        //print (self.targetName)
-        //        print (targetDictionary?["lat"])
-        //        print (targetDictionary?["lng"])
-        
-        
-        let lat = targetDictionary?["lat"] as? Double ?? 0.0
-        //print(lat)
-        
-        let lng = targetDictionary?["lng"] as? Double ?? 0.0
-        //print(lng)
-        
-        //print("locations loaded")
-        self.target = CLLocation(latitude: lat  , longitude: lng  )
-        
-
-    }
+//    func loadDictionary(){
+//        //let locationManager = LocationManager()
+//        if(self.targetList.count<1){
+//            return
+//        }
+//        let targetDictionary = self.targetList[targetIndex]  as? [String: Any];
+//
+//        if(targetDictionary == nil){
+//            return
+//        }
+//
+//        self.targetName = targetDictionary?["searchedText"] as! String
+//
+//        //print (self.targetName)
+//        //        print (targetDictionary?["lat"])
+//        //        print (targetDictionary?["lng"])
+//
+//
+//        let lat = targetDictionary?["lat"] as? Double ?? 0.0
+//        //print(lat)
+//
+//        let lng = targetDictionary?["lng"] as? Double ?? 0.0
+//        //print(lng)
+//
+//        //print("locations loaded")
+//        self.target = CLLocation(latitude: lat  , longitude: lng  )
+//        tabs.tabItems.append(TabItem( lat:lat, lng:lng, address: "",searchedText: self.targetName, tag: targetIndex))
+//
+//    }
     
 
     
