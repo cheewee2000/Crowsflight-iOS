@@ -287,7 +287,7 @@ struct CFTabView : View {
     
     init(targetIndex : Int) {
         //self.target.targetIndex = targetIndex
-        if(targetIndex > tabViewModel.tabItems.count){
+        if(targetIndex > tabViewModel.tabItems.count-1){
         return
         }
         self.destination.targetName = tabViewModel.tabItems[targetIndex].searchedText

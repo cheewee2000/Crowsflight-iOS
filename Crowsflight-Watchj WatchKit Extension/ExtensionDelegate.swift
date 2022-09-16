@@ -16,11 +16,9 @@ class ExtensionDelegate: NSObject, ObservableObject, WKExtensionDelegate, WCSess
         
         //locationManager.loadData()
         
-        loadData()
-        //        var tabStructArray = functionsStruct()
-        //        tabs.add(item:tabStructArray[0])
-        //        tabs.add(item:tabStructArray[1])
-        //        tabs.add(item:tabStructArray[3])
+        //loadData()
+        loadLocations()
+
         
         
     }
@@ -73,27 +71,39 @@ class ExtensionDelegate: NSObject, ObservableObject, WKExtensionDelegate, WCSess
             let list=(NSArray(contentsOf: file.fileURL) as? [[String:Any]])!
             saveData(list);
             
-            //save to struct
-            tabViewModel.tabItems.removeAll()
-            
-            var count = 0
-            for item in list {
-                print(item)
-                //tabs.add(T)
-                
-                let target = TabItem(lat: item["lat"] as! Double, lng: item["lng"] as! Double, address: "", searchedText: item["searchedText"] as! String, tag: count)
-                tabViewModel.tabItems.append(target)
-                
-                count += 1
-                //tabViewModel.tabItems.append(TabItem( lat:item["lat"] as! Double, lng:0.0, address: "",searchedText: "hello", tag: item.index))
-                
-            }
-            
+            loadArrayToStruct(list: list)
             
         }
         //loadData()
         
     }
+    
+    
+    
+    func loadArrayToStruct(list : [[String:Any]] ){
+        tabViewModel.tabItems.removeAll()
+        
+        //save to struct
+        var count = 0
+        for item in list {
+            //print(item)
+            let target = TabItem(lat: item["lat"] as! Double, lng: item["lng"] as! Double, address: "", searchedText: item["searchedText"] as! String, tag: count)
+            tabViewModel.tabItems.append(target)
+            count += 1
+        }
+        
+        //save to defaults
+        UserDefaults.standard.set(try? PropertyListEncoder().encode(tabViewModel.tabItems), forKey:"locations")
+    }
+    
+    
+    func loadLocations(){
+        if let data = UserDefaults.standard.value(forKey:"locations") as? Data {
+            tabViewModel.tabItems = try! PropertyListDecoder().decode(Array<TabItem>.self, from: data)
+        }
+        
+    }
+    
     
     func session(_session: WCSession, didFinishFileTransfer fileTransfer: WCSessionFileTransfer, error: NSError?) {
         print("file transfer complete")
@@ -101,13 +111,6 @@ class ExtensionDelegate: NSObject, ObservableObject, WKExtensionDelegate, WCSess
     }
     
     
-//
-//    func saveData(_ locations : [[String:Any]]) {
-//        let archiver = NSKeyedArchiver(requiringSecureCoding: true)
-//        archiver.encode(locations, forKey: "locationList")
-//        let data = archiver.encodedData
-//        try! data.write(to: URL(fileURLWithPath: dataFilePath()))
-//    }
     
     func loadData() {
         let path = self.dataFilePath() as String

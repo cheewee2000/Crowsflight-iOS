@@ -27,7 +27,7 @@ import WatchKit
 
 
 //tabs
-struct TabItem: Identifiable, Decodable {
+struct TabItem: Identifiable, Decodable, Encodable {
     var id = UUID()
     let lat: Double
     let lng: Double
