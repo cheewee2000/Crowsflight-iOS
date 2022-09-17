@@ -240,7 +240,16 @@
 
 
 
+-(void)transferSettings{
 
+    //long n = [[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"];
+    
+    NSMutableDictionary *settings = [NSMutableDictionary dictionary];
+    //[settings setObject: n  forKey: @"targetIndex"];
+
+    
+    [[WCSession defaultSession] transferUserInfo:settings];
+}
 
 
 -(void)viewDidUnload{
@@ -251,8 +260,11 @@
 -(void)viewWillAppear:(BOOL)animated{
     
     if( [[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"]>= [dele.locationDictionaryArray count] ) {
+        
         [[NSUserDefaults standardUserDefaults] setInteger:[dele.locationDictionaryArray count]-1 forKey:@"currentDestinationN"];
     }
+    //save current page to watch
+    
     
     self.locationViewController.page=[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"];
     
@@ -391,10 +403,18 @@
                                    actionWithTitle:@"OK"
                                    style:UIAlertActionStyleDefault
                                    handler:^(UIAlertAction * action) {
-                                       //Handle no, thanks button
-                                       [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
-
-                                   }];
+            //Handle no, thanks button
+//            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+//
+            NSURL *URL =[NSURL URLWithString:UIApplicationOpenSettingsURLString];
+            
+            [[UIApplication sharedApplication] openURL:URL options:@{} completionHandler:^(BOOL success) {
+                if (success) {
+                    NSLog(@"Opened url");
+                }
+            }];
+            
+        }];
         //[servicesDisabledAlert addAction:yesButton];
         [servicesDisabledAlert addAction:noButton];
         

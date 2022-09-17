@@ -55,7 +55,7 @@
         self.filterBar.borderStyle = UITextBorderStyleNone;
         self.filterBar.returnKeyType=UIReturnKeySearch;
 
-        UIView * statusBackground=[[UIView alloc] initWithFrame:CGRectMake(0, -60, [[UIScreen mainScreen] bounds].size.width, 60)];
+        UIView * statusBackground=[[UIView alloc] initWithFrame:CGRectMake(0, -100, [[UIScreen mainScreen] bounds].size.width, 100)];
         [statusBackground setBackgroundColor:[UIColor whiteColor]];
         [self.filterBar addSubview:statusBackground];
     
@@ -393,8 +393,20 @@
            
     }
     if(h>10 && animationFrame>=maxWalkFrames+6){
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://shop.cwandt.com"]];
+//        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://shop.cwandt.com"] options:nil completionHandler:nil];
 
+        NSURL *URL = [NSURL URLWithString:@"shop.cwandt.com"];
+        [[UIApplication sharedApplication] openURL:URL options:@{} completionHandler:^(BOOL success) {
+            if (success) {
+                 NSLog(@"Opened url");
+            }
+        }];
+        
+        
+        
+        //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://shop.cwandt.com"]];
+
+        
     }
     
     }
@@ -920,15 +932,28 @@
     if(indexPath.section==1){
         
         if(indexPath.row==2){
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://cwandt.com/"]];
+//            [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://cwandt.com/"]];
 
+            NSURL *URL = [NSURL URLWithString:@"http://cwandt.com/"];
+            [[UIApplication sharedApplication] openURL:URL options:@{} completionHandler:^(BOOL success) {
+                if (success) {
+                     NSLog(@"Opened url");
+                }
+            }];
             return;            
         }
         else if(indexPath.row==3){
             
             //[[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://appstore.com/crowsflight"]];
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"itms-apps://itunes.apple.com/app/id444185307"]];
+//            [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"itms-apps://itunes.apple.com/app/id444185307"]];
 
+            NSURL *URL = [NSURL URLWithString:@"itms-apps://itunes.apple.com/app/id444185307"];
+            [[UIApplication sharedApplication] openURL:URL options:@{} completionHandler:^(BOOL success) {
+                if (success) {
+                     NSLog(@"Opened url");
+                }
+            }];
+            
             //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://itunes.apple.com/ru/app/id444185307"]];
 
             return;

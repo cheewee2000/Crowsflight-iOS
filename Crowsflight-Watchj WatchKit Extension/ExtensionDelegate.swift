@@ -1,26 +1,25 @@
 import WatchKit
 import WatchConnectivity
 
-//var locationInstance = LocationManager()
+
+var settings = Settings(unitsMetric: true, currentTargetIndex: 0, showInstructions: true)
+
+
+//settings
+struct Settings:  Decodable, Encodable {
+    var unitsMetric: Bool
+    var currentTargetIndex: Int
+    var showInstructions: Bool
+}
 
 class ExtensionDelegate: NSObject, ObservableObject, WKExtensionDelegate, WCSessionDelegate {
     
     func applicationDidFinishLaunching() {
         print("watch launched")
-        setupWatchConnectivity()
-        
-        // var compassHeading = CompassHeading()
-        //compassHeading.loadData()
-        //compassHeading.loadDictionary()
-        let  locationManager = LocationManager()
-        
-        //locationManager.loadData()
-        
-        //loadData()
-        loadLocations()
+        loadSettings()
 
-        
-        
+        setupWatchConnectivity()
+        loadLocations()
     }
     
     
@@ -56,31 +55,21 @@ class ExtensionDelegate: NSObject, ObservableObject, WKExtensionDelegate, WCSess
         print("Outstanding file transfers: \(WCSession.default.outstandingFileTransfers)")
         print("Has content pending: \(WCSession.default.hasContentPending)")
         
-        //self.fileURL = file.fileURL
-        
-        //        let array=(NSArray(contentsOf:file.fileURL) as? [Any])!
-        //        if(!array.isEmpty){
-        //            print(array)
-        //            let list=(NSArray(contentsOf: file.fileURL) as? [Any])!
-        //            saveData(list);
-        //        }
-        
         let array=(NSArray(contentsOf:file.fileURL) as? [[String:Any]])!
         if(!array.isEmpty){
             print(array)
             let list=(NSArray(contentsOf: file.fileURL) as? [[String:Any]])!
             saveData(list);
-            
             loadArrayToStruct(list: list)
-            
         }
-        //loadData()
-        
     }
     
+    func session(_session: WCSession, didFinishFileTransfer fileTransfer: WCSessionFileTransfer, error: NSError?) {
+        print("file transfer complete")
+        print("error: ", error as Any)
+    }
     
-    
-    func loadArrayToStruct(list : [[String:Any]] ){
+        func loadArrayToStruct(list : [[String:Any]] ){
         tabViewModel.tabItems.removeAll()
         
         //save to struct
@@ -101,106 +90,21 @@ class ExtensionDelegate: NSObject, ObservableObject, WKExtensionDelegate, WCSess
         if let data = UserDefaults.standard.value(forKey:"locations") as? Data {
             tabViewModel.tabItems = try! PropertyListDecoder().decode(Array<TabItem>.self, from: data)
         }
-        
     }
     
-    
-    func session(_session: WCSession, didFinishFileTransfer fileTransfer: WCSessionFileTransfer, error: NSError?) {
-        print("file transfer complete")
-        print("error: ", error as Any)
-    }
-    
-    
-    
-    func loadData() {
-        let path = self.dataFilePath() as String
-        let defaultManager = FileManager()
-        
-        //print(path)
-        if defaultManager.fileExists(atPath: path) {
-            print("path exists")
-            let url = URL(fileURLWithPath: path)
-            print (url)
-            let arr = NSArray(contentsOfFile: path) as? [Any]
-            print(arr)
-            
-            
-            //self.targetList = arr ?? self.defaultTargetList
-            //self.targetMax = self.targetList.count
-            //for i in vehicleList?._embedded.userVehicles ?? [] { }
-            
-            for item in arr ?? [] {
-                print(item)
-                //tabs.add(T)
-                tabViewModel.tabItems.append(TabItem( lat:0.0, lng:0.0, address: "",searchedText: "hello", tag: 1))
-                
-            }
-            
+
+    func loadSettings(){
+        if let data = UserDefaults.standard.value(forKey:"settings") as? Data {
+            settings = try! PropertyListDecoder().decode(Settings.self, from: data)
         }
-        //
-        
-        //        var tabStructArray = functionsStruct()
-        //        tabs.add(item:tabStructArray[0])
-        //        tabs.add(item:tabStructArray[1])
-        //        tabs.add(item:tabStructArray[3])
-        //
-        //
-        
-        
     }
     
-    
-    
-    
-    //save file
-    //    func getDocumentsDirectory() -> URL {
-    //        // find all possible documents directories for this user
-    //        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-    //
-    //        // just send back the first one, which ought to be the only one
-    //        return paths[0]
-    //    }
-    //
-    //
-    //    func dataFilePath ()->URL{
-    //        return self.getDocumentsDirectory().appendingPathComponent("locationList.plist")
-    //    }
-    
-    //    func saveData(_ locations : [Any]) {
-    //        (locations as NSArray).write(to: dataFilePath(), atomically: true)
-    //        print("saved list to file")
-    //        print(dataFilePath())
-    //
-    //        //restart ContentView
-    //
-    //    }
-    
-    
-    func functionsStruct() -> [TabItem] {
-        
-        let path = self.dataFilePath()
-        //let defaultManager = FileManager()
-        
-        //print(path)
-        //        if (!defaultManager.fileExists(atPath: path)) {
-        //         return
-        //        }
-        //print("path exists")
-        let url = URL(fileURLWithPath: path)
-        
-        //print (url)
-        
-        //let url = Bundle.main.url(forResource: "locationList", withExtension: "plist")!
-        let data = try! Data(contentsOf: url)
-        let decoder = PropertyListDecoder()
-        print(data)
-        //}
-        return try! decoder.decode([TabItem].self, from: data)
-        
+    func saveSettings(){
+        //save to defaults
+        UserDefaults.standard.set(try? PropertyListEncoder().encode(settings), forKey:"settings")
     }
     
-    
-    
+
     
     func documentsDirectory()->String {
         let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
@@ -218,27 +122,5 @@ class ExtensionDelegate: NSObject, ObservableObject, WKExtensionDelegate, WCSess
         let data = archiver.encodedData
         try! data.write(to: URL(fileURLWithPath: dataFilePath()))
     }
-    
-    
-    //    func documentsDirectory()->String {
-    //        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-    //        let documentsDirectory = paths.first!
-    //        return documentsDirectory
-    //    }
-    ////
-    //    func dataFilePath ()->String{
-    //        return self.documentsDirectory().appendingFormat("/locationList.plist")
-    //    }
-    ////
-    //    func saveData(_ locations : [Any]) {
-    //        let archiver = NSKeyedArchiver(requiringSecureCoding: true)
-    //        archiver.encode(locations, forKey: "locationList")
-    //        let data = archiver.encodedData
-    //        try! data.write(to: URL(fileURLWithPath: dataFilePath()))
-    //    }
-    
-    
-    
-    
 }
 

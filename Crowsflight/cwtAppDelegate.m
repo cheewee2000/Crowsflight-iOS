@@ -613,6 +613,10 @@
     
 }
 
+
+
+
+
 - (void)session:(nonnull WCSession *)session activationDidCompleteWithState:(WCSessionActivationState)activationState error:(nullable NSError *)error { 
 
     [self transferLocations];

@@ -11,14 +11,12 @@ import SwiftUI
 @main
 struct CrowsflightApp: App {
     @WKExtensionDelegateAdaptor(ExtensionDelegate.self) var delegate
-    //@ObservedObject var viewModel = LocationManager()
-
-    @SceneBuilder var body: some Scene {
+    var body: some Scene {
         WindowGroup {
-                ContentView()
+            ContentView()
         }
-
+        
         WKNotificationScene(controller: NotificationController.self, category: "myCategory")
-            
+        
     }
 }

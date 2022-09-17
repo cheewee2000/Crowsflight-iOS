@@ -1,18 +1,9 @@
-//
-//  Compass.swift
-//  Compass
-//
-//  Created by ProgrammingWithSwift on 2019/10/06.
-//  Copyright © 2019 ProgrammingWithSwift. All rights reserved.
-//
 
 //todo
 /*
- Save index and unit preference to default settings
+ load init screen, no wrist movement
+ save current index on phone, pass to watch 
  
- Reload everything when view appears
- 
- Last page of instructions
  Set to the front most app
  
  Long press to save current location
@@ -36,44 +27,16 @@ struct TabItem: Identifiable, Decodable, Encodable {
     let tag: Int?
 }
 
-
 var tabViewModel = DynamicTabViewModel() //global
 
 final class DynamicTabViewModel: ObservableObject {
     @Published var tabItems: [TabItem] = []
     @Published var tabCount = 1
-    
-    
-    func add(item : TabItem) {
-        //tabItems.append(TabItem( lat:0.0, lng:0.0, address: "",searchedText: "hello", tag: tabCount))
-        tabItems.append(item)
-        tabCount += 1
-        //print(tabCount)
-    }
-
-
-    func addTabItem() {
-        tabItems.append(TabItem( lat:0.0, lng:0.0, address: "",searchedText: "hello", tag: tabCount))
-        tabCount += 1
-        //print(tabCount)
-    }
-
-    func removeTabItem() {
-        tabItems.removeLast()
-        tabCount -= 1
-    }
-    
 }
-
-
-//var tabs = DynamicTabViewModel()
-
-
 
 class Target: NSObject, ObservableObject, CLLocationManagerDelegate{
     //var extensionDelegate = ExtensionDelegate();
     //var locationManager = LocationManager()
-    
     var objectWillChange = PassthroughSubject<Void, Never>()
     var heading: Double = .zero {
         didSet {
@@ -155,7 +118,8 @@ class Target: NSObject, ObservableObject, CLLocationManagerDelegate{
             objectWillChange.send()
         }
     }
-    var progress: Double = 0.0 {
+    
+    var progress: Double = -1.0 {
         didSet {
             objectWillChange.send()
         }
@@ -202,54 +166,16 @@ class Target: NSObject, ObservableObject, CLLocationManagerDelegate{
         
     ]
     
-//    func loadData() {
-//        let path = self.dataFilePath()
-//        let defaultManager = FileManager()
-//
-//        //print(path)
-//        if defaultManager.fileExists(atPath: path) {
-//            print("path exists")
-//            let url = URL(fileURLWithPath: path)
-//            print (url)
-//            let arr = NSArray(contentsOfFile: path) as? [Any]
-//            self.targetList = arr ?? self.defaultTargetList
-//        }
-//    }
-//    
-//    func documentsDirectory()->String {
-//        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-//        let documentsDirectory = paths.first!
-//        return documentsDirectory
-//    }
-//    
-//    func dataFilePath ()->String{
-//        return self.documentsDirectory().appendingFormat("/locationList.plist")
-//    }
-//    
-//    func saveData(_ locations : [[String:Any]]) {
-//        let archiver = NSKeyedArchiver(requiringSecureCoding: true)
-//        archiver.encode(locations, forKey: "locationList")
-//        let data = archiver.encodedData
-//        try! data.write(to: URL(fileURLWithPath: dataFilePath()))
-//    }
-    
     
     private let locationManager: CLLocationManager
 
     override init() {
-        //self.targetIndex = targetIndex
-
         self.locationManager = CLLocationManager()
         super.init()
         self.locationManager.delegate = self
         self.setup()
 
     }
-    
-    //    init(targetIndex : Int) {
-    //        self.targetIndex = targetIndex
-    ////        index = targetIndex
-    //       }
     
     
     private func setup() {
@@ -260,50 +186,14 @@ class Target: NSObject, ObservableObject, CLLocationManagerDelegate{
             self.locationManager.startUpdatingHeading()
         }
         
-        //let extensionDelegate = ExtensionDelegate();
-        //loadData()
-        //loadDictionary()
-        
         calculateBearing()
         calculateDistance()
 
         print("target setup complete")
-        print(self.targetName)
+        //print(self.targetName)
     }
     
-    
-//    func loadDictionary(){
-//        //let locationManager = LocationManager()
-//        if(self.targetList.count<1){
-//            return
-//        }
-//        let targetDictionary = self.targetList[targetIndex]  as? [String: Any];
-//
-//        if(targetDictionary == nil){
-//            return
-//        }
-//
-//        self.targetName = targetDictionary?["searchedText"] as! String
-//
-//        //print (self.targetName)
-//        //        print (targetDictionary?["lat"])
-//        //        print (targetDictionary?["lng"])
-//
-//
-//        let lat = targetDictionary?["lat"] as? Double ?? 0.0
-//        //print(lat)
-//
-//        let lng = targetDictionary?["lng"] as? Double ?? 0.0
-//        //print(lng)
-//
-//        //print("locations loaded")
-//        self.target = CLLocation(latitude: lat  , longitude: lng  )
-//        tabs.tabItems.append(TabItem( lat:lat, lng:lng, address: "",searchedText: self.targetName, tag: targetIndex))
-//
-//    }
-    
 
-    
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
         self.heading = -1 * newHeading.trueHeading
         self.headingAccuracy = newHeading.headingAccuracy
@@ -312,11 +202,8 @@ class Target: NSObject, ObservableObject, CLLocationManagerDelegate{
 
     }
     
-    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-
         let location = locations[0]
-        
         self.lat = location.coordinate.latitude
         self.lng = location.coordinate.longitude
         
@@ -328,8 +215,6 @@ class Target: NSObject, ObservableObject, CLLocationManagerDelegate{
         calculateBearing()
         calculateDistance()
     }
-    
-    
     
     
     func calculateDistance() {
@@ -345,6 +230,9 @@ class Target: NSObject, ObservableObject, CLLocationManagerDelegate{
         //measure distance
         self.distance = here.distance(from: self.target)
         
+        //get unit type from settings
+        self.unitsMetric = settings.unitsMetric
+        
         //always update distance
         if(self.unitsMetric == false){
             let miles = self.distance*0.000621371
@@ -352,7 +240,6 @@ class Target: NSObject, ObservableObject, CLLocationManagerDelegate{
             if(feet<1000){ //.25 miles in meters
                 self.distanceText = String (format:"%.0f",feet);
                 self.unitText="FEET";
-                
             }else if(miles<1000){
                 self.distanceText = String (format:"%.02f",miles);
                 self.unitText="MILES";
@@ -367,40 +254,32 @@ class Target: NSObject, ObservableObject, CLLocationManagerDelegate{
             }
         }
         else {
-            
-            
             if(self.distance<1000){
                 self.distanceText = String(format:"%.0f", self.distance)
                 self.unitText = "METERS";
-                
-                
             }else if(self.distance<10000){
                 self.distanceText = String(format:"%.02f", self.distance/1000.0)
                 self.unitText="KM";
-                
             }
             else  if(self.distance<100000) {
                 self.distanceText = String(format:"%.01f", self.distance/1000.0)
                 self.unitText="KM";
-                
             }
             else{
                 self.distanceText = String(format:"%.0f", self.distance/1000.0)
                 self.unitText="KM";
-                
             }
 
-        
-
             //calculate progress
-            self.progress = ((log(1+self.distance)/log(100)) * 0.275 - 0.2) * 360.0;
- 
+//            if(self.progress<1) {
+//                self.progress = 4
+//            }
+            self.progress = ((log(1.0 + self.distance)/log(100.0)) * 0.275 - 0.2) * 360.0;
+
+            
         }
     }
-    
-    
-    
-    
+
     func calculateBearing(){
         //let locationManager = LocationManager()
 
