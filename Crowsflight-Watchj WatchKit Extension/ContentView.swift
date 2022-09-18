@@ -179,6 +179,8 @@ struct ContentView : View {
     
     init() {
         //viewModel.addTabItem
+        //print(tabViewModel.count)
+        
     }
     
     
@@ -187,17 +189,17 @@ struct ContentView : View {
         NavigationView {
             
             TabView(selection: $selectedTab) {
+            //TabView() {
                 if(showDetails && settings.showInstructions){
-                    
                     Text("Welcome to Crowsflight. Swipe to choose locations.")
                 }
+                
                 ForEach(viewModel.tabItems) { item in
                     CFTabView(targetIndex:item.tag ?? 0)
                 }
-
+                
                 if(viewModel.tabItems.count == 0 ){
                     Text("No locations to display. Open the Crowsflight iPhone app to edit and sync locations.")
-
                 }
                 if(showDetails && settings.showInstructions){
                     //if(0 == 0){
@@ -233,10 +235,10 @@ struct CFTabView : View {
     init(targetIndex : Int) {
         tIndex = targetIndex
         //self.target.targetIndex = targetIndex
-        if(targetIndex < tabViewModel.tabItems.count-1){
-            
-            self.destination.targetName = tabViewModel.tabItems[targetIndex].searchedText
-            self.destination.target = CLLocation(latitude:  tabViewModel.tabItems[targetIndex].lat, longitude: tabViewModel.tabItems[targetIndex].lng)
+        //print(targetIndex)
+        if(tIndex < tabViewModel.tabItems.count){
+            self.destination.targetName = tabViewModel.tabItems[tIndex].searchedText
+            self.destination.target = CLLocation(latitude:  tabViewModel.tabItems[tIndex].lat, longitude: tabViewModel.tabItems[tIndex].lng)
         }
         //print("init CFTabView")
     }
@@ -349,9 +351,6 @@ struct CFTabView : View {
     }
     
     func tabAppeared(){
-        //self.target.loadDictionary()
-        print("tabAppeared")
-        //self.destination.calculateBearing() //force update unit display
         self.destination.calculateDistance() //force update unit display
         
     }

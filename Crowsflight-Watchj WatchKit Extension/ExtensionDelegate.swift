@@ -17,7 +17,7 @@ class ExtensionDelegate: NSObject, ObservableObject, WKExtensionDelegate, WCSess
     func applicationDidFinishLaunching() {
         print("watch launched")
         loadSettings()
-
+        
         setupWatchConnectivity()
         loadLocations()
     }
@@ -57,29 +57,74 @@ class ExtensionDelegate: NSObject, ObservableObject, WKExtensionDelegate, WCSess
         
         let array=(NSArray(contentsOf:file.fileURL) as? [[String:Any]])!
         if(!array.isEmpty){
-            print(array)
+            //print(array)
             let list=(NSArray(contentsOf: file.fileURL) as? [[String:Any]])!
-            saveData(list);
             loadArrayToStruct(list: list)
         }
     }
     
     func session(_session: WCSession, didFinishFileTransfer fileTransfer: WCSessionFileTransfer, error: NSError?) {
-        print("file transfer complete")
-        print("error: ", error as Any)
+        
+        if error != nil {
+            print(error?.description)
+        }
+        else{
+            print("Finished File Transfer Successfully")
+        }
+        
+        
     }
     
-        func loadArrayToStruct(list : [[String:Any]] ){
-        tabViewModel.tabItems.removeAll()
+    func loadArrayToStruct(list : [[String:Any]] ){
         
+        //var newTabs : tabViewModel.tabItems
+        var newModel = DynamicTabViewModel() //global
+
         //save to struct
         var count = 0
         for item in list {
             //print(item)
-            let target = TabItem(lat: item["lat"] as! Double, lng: item["lng"] as! Double, address: "", searchedText: item["searchedText"] as! String, tag: count)
-            tabViewModel.tabItems.append(target)
+            
+            if item["lat"] == nil {
+                return
+            }
+            
+            if item["lng"] == nil {
+                return
+            }
+            if item["searchedText"] == nil {
+                return
+            }
+            
+            print(item["searchedText"])
+            
+            var lat : Double = 0.0
+            if let latName = item["lat"] as? String {
+                lat = Double(latName) ?? 0.0
+            } else {
+                if let latName = item["lat"] as? Double {
+                    lat = Double(latName)
+                }
+            }
+            
+            var lng : Double = 0.0
+            if let lngName = item["lng"] as? String {
+                lng = Double(lngName) ?? 0.0
+            } else {
+                if let lngName = item["lng"] as? Double {
+                    lng = Double(lngName)
+                }
+            }
+            
+            let target = TabItem(lat: lat, lng: lng, address: "", searchedText: item["searchedText"] as! String, tag: count)
+            newModel.tabItems.append(target)
             count += 1
         }
+        
+        
+        
+        //tabViewModel.tabItems.removeAll()
+        tabViewModel.tabItems = newModel.tabItems
         
         //save to defaults
         UserDefaults.standard.set(try? PropertyListEncoder().encode(tabViewModel.tabItems), forKey:"locations")
@@ -92,7 +137,7 @@ class ExtensionDelegate: NSObject, ObservableObject, WKExtensionDelegate, WCSess
         }
     }
     
-
+    
     func loadSettings(){
         if let data = UserDefaults.standard.value(forKey:"settings") as? Data {
             settings = try! PropertyListDecoder().decode(Settings.self, from: data)
@@ -104,7 +149,7 @@ class ExtensionDelegate: NSObject, ObservableObject, WKExtensionDelegate, WCSess
         UserDefaults.standard.set(try? PropertyListEncoder().encode(settings), forKey:"settings")
     }
     
-
+    
     
     func documentsDirectory()->String {
         let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)

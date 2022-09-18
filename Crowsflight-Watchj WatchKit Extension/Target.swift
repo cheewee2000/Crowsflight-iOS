@@ -31,7 +31,7 @@ var tabViewModel = DynamicTabViewModel() //global
 
 final class DynamicTabViewModel: ObservableObject {
     @Published var tabItems: [TabItem] = []
-    @Published var tabCount = 1
+    @Published var tabCount = 0
 }
 
 class Target: NSObject, ObservableObject, CLLocationManagerDelegate{
@@ -189,7 +189,7 @@ class Target: NSObject, ObservableObject, CLLocationManagerDelegate{
         calculateBearing()
         calculateDistance()
 
-        print("target setup complete")
+        //print("target setup complete")
         //print(self.targetName)
     }
     
