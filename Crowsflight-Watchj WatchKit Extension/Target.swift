@@ -194,7 +194,7 @@ class Target: NSObject, ObservableObject, CLLocationManagerDelegate{
     }
     
 
-    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
         self.heading = -1 * newHeading.trueHeading
         self.headingAccuracy = newHeading.headingAccuracy
         calculateBearing()
@@ -202,7 +202,7 @@ class Target: NSObject, ObservableObject, CLLocationManagerDelegate{
 
     }
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations[0]
         self.lat = location.coordinate.latitude
         self.lng = location.coordinate.longitude
@@ -217,7 +217,7 @@ class Target: NSObject, ObservableObject, CLLocationManagerDelegate{
     }
     
     
-    func calculateDistance() {
+     func calculateDistance() {
         
         let lat = self.lat
         let lng = self.lng
@@ -229,10 +229,11 @@ class Target: NSObject, ObservableObject, CLLocationManagerDelegate{
         
         //measure distance
         self.distance = here.distance(from: self.target)
-        
+        self.progress = ((log(1+self.distance)/log(100)) * 0.275 - 0.2) * 359.0;
+
         //get unit type from settings
         self.unitsMetric = settings.unitsMetric
-        
+
         //always update distance
         if(self.unitsMetric == false){
             let miles = self.distance*0.000621371
@@ -274,13 +275,14 @@ class Target: NSObject, ObservableObject, CLLocationManagerDelegate{
 //            if(self.progress<1) {
 //                self.progress = 4
 //            }
-            self.progress = ((log(1.0 + self.distance)/log(100.0)) * 0.275 - 0.2) * 360.0;
+            //self.progress = ((log(1.0 + self.distance)/log(100.0)) * 0.275 - 0.2) * 360.0;
 
-            
+            //self.progress =((log(1+self.distance)/log(100))*.275-.2)*[self.arcProgressView maxArc];
+
         }
     }
 
-    func calculateBearing(){
+     func calculateBearing(){
         //let locationManager = LocationManager()
 
         //measure bearing
@@ -322,7 +324,7 @@ class Target: NSObject, ObservableObject, CLLocationManagerDelegate{
     }
 
     
-    func getBearing(L1: CLLocation,  L2: CLLocation) -> Double{
+     func getBearing(L1: CLLocation,  L2: CLLocation) -> Double{
         
         let lat1 = (L1.coordinate.latitude / 180.0 * Double.pi);
         let lat2 = (L2.coordinate.latitude / 180.0 * Double.pi);

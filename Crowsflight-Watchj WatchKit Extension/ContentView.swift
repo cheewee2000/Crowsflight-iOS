@@ -229,7 +229,7 @@ func viewAppeared(){
 
 struct CFTabView : View {
     //var index = 0;
-    @ObservedObject var destination = Target()
+    @MainActor @ObservedObject var destination = Target()
     var tIndex = 0
     
     init(targetIndex : Int) {
