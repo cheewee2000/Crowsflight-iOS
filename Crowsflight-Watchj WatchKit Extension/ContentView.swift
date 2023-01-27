@@ -307,6 +307,15 @@ struct CFTabView : View {
                         .frame(width:60)
                         .monospacedDigit()
                     
+                    
+                    //bearing
+                    Text(self.destination.bearingText)
+                        .font(.system(size: 20, weight: .light))
+                        .foregroundColor(.black)
+                        .frame(width:300)
+                        .monospacedDigit()
+                    
+                    
                 }
                 
                 ZStack {
@@ -328,11 +337,16 @@ struct CFTabView : View {
             .onTapGesture(){
                 //switch units
                 //self.destination.unitsMetric = !self.destination.unitsMetric
-                settings.unitsMetric = !settings.unitsMetric
-                self.destination.calculateDistance() //force update unit display
-                ExtensionDelegate().saveSettings()
+                settings.showBearing = !settings.showBearing;
+                self.destination.calculateDistance(); //force update unit display
+                self.destination.calculateBearing(); //force update unit display
+                ExtensionDelegate().saveSettings();
             }
-            
+            .onLongPressGesture(minimumDuration: 0.1) {
+                settings.unitsMetric = !settings.unitsMetric;
+                self.destination.calculateDistance(); //force update unit display
+                ExtensionDelegate().saveSettings();
+            }
             
             
             
@@ -343,7 +357,7 @@ struct CFTabView : View {
             //                    self.compassHeading.targetIndex = 0
             //                }
             //            }
-            
+        
         }.onAppear(perform: tabAppeared)
             .tag(tIndex)
         //.navigationTitle(self.compassHeading.targetName.uppercased())
@@ -352,7 +366,8 @@ struct CFTabView : View {
     
     func tabAppeared(){
         self.destination.calculateDistance() //force update unit display
-        
+        self.destination.calculateBearing(); //force update bearing display
+
     }
     
 }

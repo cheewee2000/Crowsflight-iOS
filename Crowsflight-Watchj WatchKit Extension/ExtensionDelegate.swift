@@ -2,17 +2,21 @@ import WatchKit
 import WatchConnectivity
 
 
-var settings = Settings(unitsMetric: true, currentTargetIndex: 0, showInstructions: true)
+var settings = Settings(unitsMetric: true, currentTargetIndex: 0, showInstructions: true, showBearing: true)
 
+//var settings = Settings(unitsMetric: true, currentTargetIndex: 0, showInstructions: true)
 
 //settings
 struct Settings:  Decodable, Encodable {
     var unitsMetric: Bool
     var currentTargetIndex: Int
     var showInstructions: Bool
+    var showBearing: Bool
+
 }
 
 class ExtensionDelegate: NSObject, ObservableObject, WKExtensionDelegate, WCSessionDelegate {
+    
     
     func applicationDidFinishLaunching() {
         print("watch launched")
@@ -140,7 +144,13 @@ class ExtensionDelegate: NSObject, ObservableObject, WKExtensionDelegate, WCSess
     
     func loadSettings(){
         if let data = UserDefaults.standard.value(forKey:"settings") as? Data {
-            settings = try! PropertyListDecoder().decode(Settings.self, from: data)
+            
+            do{
+                settings = try PropertyListDecoder().decode(Settings.self, from: data)
+            }
+            catch{
+                saveSettings();
+            }
         }
     }
     

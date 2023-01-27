@@ -81,7 +81,6 @@
     // Allocate a reachability object
     Reachability* reach = [Reachability reachabilityWithHostname:@"www.google.com"];
     
-    [self activateASession];
 
 
 
@@ -112,6 +111,7 @@
     // Synchronize Store
     [store synchronize];
     
+    [self activateASession];
 
     
     return YES;
@@ -122,8 +122,10 @@
     if ([WCSession isSupported]) {
         session = [WCSession defaultSession];
         session.delegate = self;
+        [session activateSession];
+
         if([session activationState]!=WCSessionActivationStateActivated){
-               [session activateSession];
+               //[session activateSession];
            }
         NSLog(@"Session on phone starting");
     }
@@ -618,6 +620,7 @@
 
 
 - (void)session:(nonnull WCSession *)session activationDidCompleteWithState:(WCSessionActivationState)activationState error:(nullable NSError *)error { 
+    NSLog(@"activation complete");
 
     [self transferLocations];
 

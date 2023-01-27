@@ -78,6 +78,11 @@ class Target: NSObject, ObservableObject, CLLocationManagerDelegate{
         }
     }
     
+    var bearingText: String = "" {
+        didSet {
+            objectWillChange.send()
+        }
+    }
     var horizontalAccuracy: Double = .zero {
         didSet {
             objectWillChange.send()
@@ -114,6 +119,12 @@ class Target: NSObject, ObservableObject, CLLocationManagerDelegate{
     }
     
     var unitsMetric: Bool = true {
+        didSet {
+            objectWillChange.send()
+        }
+    }
+    
+    var showBearing: Bool = false {
         didSet {
             objectWillChange.send()
         }
@@ -232,7 +243,8 @@ class Target: NSObject, ObservableObject, CLLocationManagerDelegate{
         self.progress = ((log(1+self.distance)/log(100)) * 0.275 - 0.2) * 359.0;
 
         //get unit type from settings
-        self.unitsMetric = settings.unitsMetric
+         self.unitsMetric = settings.unitsMetric;
+         self.showBearing = settings.showBearing;
 
         //always update distance
         if(self.unitsMetric == false){
@@ -271,19 +283,19 @@ class Target: NSObject, ObservableObject, CLLocationManagerDelegate{
                 self.unitText="KM";
             }
 
-            //calculate progress
-//            if(self.progress<1) {
-//                self.progress = 4
-//            }
-            //self.progress = ((log(1.0 + self.distance)/log(100.0)) * 0.275 - 0.2) * 360.0;
-
-            //self.progress =((log(1+self.distance)/log(100))*.275-.2)*[self.arcProgressView maxArc];
-
         }
+         
+         if(self.showBearing){
+             self.distanceText = "";
+             self.unitText = "";
+         }else{
+             self.bearingText = "";
+         }
     }
 
      func calculateBearing(){
         //let locationManager = LocationManager()
+        //self.showBearing = settings.showBearing;
 
         //measure bearing
         self.bearing = getBearing(L1: self.here, L2: self.target)
@@ -321,6 +333,15 @@ class Target: NSObject, ObservableObject, CLLocationManagerDelegate{
         if(self.bearingAccuracy <= 1.0){self.bearingAccuracy = 20.0};
         if(self.bearingAccuracy > 180.0){self.bearingAccuracy = 180.0};
         
+         if(self.showBearing){
+             self.bearingText = String(format:"%.0f°", self.bearing);
+             self.distanceText = "";
+             self.unitText = "";
+         }
+         else {
+             self.bearingText = "";
+         }
+         
     }
 
     
