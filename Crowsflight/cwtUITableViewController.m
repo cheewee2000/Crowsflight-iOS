@@ -99,11 +99,6 @@
 
 
 
--(void)viewDidUnload{
-    //AudioServicesDisposeSystemSoundID(audioSelect3);
-    
-}
-
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
@@ -183,10 +178,10 @@
     [self.filterBar resignFirstResponder];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 

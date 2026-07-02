@@ -133,7 +133,7 @@
 }
 
 
-- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options {
     
 	//cout<<url;
 	//NSString * urlString= [[NSString alloc] initWithUTF8String:url.c_str()];
@@ -304,9 +304,10 @@
 //}
 
 
-- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
 
-    
+    CLLocation *newLocation = [locations lastObject];
+
     // test the age of the location measurement to determine if the measurement is cached
     // in most cases you will not want to rely on cached measurements
     NSTimeInterval locationAge = -[newLocation.timestamp timeIntervalSinceNow];

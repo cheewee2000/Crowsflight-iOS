@@ -36,7 +36,7 @@
 	// Do any additional setup after loading the view.
     self.progress=1;
     
-    dele = [[UIApplication sharedApplication] delegate];
+    dele = (cwtAppDelegate *)[[UIApplication sharedApplication] delegate];
     CGRect screen = [[UIScreen mainScreen] bounds];
     
     //    self.arrowImage=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrow-line.png"]];
@@ -570,21 +570,6 @@
 
 }
 
-- (void) alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    //    cwtAppDelegate* dele=[[UIApplication sharedApplication] delegate];
-    //
-    //    //edit location name
-    //	if(alertView.tag==5){
-    //		if(buttonIndex==1){
-    //            self.destinationButton.titleLabel.text=self.nameField.text;
-    //
-    //			[dele editDestination:self.nameField.text newlat:0 newlng:0];
-    //
-    //		}
-    //	}
-    
-}
-
 -(void) hideArrow:(BOOL) state
 {
     self.arrow.hidden=state;
@@ -596,7 +581,4 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewDidUnload {
-    [super viewDidUnload];
-}
 @end

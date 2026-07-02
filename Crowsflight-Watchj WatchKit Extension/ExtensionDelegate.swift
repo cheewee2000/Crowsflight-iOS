@@ -70,7 +70,7 @@ class ExtensionDelegate: NSObject, ObservableObject, WKExtensionDelegate, WCSess
     func session(_session: WCSession, didFinishFileTransfer fileTransfer: WCSessionFileTransfer, error: NSError?) {
         
         if error != nil {
-            print(error?.description)
+            print(error?.description ?? "unknown error")
         }
         else{
             print("Finished File Transfer Successfully")
@@ -82,7 +82,7 @@ class ExtensionDelegate: NSObject, ObservableObject, WKExtensionDelegate, WCSess
     func loadArrayToStruct(list : [[String:Any]] ){
         
         //var newTabs : tabViewModel.tabItems
-        var newModel = DynamicTabViewModel() //global
+        let newModel = DynamicTabViewModel() //global
 
         //save to struct
         var count = 0
@@ -100,7 +100,7 @@ class ExtensionDelegate: NSObject, ObservableObject, WKExtensionDelegate, WCSess
                 return
             }
             
-            print(item["searchedText"])
+            print(item["searchedText"] ?? "")
             
             var lat : Double = 0.0
             if let latName = item["lat"] as? String {

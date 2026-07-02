@@ -28,7 +28,7 @@
 
 
 
-@interface cwtViewController3 ()<UIPageViewControllerDataSource, UIPageViewControllerDelegate>
+@interface cwtViewController3 ()<UIPageViewControllerDataSource, UIPageViewControllerDelegate, WCSessionDelegate>
 
 
 @end
@@ -252,8 +252,17 @@
     [[WCSession defaultSession] transferUserInfo:settings];
 }
 
+//WCSessionDelegate required methods
+- (void)session:(WCSession *)session activationDidCompleteWithState:(WCSessionActivationState)activationState error:(NSError *)error{
+}
+- (void)sessionDidBecomeInactive:(WCSession *)session{
+}
+- (void)sessionDidDeactivate:(WCSession *)session{
+}
 
--(void)viewDidUnload{
+
+// was viewDidUnload (deprecated/never called on modern iOS); dispose sound on dealloc instead
+-(void)dealloc{
     AudioServicesDisposeSystemSoundID(audioCreate);
 }
 
@@ -378,7 +387,7 @@
         causeStr = @"device";
     }
     // check the application’s explicit authorization status:
-    else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied)
+    else if ([[[CLLocationManager alloc] init] authorizationStatus] == kCLAuthorizationStatusDenied)
     {
         causeStr = @"app";
     }
@@ -1027,11 +1036,8 @@
             
             
             self.localSearch = [[MKLocalSearch alloc] initWithRequest:request];
-            
-            
-            [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-            
-            
+
+
 
             MKLocalSearchCompletionHandler completionHandler = ^(MKLocalSearchResponse *response, NSError *error)
             {
@@ -1046,7 +1052,7 @@
                 {
                     
                     NSString *errorMessage=@"NO RESULTS";
-                    if(dele.hasInternet==FALSE){
+                    if(self->dele.hasInternet==FALSE){
                         errorMessage=@"NO INTERNET CONNECTION";
                         
                     }
@@ -1072,9 +1078,8 @@
 
                     
                     [self.navigationController pushDrawerViewController:self.mapViewController  withStyle:DrawerLayoutStyleRightAnchored animated:YES];
-    
+
                 }
-                [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
             };
             
             [self.localSearch startWithCompletionHandler:completionHandler];

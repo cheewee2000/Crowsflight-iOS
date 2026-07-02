@@ -38,7 +38,7 @@ static BOOL __si_alert_animating;
 static SIAlertBackgroundWindow *__si_alert_background_window;
 static SIAlertView *__si_alert_current_view;
 
-@interface SIAlertView ()
+@interface SIAlertView () <CAAnimationDelegate>
 
 @property (nonatomic, strong) NSMutableArray *items;
 @property (nonatomic, strong) UIWindow *alertWindow;
@@ -70,6 +70,9 @@ static SIAlertView *__si_alert_current_view;
 @end
 
 
+// Intentionally overrides UITextField methods via a category (library design); suppress the warning.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-protocol-method-implementation"
 @implementation UITextField (custom)
 - (CGRect)textRectForBounds:(CGRect)bounds {
     return CGRectMake(bounds.origin.x + 40, bounds.origin.y + 10,
@@ -79,6 +82,7 @@ static SIAlertView *__si_alert_current_view;
     return [self textRectForBounds:bounds];
 }
 @end
+#pragma clang diagnostic pop
 
 
 #pragma mark - SIBackgroundWindow
@@ -182,8 +186,9 @@ static SIAlertView *__si_alert_current_view;
     
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
     [self.alertView resetTransition];
     [self.alertView invaliadateLayout];
 }
@@ -886,8 +891,8 @@ static SIAlertView *__si_alert_current_view;
 
 
 -(void)addSearchField{
-    
-    cwtAppDelegate* dele=[[UIApplication sharedApplication] delegate];
+
+    cwtAppDelegate* dele=(cwtAppDelegate *)[[UIApplication sharedApplication] delegate];
     CGRect screen = [[UIScreen mainScreen] bounds];
 
     CGFloat height = [self preferredHeight];
@@ -955,7 +960,7 @@ static SIAlertView *__si_alert_current_view;
     
         else{
             
-            cwtAppDelegate * dele = [[UIApplication sharedApplication] delegate];
+            cwtAppDelegate * dele = (cwtAppDelegate *)[[UIApplication sharedApplication] delegate];
             //W3wPosition *tPosition = [dele.viewController.w3wSDK convertPositionToW3W:kW3wLanguageEnglish lat:dele.myLat lng:dele.myLng];
             //self.textField.text=[NSString stringWithFormat:@"%f,%f %@",dele.myLat,dele.myLng,tPosition.getW3w];
 

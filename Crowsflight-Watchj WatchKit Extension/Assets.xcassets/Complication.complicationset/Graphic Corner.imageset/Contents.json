@@ -1,10 +1,6 @@
 {
   "images" : [
     {
-      "filename" : "Crowsflight-alpha.png",
-      "idiom" : "watch"
-    },
-    {
       "idiom" : "watch",
       "screen-width" : "<=145"
     },

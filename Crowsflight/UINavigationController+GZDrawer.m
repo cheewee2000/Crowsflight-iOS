@@ -36,11 +36,7 @@
 // Screencapture a view and turn it into an image
 + (UIImage *)imageByScreencapturingView:(UIView *)view {
     
-    if (&UIGraphicsBeginImageContextWithOptions != NULL) {
-        UIGraphicsBeginImageContextWithOptions(view.bounds.size, YES, 0.0);
-    } else    {
-        UIGraphicsBeginImageContext(view.bounds.size);
-    }
+    UIGraphicsBeginImageContextWithOptions(view.bounds.size, YES, 0.0);
     
     [view.layer renderInContext:UIGraphicsGetCurrentContext()];
     
@@ -53,7 +49,14 @@
 
 // The status bar frame wrt a view
 + (CGRect)statusBarFrameWithView:(UIView*)view {
-    return [view convertRect:[view.window convertRect:[[UIApplication sharedApplication] statusBarFrame]
+    CGRect statusBarFrame = CGRectZero;
+    UIStatusBarManager *statusBarManager = view.window.windowScene.statusBarManager;
+    if (statusBarManager) {
+        statusBarFrame = statusBarManager.statusBarFrame;
+    } else {
+        statusBarFrame = [[[[UIApplication sharedApplication] windows] firstObject] windowScene].statusBarManager.statusBarFrame;
+    }
+    return [view convertRect:[view.window convertRect:statusBarFrame
                                            fromWindow:nil]
                     fromView:nil];
 }
@@ -160,16 +163,11 @@
     }
     
     if (animated) {
-        [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationDuration:0.15];
-    }
-    
-    
-    topViewButton.frame = frame;
-    
-
-    if (animated) {
-        [UIView commitAnimations];
+        [UIView animateWithDuration:0.15 animations:^{
+            topViewButton.frame = frame;
+        }];
+    } else {
+        topViewButton.frame = frame;
     }
 }
 
@@ -195,12 +193,8 @@
     }
     
     if (animated) {
-        [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationDuration:0.15];
-        [UIView setAnimationDelegate:self];
-        [UIView setAnimationDidStopSelector:@selector(popDrawerAnimationDidEnd)];
-                
-        
+
+
 //        [UIView animateWithDuration:.2
 //                              delay:0
 //                            options:UIViewAnimationOptionAllowUserInteraction
@@ -222,22 +216,29 @@
 //                                              completion:^(BOOL finished) {
 //                                                  [self popDrawerAnimationDidEnd];
 //                                              }];                         }];
-//        
-//        
-    }
-    
-    CGRect frame = topView.frame;
-    frame.origin.x = 0;
+//
+//
+        [UIView animateWithDuration:0.15
+                         animations:^{
+                             CGRect frame = topView.frame;
+                             frame.origin.x = 0;
 
-    topView.frame = frame;
-    //[topView setAlpha:0.5];
-    
-    if (animated) {
-        [UIView commitAnimations];
+                             topView.frame = frame;
+                             //[topView setAlpha:0.5];
+                         }
+                         completion:^(BOOL finished) {
+                             [self popDrawerAnimationDidEnd];
+                         }];
     } else {
+        CGRect frame = topView.frame;
+        frame.origin.x = 0;
+
+        topView.frame = frame;
+        //[topView setAlpha:0.5];
+
         [self popDrawerAnimationDidEnd];
     }
-    
+
     return YES;
 }
 

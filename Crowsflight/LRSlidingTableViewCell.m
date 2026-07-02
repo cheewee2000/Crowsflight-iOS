@@ -216,7 +216,7 @@
     
         //check for google maps
         if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"comgooglemaps://"]]){
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"comgooglemaps://?saddr=&daddr=%f,%f&zoom=19",lat, lng]]];            
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"comgooglemaps://?saddr=&daddr=%f,%f&zoom=19",lat, lng]] options:@{} completionHandler:nil];
         }
 
         // Check for iOS 6
@@ -235,7 +235,7 @@
         }
         else{
             //if there is no ios6
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat: @"http://maps.google.com/maps?ll=%f,%f&z=19", lat, lng]]];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat: @"http://maps.google.com/maps?ll=%f,%f&z=19", lat, lng]] options:@{} completionHandler:nil];
         }
 
 

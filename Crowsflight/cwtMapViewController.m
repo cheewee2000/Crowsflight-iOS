@@ -447,7 +447,7 @@
 - (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id < MKOverlay >)overlay
 {
 
-    MKPolygonRenderer *renderer = [[MKPolygonRenderer alloc] initWithPolygon:overlay];
+    MKPolygonRenderer *renderer = [[MKPolygonRenderer alloc] initWithPolygon:(MKPolygon *)overlay];
 
     renderer.fillColor   = [[UIColor yellowColor] colorWithAlphaComponent:.4];
     renderer.strokeColor = [UIColor clearColor];
@@ -555,7 +555,8 @@
 
     
 }
--(void)viewDidUnload{
+// was viewDidUnload (deprecated/never called on modern iOS); dispose sound on dealloc instead
+-(void)dealloc{
     AudioServicesDisposeSystemSoundID(audioCreate);
 }
 
@@ -678,8 +679,8 @@
                 //check zoom level to set name
                 //NSLog(@"%f",mapView.region.span.latitudeDelta);
                 
-                if(mapView.region.span.latitudeDelta>1) locTitle=placemark.locality;
-                else if(mapView.region.span.latitudeDelta>.05)locTitle=placemark.subLocality;
+                if(self.mapView.region.span.latitudeDelta>1) locTitle=placemark.locality;
+                else if(self.mapView.region.span.latitudeDelta>.05)locTitle=placemark.subLocality;
                 else locTitle=placemark.name;
 
                 locTitle=[locTitle uppercaseString];
@@ -695,8 +696,8 @@
             NSLog(@"loc Title: %@",locTitle);
             
 
-            [dele.viewController addLocation:touchMapCoordinate title:locTitle];
-            AudioServicesPlaySystemSound(audioCreate);
+            [self->dele.viewController addLocation:touchMapCoordinate title:locTitle];
+            AudioServicesPlaySystemSound(self->audioCreate);
 
         }];
 
@@ -890,7 +891,7 @@
         
 
         
-        MKPointAnnotation *pin = annotationView.annotation;
+        MKPointAnnotation *pin = (MKPointAnnotation *)annotationView.annotation;
         
         pin.subtitle=[NSString stringWithFormat:@"SAVED: %f,%f",droppedAt.latitude,droppedAt.longitude];
         
