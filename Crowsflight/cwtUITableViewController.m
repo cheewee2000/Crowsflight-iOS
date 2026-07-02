@@ -236,10 +236,10 @@
         
         //reset scroll to 0, stopping at the safe area top (notch) instead of a hardcoded 20pt status bar
         CGPoint contentOffset = self.tableView.contentOffset;
-        contentOffset.y = -self.tableView.adjustedContentInset.top;
+        contentOffset.y = -[self topInsetClearingNotch];
         [self.tableView setContentOffset:contentOffset animated:NO];
     }
-    
+
     //swipe and delete instructions
     else
     {
@@ -1106,7 +1106,7 @@
         if(self.filteredTableData.count>0)
         {
             CGPoint contentOffset = self.tableView.contentOffset;
-            contentOffset.y = -self.tableView.adjustedContentInset.top;
+            contentOffset.y = -[self topInsetClearingNotch];
             [self.tableView setContentOffset:contentOffset animated:NO];
         }
     }
@@ -1140,6 +1140,17 @@
     return _searchBarMayResign;
 }
 
+
+
+//the amount to scroll the sticky filter-bar header down so it never rides under the notch.
+//prefer the table's adjusted content inset, but fall back to the window safe-area top in case
+//the drawer host reports a zero inset (keeps the search bar below the notch on every phone).
+-(CGFloat)topInsetClearingNotch{
+    CGFloat topInset = self.tableView.adjustedContentInset.top;
+    CGFloat safeTop = self.tableView.window.safeAreaInsets.top;
+    if (safeTop > topInset) topInset = safeTop;
+    return topInset;
+}
 
 
 -(void)doFilter{
