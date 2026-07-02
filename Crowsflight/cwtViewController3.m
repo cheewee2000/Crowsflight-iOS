@@ -28,7 +28,7 @@
 
 
 
-@interface cwtViewController3 ()<UIPageViewControllerDataSource, UIPageViewControllerDelegate, WCSessionDelegate>
+@interface cwtViewController3 ()<UIPageViewControllerDataSource, UIPageViewControllerDelegate, WCSessionDelegate, UIGestureRecognizerDelegate>
 
 
 @end
@@ -79,15 +79,19 @@
     [self.view addSubview:self.pageView.view];
     self.pageView.view.frame=CGRectMake(0, 0, CGRectGetWidth(self.view.bounds),  CGRectGetHeight(self.view.bounds));
 
-    //make page swipes work everywhere on screen: move the pager's pan gesture to the main view
-    //so buttons (destination name, more info, toolbar) can't swallow the swipe. taps still work.
+    //make page swipes work everywhere on screen, not just over the middle of the pager.
+    //the pager's own scroll only recognises swipes that begin inside its content, so the
+    //destination-name button, more-info button, arc and labels used to swallow edge swipes.
+    //instead we disable the pager's internal scrolling and flip pages ourselves from swipe
+    //recognisers on the full-screen view; taps on buttons still work (a tap never becomes a swipe).
     for (UIView *subview in self.pageView.view.subviews) {
         if ([subview isKindOfClass:[UIScrollView class]]) {
-            UIScrollView *pageScrollView = (UIScrollView *)subview;
-            pageScrollView.canCancelContentTouches = YES;
-            [self.view addGestureRecognizer:pageScrollView.panGestureRecognizer];
+            ((UIScrollView *)subview).scrollEnabled = NO;
         }
     }
+    UIPanGestureRecognizer *pagePan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePagePan:)];
+    pagePan.delegate = self;
+    [self.view addGestureRecognizer:pagePan];
 
     
     self.locationViewController=[[cfLocationViewController2 alloc] init];
@@ -730,6 +734,48 @@
         [self flipToPage:[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"]];
     }
     [dele iCloudSync];
+}
+
+
+//let the page pan coexist with taps/other recognisers
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return YES;
+}
+
+//flip to the neighbouring destination in response to a horizontal drag/flick anywhere on the screen
+-(void)handlePagePan:(UIPanGestureRecognizer *)gr {
+    if (gr.state != UIGestureRecognizerStateEnded) return;
+
+    CGPoint tr = [gr translationInView:self.view];
+    CGPoint vel = [gr velocityInView:self.view];
+    //ignore mostly-vertical gestures and tiny/slow movements
+    if (fabs(tr.x) < fabs(tr.y)) return;
+    if (fabs(tr.x) < 40 && fabs(vel.x) < 300) return;
+
+    cfLocationViewController2 *current = (cfLocationViewController2 *)[self.pageView.viewControllers firstObject];
+    if (current == nil) return;
+
+    NSInteger idx = current.page;
+    NSInteger target;
+    UIPageViewControllerNavigationDirection dir;
+    if (tr.x < 0) {           //dragged/flicked left -> next destination
+        target = idx + 1;
+        dir = UIPageViewControllerNavigationDirectionForward;
+    } else {                  //dragged/flicked right -> previous destination
+        target = idx - 1;
+        dir = UIPageViewControllerNavigationDirectionReverse;
+    }
+    if (target < 0 || target >= (NSInteger)[dele.locationDictionaryArray count]) return;
+
+    cfLocationViewController2 *newVC = [self viewControllerAtIndex:target];
+    if (newVC == nil) return;
+
+    //block input during the transition so a fast second pan can't corrupt the pager
+    self.pageView.view.userInteractionEnabled = NO;
+    __weak typeof(self) weakSelf = self;
+    [self.pageView setViewControllers:@[newVC] direction:dir animated:YES completion:^(BOOL finished) {
+        weakSelf.pageView.view.userInteractionEnabled = YES;
+    }];
 }
 
 
