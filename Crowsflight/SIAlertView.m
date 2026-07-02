@@ -685,6 +685,9 @@ static SIAlertView *__si_alert_current_view;
     CGFloat left = (self.bounds.size.width - [[UIScreen mainScreen] bounds].size.width) * 0.5;
     //CGFloat top = (self.bounds.size.height - height) * 0.5;
     CGFloat top=self.topPosition;
+    //stop at the safe area top (notch/status bar) instead of a hardcoded y=0
+    UIEdgeInsets safeInsets = self.window ? self.window.safeAreaInsets : self.safeAreaInsets;
+    if(top<safeInsets.top) top=safeInsets.top;
     
     self.containerView.transform = CGAffineTransformIdentity;
     self.containerView.frame = CGRectMake(left, top, [[UIScreen mainScreen] bounds].size.width, height);
@@ -953,7 +956,12 @@ static SIAlertView *__si_alert_current_view;
                     locTitle=placemark.name;
                     locTitle=[locTitle uppercaseString];
                     if(locTitle.length>0) self.textField.text=locTitle;
-                }                
+                }
+
+                //fall back to a default title if geocoding failed or returned nothing
+                if([[self.textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length]==0){
+                    self.textField.text=@"Untitled";
+                }
 
             }];
         }

@@ -41,7 +41,9 @@
         [self.filterBar  setLeftViewMode:UITextFieldViewModeAlways];
 
         self.filterBar.autocapitalizationType=UITextAutocapitalizationTypeAllCharacters;
-        self.filterBar.placeholder=@"FILTER OR SEARCH";
+        //force black text so it stays legible on the light background (dark mode makes the default labelColor white)
+        self.filterBar.textColor=[UIColor blackColor];
+        self.filterBar.attributedPlaceholder=[[NSAttributedString alloc] initWithString:@"FILTER OR SEARCH" attributes:@{NSForegroundColorAttributeName:[UIColor darkGrayColor]}];
         self.filterBar.layer.masksToBounds = NO;
         self.filterBar.layer.shadowOffset = CGSizeMake(0, 1);
         self.filterBar.layer.shadowRadius = 2;
@@ -232,9 +234,9 @@
 
         
         
-        //reset scroll to 0
+        //reset scroll to 0, stopping at the safe area top (notch) instead of a hardcoded 20pt status bar
         CGPoint contentOffset = self.tableView.contentOffset;
-        contentOffset.y = -20;
+        contentOffset.y = -self.tableView.adjustedContentInset.top;
         [self.tableView setContentOffset:contentOffset animated:NO];
     }
     
@@ -1100,11 +1102,11 @@
         self.isFiltered = TRUE;
         [[NSUserDefaults standardUserDefaults] setValue:self.filterBar.text forKey:@"lastSearchText"];
         [self doFilter];
-        //reset scroll to 0 if there are results
+        //reset scroll to 0 if there are results, stopping at the safe area top (notch) instead of a hardcoded 20pt status bar
         if(self.filteredTableData.count>0)
         {
             CGPoint contentOffset = self.tableView.contentOffset;
-            contentOffset.y = -20;
+            contentOffset.y = -self.tableView.adjustedContentInset.top;
             [self.tableView setContentOffset:contentOffset animated:NO];
         }
     }

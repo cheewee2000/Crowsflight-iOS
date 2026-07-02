@@ -692,7 +692,12 @@
 //
 //                locTitle=[NSString stringWithFormat:@"%@\n%f,%f",position.getW3w,touchMapCoordinate.latitude,touchMapCoordinate.longitude];
 //            }
-            
+
+            //fall back to a default title if geocoding failed or returned nothing
+            if(locTitle==NULL || [[locTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length]==0){
+                locTitle=@"Untitled";
+            }
+
             NSLog(@"loc Title: %@",locTitle);
             
 
@@ -711,6 +716,7 @@
 //        W3wPosition *position = [dele.viewController.w3wSDK convertPositionToW3W:kW3wLanguageEnglish lat:touchMapCoordinate.latitude lng:touchMapCoordinate.longitude];
 //
 //        locTitle=[NSString stringWithFormat:@"%@\n%f,%f",position.getW3w,touchMapCoordinate.latitude,touchMapCoordinate.longitude];
+        locTitle=@"Untitled";
         [dele.viewController addLocation:touchMapCoordinate title:locTitle];
         AudioServicesPlaySystemSound(audioCreate);
         [self dismissViewControllerAnimated:YES completion:nil];

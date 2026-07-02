@@ -78,7 +78,17 @@
     self.pageView.view.layer.masksToBounds=FALSE;
     [self.view addSubview:self.pageView.view];
     self.pageView.view.frame=CGRectMake(0, 0, CGRectGetWidth(self.view.bounds),  CGRectGetHeight(self.view.bounds));
-    
+
+    //make page swipes work everywhere on screen: move the pager's pan gesture to the main view
+    //so buttons (destination name, more info, toolbar) can't swallow the swipe. taps still work.
+    for (UIView *subview in self.pageView.view.subviews) {
+        if ([subview isKindOfClass:[UIScrollView class]]) {
+            UIScrollView *pageScrollView = (UIScrollView *)subview;
+            pageScrollView.canCancelContentTouches = YES;
+            [self.view addGestureRecognizer:pageScrollView.panGestureRecognizer];
+        }
+    }
+
     
     self.locationViewController=[[cfLocationViewController2 alloc] init];
 
