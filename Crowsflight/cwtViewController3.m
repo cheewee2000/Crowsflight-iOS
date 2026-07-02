@@ -105,15 +105,13 @@
     
     
     
-    //custom toolbar
+    //custom toolbar. final position/height is set in viewDidLayoutSubviews once the
+    //safe-area insets are known, so it clears the home indicator on every notched phone
+    //(the old code only special-cased the original iPhone X by its exact pixel height).
     UIView* buttonBar=[[UIView alloc ]initWithFrame:CGRectMake(0, screen.size.height-55, screen.size.width, 55)];
-    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone && UIScreen.mainScreen.nativeBounds.size.height == 2436)  {
-        //iPhone X
-        buttonBar=[[UIView alloc ]initWithFrame:CGRectMake(0, screen.size.height-64, screen.size.width, 64)];
-        
-    }
-    
-    
+    cfButtonBar = buttonBar;
+
+
     buttonBar.layer.masksToBounds = NO;
     buttonBar.layer.shadowOffset = CGSizeMake(0, -1);
     buttonBar.layer.shadowRadius = 2;
@@ -184,7 +182,7 @@
     [session activateSession];
     }
 
-    
+
 }
 
 
@@ -455,7 +453,20 @@
 -(void)viewDidLayoutSubviews{
     //CGRect screen = [[UIScreen mainScreen] applicationFrame];
     //self.compassImage.center=CGPointMake(screen.size.width*.5, screen.size.height*.5+22);
-    
+
+    //keep the toolbar and more-info button clear of the home indicator on notched phones.
+    //the buttons sit at the top of the bar, so lifting the bar by the bottom safe-area inset
+    //moves them above the indicator while the bar's background still fills to the screen edge.
+    CGFloat safeBottom = self.view.safeAreaInsets.bottom;
+    CGFloat w = self.view.bounds.size.width;
+    CGFloat h = self.view.bounds.size.height;
+
+    CGFloat barH = 55 + safeBottom;
+    cfButtonBar.frame = CGRectMake(0, h - barH, w, barH);
+    cfButtonBar.layer.shadowPath = [UIBezierPath bezierPathWithRect:cfButtonBar.bounds].CGPath;
+
+    CGRect mi = moreInfo.frame;
+    moreInfo.frame = CGRectMake(mi.origin.x, h - 80.0 - mi.size.height - safeBottom, mi.size.width, mi.size.height);
 }
 
 

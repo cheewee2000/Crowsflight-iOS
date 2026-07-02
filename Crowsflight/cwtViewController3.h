@@ -31,6 +31,7 @@
     
     cwtAppDelegate* dele;
     UIButton *moreInfo;
+    UIView *cfButtonBar;
     SystemSoundID audioCreate;
     NSMutableData *_responseData;
 
