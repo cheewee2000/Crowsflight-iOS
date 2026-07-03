@@ -80,18 +80,19 @@
     self.pageView.view.frame=CGRectMake(0, 0, CGRectGetWidth(self.view.bounds),  CGRectGetHeight(self.view.bounds));
 
     //make page swipes work everywhere on screen, not just over the middle of the pager.
-    //the pager's own scroll only recognises swipes that begin inside its content, so the
-    //destination-name button, more-info button, arc and labels used to swallow edge swipes.
-    //instead we disable the pager's internal scrolling and flip pages ourselves from swipe
-    //recognisers on the full-screen view; taps on buttons still work (a tap never becomes a swipe).
-    for (UIView *subview in self.pageView.view.subviews) {
-        if ([subview isKindOfClass:[UIScrollView class]]) {
-            ((UIScrollView *)subview).scrollEnabled = NO;
-        }
-    }
+    //the pager's private scroll view swallows any touch that lands on non-UIControl page
+    //content (the full-screen arrow, the arc, labels), so a recogniser on this view never
+    //hears about them. taking the pager's whole subtree out of the touch path is the only
+    //arrangement that verifiably delivers every touch here; we flip pages ourselves from a
+    //pan on this view, and re-route the two taps the pages used to handle (destination name,
+    //units arc) via handlePageTap: below.
+    self.pageView.view.userInteractionEnabled = NO;
     UIPanGestureRecognizer *pagePan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePagePan:)];
     pagePan.delegate = self;
     [self.view addGestureRecognizer:pagePan];
+    UITapGestureRecognizer *pageTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handlePageTap:)];
+    pageTap.delegate = self;
+    [self.view addGestureRecognizer:pageTap];
 
     
     self.locationViewController=[[cfLocationViewController2 alloc] init];
@@ -756,6 +757,7 @@
 //flip to the neighbouring destination in response to a horizontal drag/flick anywhere on the screen
 -(void)handlePagePan:(UIPanGestureRecognizer *)gr {
     if (gr.state != UIGestureRecognizerStateEnded) return;
+    if (pageFlipInProgress) return;
 
     CGPoint tr = [gr translationInView:self.view];
     CGPoint vel = [gr velocityInView:self.view];
@@ -781,12 +783,29 @@
     cfLocationViewController2 *newVC = [self viewControllerAtIndex:target];
     if (newVC == nil) return;
 
-    //block input during the transition so a fast second pan can't corrupt the pager
-    self.pageView.view.userInteractionEnabled = NO;
+    //block further flips during the transition so a fast second pan can't corrupt the pager
+    //(the pager's view is permanently non-interactive, so guard with a flag instead)
+    pageFlipInProgress = YES;
     __weak typeof(self) weakSelf = self;
     [self.pageView setViewControllers:@[newVC] direction:dir animated:YES completion:^(BOOL finished) {
-        weakSelf.pageView.view.userInteractionEnabled = YES;
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (strongSelf) strongSelf->pageFlipInProgress = NO;
     }];
+}
+
+//the pager's subtree no longer receives touches (see viewDidLoad), so the two tap targets
+//that live inside each page are re-routed here: the destination-name button and the units arc.
+-(void)handlePageTap:(UITapGestureRecognizer *)gr {
+    if (gr.state != UIGestureRecognizerStateEnded) return;
+    cfLocationViewController2 *current = (cfLocationViewController2 *)[self.pageView.viewControllers firstObject];
+    if (current == nil || current.isViewLoaded == NO) return;
+
+    CGPoint p = [gr locationInView:current.view];
+    if (CGRectContainsPoint(current.destinationButton.frame, p)) {
+        [current editLocationName];
+    } else if (CGRectContainsPoint(current.arcProgressView.frame, p)) {
+        [current pickUnits];
+    }
 }
 
 

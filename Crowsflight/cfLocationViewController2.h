@@ -68,6 +68,9 @@
 //- (void)rotateCompass:(NSTimeInterval)duration  degrees:(CGFloat)degrees;
 //
 //- (IBAction)editLocationName:(id)sender;
+//tap targets re-routed from cwtViewController3's full-screen tap (the pager's subtree is non-interactive)
+-(void)editLocationName;
+-(void)pickUnits;
 -(void)showHideInfo: (float)duration;
 //- (void) hideArrow: (BOOL) state;
 //-(void) hideCompass:(BOOL) state;

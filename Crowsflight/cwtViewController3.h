@@ -34,6 +34,7 @@
     UIView *cfButtonBar;
     SystemSoundID audioCreate;
     NSMutableData *_responseData;
+    BOOL pageFlipInProgress;
 
 
 }
