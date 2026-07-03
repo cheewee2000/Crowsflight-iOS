@@ -132,7 +132,7 @@
 {
     [super viewDidAppear:animated];
     [[dele window] makeKeyWindow];
-    
+
     [self.filterBar  setText:[[NSUserDefaults standardUserDefaults] stringForKey:@"lastSearchText"]];
     
     if(self.filterBar.text.length == 0)
@@ -1168,6 +1168,10 @@
 -(CGFloat)topInsetClearingNotch{
     CGFloat topInset = self.tableView.adjustedContentInset.top;
     CGFloat safeTop = self.tableView.window.safeAreaInsets.top;
+    //before the drawer's view joins a window (first viewWillAppear pin) both values above are 0,
+    //which briefly pinned the bar under the notch and made it visibly drop once layout ran in-window.
+    //the app window is always attached, so its inset gives the correct floor from the first pin on.
+    if (safeTop <= 0) safeTop = dele.window.safeAreaInsets.top;
     if (safeTop > topInset) topInset = safeTop;
     return topInset;
 }
