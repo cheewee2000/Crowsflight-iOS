@@ -150,6 +150,7 @@ class ShareViewController: UIViewController {
     // MARK: - Outcomes
 
     private func finish(name: String, address: String, lat: Double, lng: Double) {
+        cancelButton.isHidden = true
         guard let suite = UserDefaults(suiteName: appGroupID) else {
             return fail("App Group unavailable — check signing.")
         }
