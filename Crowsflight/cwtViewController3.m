@@ -28,8 +28,13 @@
 
 
 
-@interface cwtViewController3 ()<UIPageViewControllerDataSource, UIPageViewControllerDelegate, WCSessionDelegate, UIGestureRecognizerDelegate>
-
+@interface cwtViewController3 ()<UIScrollViewDelegate, WCSessionDelegate>{
+    //destination pager state: loaded page VCs by index, pages mid appearance-transition,
+    //and the index the pager last snapped to (-1 before the first settle)
+    NSMutableDictionary *loadedPages;
+    NSMutableSet *appearingPages;
+    NSInteger settledPage;
+}
 
 @end
 
@@ -72,32 +77,32 @@
     
     
     
-    self.pageView=[[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
-    self.pageView.dataSource = self;
-    self.pageView.delegate = self;
-    self.pageView.view.layer.masksToBounds=FALSE;
-    [self.view addSubview:self.pageView.view];
-    self.pageView.view.frame=CGRectMake(0, 0, CGRectGetWidth(self.view.bounds),  CGRectGetHeight(self.view.bounds));
+    //destination pager: a plain paging scroll view, so pages track the finger and snap.
+    //(replaced UIPageViewController: its private queuing scroll view swallows touches that
+    //land on non-UIControl page content - the full-screen arrow, the arc, labels - so
+    //neither its own native scroll nor any external recogniser could ever cover the whole
+    //screen. a vanilla scroll view has standard touch routing: dragging works over any
+    //page content and the in-page buttons receive their taps natively.)
+    loadedPages = [NSMutableDictionary dictionary];
+    appearingPages = [NSMutableSet set];
+    settledPage = -1;
+    self.pagerScroll = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+    //paging is done manually (fast deceleration + snap in scrollViewWillEndDragging:)
+    //rather than pagingEnabled=YES: modern UIKit gates a paging scroll view's pan behind
+    //a private swipe recogniser, which adds a swipe-vs-drag mode split; manual snapping
+    //gives the classic one-page-at-a-time feel and tracks the finger the whole way.
+    self.pagerScroll.pagingEnabled = NO;
+    self.pagerScroll.decelerationRate = UIScrollViewDecelerationRateFast;
+    self.pagerScroll.showsHorizontalScrollIndicator = NO;
+    self.pagerScroll.showsVerticalScrollIndicator = NO;
+    self.pagerScroll.alwaysBounceHorizontal = YES;
+    self.pagerScroll.alwaysBounceVertical = NO;
+    self.pagerScroll.directionalLockEnabled = YES;
+    self.pagerScroll.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    self.pagerScroll.delegate = self;
+    [self.view addSubview:self.pagerScroll];
 
-    //make page swipes work everywhere on screen, not just over the middle of the pager.
-    //the pager's private scroll view swallows any touch that lands on non-UIControl page
-    //content (the full-screen arrow, the arc, labels), so a recogniser on this view never
-    //hears about them. taking the pager's whole subtree out of the touch path is the only
-    //arrangement that verifiably delivers every touch here; we flip pages ourselves from a
-    //pan on this view, and re-route the two taps the pages used to handle (destination name,
-    //units arc) via handlePageTap: below.
-    self.pageView.view.userInteractionEnabled = NO;
-    UIPanGestureRecognizer *pagePan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePagePan:)];
-    pagePan.delegate = self;
-    [self.view addGestureRecognizer:pagePan];
-    UITapGestureRecognizer *pageTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handlePageTap:)];
-    pageTap.delegate = self;
-    [self.view addGestureRecognizer:pageTap];
 
-    
-    self.locationViewController=[[cfLocationViewController2 alloc] init];
-
-    
     
     [[SIAlertView appearance] setMessageFont:[UIFont systemFontOfSize:13]];
     [[SIAlertView appearance] setCornerRadius:0];
@@ -281,22 +286,16 @@
 
 
 -(void)viewWillAppear:(BOOL)animated{
-    
+
     if( [[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"]>= [dele.locationDictionaryArray count] ) {
-        
+
         [[NSUserDefaults standardUserDefaults] setInteger:[dele.locationDictionaryArray count]-1 forKey:@"currentDestinationN"];
     }
-    //save current page to watch
-    
-    
-    self.locationViewController.page=[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"];
-    
-    
-    [self.pageView setViewControllers:@[self.locationViewController] direction:UIPageViewControllerNavigationDirectionForward  animated:NO completion:^(BOOL finished) {
-        //code
-    }
-     ];
-    
+
+    //rebuild the pager on every appearance: destinations may have been added, removed,
+    //renamed or reordered in the list/map drawers while this view was covered
+    [self reloadPagerShowingPage:[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"]];
+
     //hide or unhide info
     self.showInfo=[[NSUserDefaults standardUserDefaults] boolForKey:@"showInfo"];
     //NSLog(@"read show info %i",self.showInfo);
@@ -468,28 +467,41 @@
 
     CGRect mi = moreInfo.frame;
     moreInfo.frame = CGRectMake(mi.origin.x, h - 80.0 - mi.size.height - safeBottom, mi.size.width, mi.size.height);
+
+    //keep the pager and its loaded pages in step with the root view's size
+    if (!CGRectEqualToRect(self.pagerScroll.frame, self.view.bounds)) {
+        self.pagerScroll.frame = self.view.bounds;
+        [self updatePagerContentSize];
+        for (NSNumber *key in loadedPages) {
+            [self loadPage:key.integerValue]; //re-applies the page frame
+        }
+        if (settledPage >= 0) {
+            self.pagerScroll.contentOffset = CGPointMake(settledPage * self.pagerScroll.bounds.size.width, 0);
+        }
+    }
 }
 
 
+//live location/heading ticks from the app delegate: feed every loaded page (current +
+//preloaded neighbours, three at most) so a half-dragged page is never stale
 -(void)updateViewControllersWithName{
-    
-    NSArray* viewC = [self.pageView viewControllers];
-    cfLocationViewController2 * vc=[viewC objectAtIndex:0];
-
-    [vc updateDestinationName];
+    for (cfLocationViewController2 *vc in [loadedPages allValues]) {
+        [vc updateDestinationName];
+    }
 }
 
 
 -(void)updateViewControllersWithLatLng: (int)_page{
-    NSArray* viewC = [self.pageView viewControllers];
-    cfLocationViewController2 * vc=[viewC objectAtIndex:0];
-    [vc updateDistanceWithLatLng:.3];
+    for (cfLocationViewController2 *vc in [loadedPages allValues]) {
+        [vc updateDistanceWithLatLng:.3];
+    }
 }
 
 
 -(void)updateViewControllersWithHeading: (int)_page{
-    NSArray* viewC = [self.pageView viewControllers];
-    [[viewC objectAtIndex:0] updateHeading];
+    for (cfLocationViewController2 *vc in [loadedPages allValues]) {
+        [vc updateHeading];
+    }
     [self rotateCompass:.1 degrees:-dele.heading];
     //NSLog(@"dele.heading: %f", dele.heading);
 
@@ -577,9 +589,10 @@
                          [self.compassImage setHidden:!self.showInfo];
                      }];
     
-    NSArray* viewC = [self.pageView viewControllers];
-    [[viewC objectAtIndex:0] showHideInfo:.3f];
-    
+    for (cfLocationViewController2 *vc in [loadedPages allValues]) {
+        [vc showHideInfo:.3f];
+    }
+
     [self nextInstruction:7];
 
     //NSLog(@"switch showinfo");
@@ -591,66 +604,188 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - UIPageViewController Data Source
+#pragma mark - Destination pager
 
-- (UIViewController*)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
-{
-    NSInteger indx = [(cfLocationViewController2*)viewController page];
-    indx++;
-    
-    if( indx>= [dele.locationDictionaryArray count] ) return nil;
-    
-
-    cfLocationViewController2* newLoc = [[cfLocationViewController2 alloc] init];
-    newLoc.page = indx;
-
-    return newLoc;
+//child page appearance (viewWillAppear -> loadLocation/arrow unhide, viewDidAppear ->
+//persist currentDestinationN) is driven manually below, tied to drags and snaps
+- (BOOL)shouldAutomaticallyForwardAppearanceMethods {
+    return NO;
 }
 
-- (UIViewController*)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
-{
-    NSInteger indx = [(cfLocationViewController2*)viewController page];
-    indx--;
-    
-    if( indx<0 ) return nil;
-    
-    cfLocationViewController2* newLoc = [[cfLocationViewController2 alloc] init];
-    newLoc.page = indx;
-    
+//create (or retrieve) the page for a destination index and place it in the scroll view
+- (cfLocationViewController2 *)loadPage:(NSInteger)index {
+    if (index < 0 || index >= (NSInteger)[dele.locationDictionaryArray count]) return nil;
 
-    return newLoc;
+    cfLocationViewController2 *vc = loadedPages[@(index)];
+    CGFloat w = self.pagerScroll.bounds.size.width;
+    CGFloat h = self.pagerScroll.bounds.size.height;
+    if (vc == nil) {
+        vc = [[cfLocationViewController2 alloc] init];
+        vc.page = index;
+        [self addChildViewController:vc];
+        vc.view.frame = CGRectMake(index * w, 0, w, h);
+        //clip each page so the oversized arrow doesn't bleed across neighbours mid-drag
+        //(page bounds == screen, so a settled page looks exactly as before)
+        vc.view.clipsToBounds = YES;
+        [self.pagerScroll addSubview:vc.view];
+        [vc didMoveToParentViewController:self];
+        loadedPages[@(index)] = vc;
+    } else {
+        vc.view.frame = CGRectMake(index * w, 0, w, h);
+    }
+    return vc;
 }
 
-
-//-(void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed
-//{
-//    
-//    
-//    if(finished){
-//        NSArray* viewC = [self.pageView viewControllers];
-//        cfLocationViewController2 * vc=[viewC lastObject];
-//
-//        [[NSUserDefaults standardUserDefaults] setInteger:vc.page forKey:@"currentDestinationN"];
-//    }
-//    
-//}
-
-- (NSInteger)presentationCountForPageViewController:(UIPageViewController *)pageViewController
-{
-    NSArray* viewC = [self.pageView viewControllers];
-    
-    return   [viewC count];
+- (void)updatePagerContentSize {
+    CGFloat w = self.pagerScroll.bounds.size.width;
+    CGFloat h = self.pagerScroll.bounds.size.height;
+    NSInteger n = (NSInteger)[dele.locationDictionaryArray count];
+    self.pagerScroll.contentSize = CGSizeMake(w * MAX(n, 1), h);
 }
 
-- (NSInteger)presentationIndexForPageViewController:(UIPageViewController *)pageViewController
-{
-    return   self.locationViewController.page;
-    
+- (void)removeAllPages {
+    for (cfLocationViewController2 *vc in [loadedPages allValues]) {
+        [vc willMoveToParentViewController:nil];
+        [vc.view removeFromSuperview];
+        [vc removeFromParentViewController];
+    }
+    [loadedPages removeAllObjects];
+    [appearingPages removeAllObjects];
 }
 
+//drop pages more than one step from the settled one; three stay loaded at most
+- (void)unloadDistantPages {
+    for (NSNumber *key in [loadedPages allKeys]) {
+        if (labs(key.integerValue - settledPage) > 1) {
+            cfLocationViewController2 *vc = loadedPages[key];
+            [vc willMoveToParentViewController:nil];
+            [vc.view removeFromSuperview];
+            [vc removeFromParentViewController];
+            [loadedPages removeObjectForKey:key];
+        }
+    }
+}
 
-- (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray *)pendingViewControllers{
-    
+//the pager came to rest on a page: finish its appearance (persists currentDestinationN,
+//fades the arrow in), retire the previous page, cancel any page that was dragged
+//partway in but abandoned
+- (void)settleOnPage:(NSInteger)index {
+    NSInteger n = (NSInteger)[dele.locationDictionaryArray count];
+    if (n <= 0) return;
+    if (index < 0) index = 0;
+    if (index >= n) index = n - 1;
+
+    cfLocationViewController2 *old = (settledPage >= 0) ? loadedPages[@(settledPage)] : nil;
+    cfLocationViewController2 *incoming = [self loadPage:index];
+    if (incoming == nil) return;
+
+    if ([appearingPages containsObject:incoming]) {
+        [incoming endAppearanceTransition];
+        [appearingPages removeObject:incoming];
+    } else if (incoming != old) {
+        [incoming beginAppearanceTransition:YES animated:NO];
+        [incoming endAppearanceTransition];
+    }
+
+    if (old != nil && old != incoming) {
+        [old beginAppearanceTransition:NO animated:NO];
+        [old endAppearanceTransition];
+    }
+
+    for (cfLocationViewController2 *vc in [appearingPages copy]) {
+        if (vc == incoming) continue;
+        [vc beginAppearanceTransition:NO animated:NO];
+        [vc endAppearanceTransition];
+        [appearingPages removeObject:vc];
+    }
+
+    settledPage = index;
+    self.locationViewController = incoming;
+    [self unloadDistantPages];
+}
+
+//tear down and rebuild at the given page without animation (data may have changed)
+- (void)reloadPagerShowingPage:(NSInteger)index {
+    [self removeAllPages];
+    settledPage = -1;
+    [self updatePagerContentSize];
+
+    NSInteger n = (NSInteger)[dele.locationDictionaryArray count];
+    if (n <= 0) {
+        self.locationViewController = nil;
+        return;
+    }
+    if (index < 0) index = 0;
+    if (index >= n) index = n - 1;
+
+    self.pagerScroll.contentOffset = CGPointMake(index * self.pagerScroll.bounds.size.width, 0);
+    [self settleOnPage:index];
+}
+
+#pragma mark - Pager scroll delegate
+
+//while dragging (or during a snap animation), make sure both visible pages exist and
+//have begun appearing, so the incoming page shows live data mid-drag
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (scrollView != self.pagerScroll) return;
+    CGFloat w = scrollView.bounds.size.width;
+    if (w <= 0) return;
+
+    NSInteger n = (NSInteger)[dele.locationDictionaryArray count];
+    NSInteger first = (NSInteger)floor(scrollView.contentOffset.x / w);
+    cfLocationViewController2 *settled = (settledPage >= 0) ? loadedPages[@(settledPage)] : nil;
+
+    for (NSInteger index = first; index <= first + 1; index++) {
+        if (index < 0 || index >= n) continue;
+        cfLocationViewController2 *vc = [self loadPage:index];
+        if (vc != nil && vc != settled && ![appearingPages containsObject:vc]) {
+            [vc beginAppearanceTransition:YES animated:YES];
+            [appearingPages addObject:vc];
+        }
+    }
+}
+
+//snap the release point to a page boundary, one page at a time like a native pager
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
+    if (scrollView != self.pagerScroll) return;
+    CGFloat w = scrollView.bounds.size.width;
+    if (w <= 0) return;
+    NSInteger n = (NSInteger)[dele.locationDictionaryArray count];
+
+    NSInteger target;
+    if (velocity.x > 0.3) {
+        target = (NSInteger)floor(scrollView.contentOffset.x / w) + 1;   //flick left -> next
+    } else if (velocity.x < -0.3) {
+        target = (NSInteger)ceil(scrollView.contentOffset.x / w) - 1;    //flick right -> previous
+    } else {
+        target = (NSInteger)round(targetContentOffset->x / w);           //slow release -> nearest
+    }
+    //never skip pages in one gesture, and stay in range
+    if (settledPage >= 0) {
+        if (target > settledPage + 1) target = settledPage + 1;
+        if (target < settledPage - 1) target = settledPage - 1;
+    }
+    if (target < 0) target = 0;
+    if (target >= n) target = n - 1;
+    targetContentOffset->x = target * w;
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    if (scrollView == self.pagerScroll) [self settleOnCurrentPage];
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
+    if (scrollView == self.pagerScroll) [self settleOnCurrentPage];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if (scrollView == self.pagerScroll && !decelerate) [self settleOnCurrentPage];
+}
+
+- (void)settleOnCurrentPage {
+    CGFloat w = self.pagerScroll.bounds.size.width;
+    if (w <= 0) return;
+    [self settleOnPage:(NSInteger)round(self.pagerScroll.contentOffset.x / w)];
 }
 
 
@@ -749,102 +884,46 @@
 }
 
 
-//let the page pan coexist with taps/other recognisers
--(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
-    return YES;
-}
-
-//flip to the neighbouring destination in response to a horizontal drag/flick anywhere on the screen
--(void)handlePagePan:(UIPanGestureRecognizer *)gr {
-    if (gr.state != UIGestureRecognizerStateEnded) return;
-    if (pageFlipInProgress) return;
-
-    CGPoint tr = [gr translationInView:self.view];
-    CGPoint vel = [gr velocityInView:self.view];
-    //ignore mostly-vertical gestures and tiny/slow movements
-    if (fabs(tr.x) < fabs(tr.y)) return;
-    if (fabs(tr.x) < 40 && fabs(vel.x) < 300) return;
-
-    cfLocationViewController2 *current = (cfLocationViewController2 *)[self.pageView.viewControllers firstObject];
-    if (current == nil) return;
-
-    NSInteger idx = current.page;
-    NSInteger target;
-    UIPageViewControllerNavigationDirection dir;
-    if (tr.x < 0) {           //dragged/flicked left -> next destination
-        target = idx + 1;
-        dir = UIPageViewControllerNavigationDirectionForward;
-    } else {                  //dragged/flicked right -> previous destination
-        target = idx - 1;
-        dir = UIPageViewControllerNavigationDirectionReverse;
-    }
-    if (target < 0 || target >= (NSInteger)[dele.locationDictionaryArray count]) return;
-
-    cfLocationViewController2 *newVC = [self viewControllerAtIndex:target];
-    if (newVC == nil) return;
-
-    //block further flips during the transition so a fast second pan can't corrupt the pager
-    //(the pager's view is permanently non-interactive, so guard with a flag instead)
-    pageFlipInProgress = YES;
-    __weak typeof(self) weakSelf = self;
-    [self.pageView setViewControllers:@[newVC] direction:dir animated:YES completion:^(BOOL finished) {
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-        if (strongSelf) strongSelf->pageFlipInProgress = NO;
-    }];
-}
-
-//the pager's subtree no longer receives touches (see viewDidLoad), so the two tap targets
-//that live inside each page are re-routed here: the destination-name button and the units arc.
--(void)handlePageTap:(UITapGestureRecognizer *)gr {
-    if (gr.state != UIGestureRecognizerStateEnded) return;
-    cfLocationViewController2 *current = (cfLocationViewController2 *)[self.pageView.viewControllers firstObject];
-    if (current == nil || current.isViewLoaded == NO) return;
-
-    CGPoint p = [gr locationInView:current.view];
-    if (CGRectContainsPoint(current.destinationButton.frame, p)) {
-        [current editLocationName];
-    } else if (CGRectContainsPoint(current.arcProgressView.frame, p)) {
-        [current pickUnits];
-    }
-}
-
-
+//programmatic flip (destination list, post-save, iCloud sync). the destination count
+//may have changed since the pager was last built, so the content size is refreshed and
+//a distant target starts its slide from the neighbouring index, reading as one page flip
 -(void) flipToPage:(NSInteger)x {
-    
-    NSUInteger retreivedIndex =self.locationViewController.page;
-    
-    cfLocationViewController2 *neighborViewController = [self viewControllerAtIndex:x-1];
-    cfLocationViewController2 *firstViewController = [self viewControllerAtIndex:x];
-    cfLocationViewController2 *secondViewController = [self viewControllerAtIndex:x+1 ];
-    
-    
-    NSArray *viewControllers = nil;
-    
-    
-    if (retreivedIndex < x){
-        viewControllers = [NSArray arrayWithObjects:neighborViewController, nil];
-        [self.pageView setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:NULL];
-        viewControllers = [NSArray arrayWithObjects:firstViewController, secondViewController, nil];
-        [self.pageView setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:NULL];
-    } else if (retreivedIndex > x ){
-        viewControllers = [NSArray arrayWithObjects:neighborViewController, nil];
-        [self.pageView setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:NULL];
-        viewControllers = [NSArray arrayWithObjects:firstViewController, secondViewController, nil];
-        [self.pageView setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:NULL];
-    }
-    
-    
-    
-    
-}
 
-- (cfLocationViewController2 *)viewControllerAtIndex:(NSUInteger)index {
-    if (([dele.locationDictionaryArray count] == 0) || (index >= [dele.locationDictionaryArray count])) {
-        return nil;
+    NSInteger n = (NSInteger)[dele.locationDictionaryArray count];
+    [self updatePagerContentSize];
+    if (n <= 0) {
+        [self removeAllPages];
+        settledPage = -1;
+        self.locationViewController = nil;
+        return;
     }
-    cfLocationViewController2* newLoc = [[cfLocationViewController2 alloc] init];
-    newLoc.page =  index;
-    return newLoc;
+    if (x < 0) x = 0;
+    if (x >= n) x = n - 1;
+
+    CGFloat w = self.pagerScroll.bounds.size.width;
+
+    //already there: rebuild in place, the data behind the index may have changed
+    if (settledPage == x) {
+        [self reloadPagerShowingPage:x];
+        return;
+    }
+
+    //jumping further than a neighbour: hop next to the target without animation first
+    if (settledPage < 0 || labs(x - settledPage) > 1) {
+        NSInteger hop = (settledPage >= 0 && x < settledPage) ? x + 1 : x - 1;
+        if (hop < 0 || hop >= n) {
+            [self reloadPagerShowingPage:x];
+            return;
+        }
+        [self removeAllPages];
+        settledPage = -1;
+        [self loadPage:hop];
+        self.pagerScroll.contentOffset = CGPointMake(hop * w, 0);
+    }
+
+    [self loadPage:x];
+    [self.pagerScroll setContentOffset:CGPointMake(x * w, 0) animated:YES];
+    //settleOnPage: fires from scrollViewDidEndScrollingAnimation
 }
 
 

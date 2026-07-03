@@ -48,6 +48,11 @@
     self.arrow=[[cwtArrow alloc] initWithFrame:CGRectMake(0,0, screen.size.height*1.5,screen.size.height*1.5)];
     //[self.arrow setCenter:CGPointMake(screen.size.width*.5, screen.size.height*.5)];
     self.arrow.backgroundColor=[UIColor clearColor];
+    //the arrow is pure display and is re-animated on every heading tick; an animating
+    //view has interaction disabled by UIKit, so while its oversized frame owned the
+    //hit-test most of the screen simply discarded drags and taps. taking it out of
+    //hit-testing lets touches fall through to the destination pager.
+    self.arrow.userInteractionEnabled = NO;
     [self.view addSubview:self.arrow];
     [self.arrow setHidden:TRUE];
     

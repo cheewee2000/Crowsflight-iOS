@@ -34,7 +34,6 @@
     UIView *cfButtonBar;
     SystemSoundID audioCreate;
     NSMutableData *_responseData;
-    BOOL pageFlipInProgress;
 
 
 }
@@ -45,7 +44,7 @@
 -(void) flipToPage:(NSInteger)x;
 
 
-@property (nonatomic,strong) UIPageViewController *pageView;
+@property (nonatomic,strong) UIScrollView *pagerScroll;
 @property (nonatomic,strong) cfLocationViewController2* locationViewController;
 @property (nonatomic,strong) cwtListViewController * listViewController;
 @property (nonatomic, strong) cwtMapViewController *mapViewController;
