@@ -431,7 +431,7 @@
 -(void)iCloudSync{
     // Save To iCloud
     NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-    
+
     if (store != nil) {
         [store setObject:self.locationDictionaryArray forKey:@"locations"];
         [store synchronize];
@@ -439,6 +439,54 @@
     }
     [self transferLocations];
 
+}
+
+#pragma mark - Share extension inbox
+
+static NSString * const kAppGroupID = @"group.com.cwandt.crowsflight";
+static NSString * const kPendingImportsKey = @"pendingImports";
+
+-(NSInteger)indexOfDestinationMatchingLat:(double)lat lng:(double)lng{
+    for (NSUInteger i = 0; i < [self.locationDictionaryArray count]; i++) {
+        NSDictionary *d = [self.locationDictionaryArray objectAtIndex:i];
+        double dlat = [[d objectForKey:@"lat"] doubleValue];
+        double dlng = [[d objectForKey:@"lng"] doubleValue];
+        if (llround(dlat * 10000.0) == llround(lat * 10000.0) &&
+            llround(dlng * 10000.0) == llround(lng * 10000.0)) {
+            return (NSInteger)i;
+        }
+    }
+    return -1;
+}
+
+-(void)drainPendingImports{
+    NSUserDefaults *shared = [[NSUserDefaults alloc] initWithSuiteName:kAppGroupID];
+    NSArray *pending = [shared arrayForKey:kPendingImportsKey];
+    if ([pending count] == 0) return;
+    [shared removeObjectForKey:kPendingImportsKey];
+
+    for (NSDictionary *item in pending) {
+        NSString *name = [item objectForKey:@"searchedText"];
+        double lat = [[item objectForKey:@"lat"] doubleValue];
+        double lng = [[item objectForKey:@"lng"] doubleValue];
+
+        if (![name isKindOfClass:[NSString class]] || [name length] == 0) continue;
+        if (lat == 0.0 && lng == 0.0) continue;
+        if (fabs(lat) > 90.0 || fabs(lng) > 180.0) continue;
+
+        NSInteger existing = [self indexOfDestinationMatchingLat:lat lng:lng];
+        if (existing >= 0) {
+            [[NSUserDefaults standardUserDefaults] setInteger:existing forKey:@"currentDestinationN"];
+            NSLog(@"Import: duplicate of %ld, selecting it", (long)existing);
+        } else {
+            [self addNewDestination:name newlat:lat newlng:lng];
+            NSLog(@"Import: added %@", name);
+        }
+    }
+
+    if (self.viewController) {
+        [self.viewController flipToPage:[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"]];
+    }
 }
 
 
@@ -552,6 +600,8 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+    [self drainPendingImports];
+
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     [UIApplication sharedApplication].idleTimerDisabled = YES;
     
