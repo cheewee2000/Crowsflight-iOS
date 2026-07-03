@@ -103,9 +103,27 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    
-    
+    [self pinFilterBar];
+}
 
+//keep the filter bar in the table's (non-scrolling) superview, pinned below the notch.
+//as a section header its on-screen position was a function of the table's contentOffset,
+//so every keystroke (filter -> setContentOffset -> reloadData) nudged it around. pinned
+//outside the table it cannot move, no matter what typing does to the scroll state.
+-(void)pinFilterBar{
+    UIView *host = self.tableView.superview;
+    if (host == nil) return;
+    if (self.filterBar.superview != host) [host addSubview:self.filterBar];
+    [host bringSubviewToFront:self.filterBar];
+    CGRect f = self.filterBar.frame;
+    f.origin = CGPointMake(0, [self topInsetClearingNotch]);
+    f.size.width = self.tableView.frame.size.width;
+    self.filterBar.frame = f;
+}
+
+-(void)viewDidLayoutSubviews{
+    [super viewDidLayoutSubviews];
+    [self pinFilterBar];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -258,11 +276,10 @@
 {
     
     if(section==0){
-        // UIView *view = [[UIView alloc] initWithFrame:[self.filterBar frame]];
-        // [view addSubview:self.filterBar];
-        //return view;
-
-        return self.filterBar;
+        //transparent spacer only - the filter bar itself is pinned to the table's superview
+        //(see pinFilterBar) so typing/scrolling can never move it. the spacer keeps the first
+        //row from sitting under the pinned bar when the list is scrolled to the top.
+        return [[UIView alloc] init];
 
     }
     else return nil;
@@ -1102,11 +1119,12 @@
         self.isFiltered = TRUE;
         [[NSUserDefaults standardUserDefaults] setValue:self.filterBar.text forKey:@"lastSearchText"];
         [self doFilter];
-        //reset scroll to 0 if there are results, stopping at the safe area top (notch) instead of a hardcoded 20pt status bar
+        //show the results from the top. the filter bar itself is pinned outside the table
+        //(pinFilterBar), so this only moves rows - the bar stays put while typing.
         if(self.filteredTableData.count>0)
         {
             CGPoint contentOffset = self.tableView.contentOffset;
-            contentOffset.y = -[self topInsetClearingNotch];
+            contentOffset.y = -self.tableView.adjustedContentInset.top;
             [self.tableView setContentOffset:contentOffset animated:NO];
         }
     }
