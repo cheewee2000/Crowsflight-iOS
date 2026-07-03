@@ -58,7 +58,9 @@
         self.filterBar.returnKeyType=UIReturnKeySearch;
 
         UIView * statusBackground=[[UIView alloc] initWithFrame:CGRectMake(0, -100, [[UIScreen mainScreen] bounds].size.width, 100)];
-        [statusBackground setBackgroundColor:[UIColor whiteColor]];
+        //match the main compass screen's background tone (and the filter bar itself) so the
+        //notch/status strip reads as one continuous surface instead of a brighter white band
+        [statusBackground setBackgroundColor:[UIColor colorWithWhite:.95 alpha:1]];
         [self.filterBar addSubview:statusBackground];
     
         
