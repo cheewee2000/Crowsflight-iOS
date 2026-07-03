@@ -13,7 +13,11 @@ class ShareViewController: UIViewController {
     private let cancelButton = UIButton(type: .system)
     private let geocoder = CLGeocoder()
     /// URLSession.shared is documented as unavailable in app extensions — own a session.
-    private let urlSession = URLSession(configuration: .ephemeral)
+    private let urlSession: URLSession = {
+        let config = URLSessionConfiguration.ephemeral
+        config.timeoutIntervalForRequest = 10
+        return URLSession(configuration: config)
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +47,7 @@ class ShareViewController: UIViewController {
         card.addSubview(spinner)
 
         cancelButton.setTitle("Cancel", for: .normal)
-        cancelButton.isHidden = true
+        cancelButton.isHidden = false
         cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
         card.addSubview(cancelButton)

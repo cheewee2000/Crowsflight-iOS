@@ -40,6 +40,7 @@ public enum PlaceURLParser {
     public static func isShortLink(_ url: URL) -> Bool {
         guard let host = url.host?.lowercased() else { return false }
         return host == "maps.app.goo.gl" || host == "goo.gl" || host == "g.co" || host == "share.google"
+            || host == "maps.apple"
     }
 
     public static func parse(_ url: URL, sharedText: String?) -> ParsedPlace? {
@@ -47,7 +48,10 @@ public enum PlaceURLParser {
               let host = comps.host?.lowercased() else { return nil }
 
         var place: ParsedPlace
-        if host.contains("google.") || host.hasPrefix("google") {
+        let isGoogleHost = host == "google.com"
+            || host.hasSuffix(".google.com")
+            || matches(of: "^(www\\.|maps\\.)?google\\.[a-z]{2,3}(\\.[a-z]{2})?$", in: host).first != nil
+        if isGoogleHost {
             place = parseGoogle(url: url, comps: comps)
         } else if host == "maps.apple.com" {
             place = parseApple(comps: comps)

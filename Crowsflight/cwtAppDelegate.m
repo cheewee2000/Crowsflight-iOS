@@ -451,8 +451,7 @@ static NSString * const kPendingImportsKey = @"pendingImports";
         NSDictionary *d = [self.locationDictionaryArray objectAtIndex:i];
         double dlat = [[d objectForKey:@"lat"] doubleValue];
         double dlng = [[d objectForKey:@"lng"] doubleValue];
-        if (llround(dlat * 10000.0) == llround(lat * 10000.0) &&
-            llround(dlng * 10000.0) == llround(lng * 10000.0)) {
+        if (fabs(dlat - lat) < 0.5e-4 && fabs(dlng - lng) < 0.5e-4) {
             return (NSInteger)i;
         }
     }
@@ -466,6 +465,7 @@ static NSString * const kPendingImportsKey = @"pendingImports";
     [shared removeObjectForKey:kPendingImportsKey];
 
     for (NSDictionary *item in pending) {
+        if (![item isKindOfClass:[NSDictionary class]]) continue;
         NSString *name = [item objectForKey:@"searchedText"];
         double lat = [[item objectForKey:@"lat"] doubleValue];
         double lng = [[item objectForKey:@"lng"] doubleValue];

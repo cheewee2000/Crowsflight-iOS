@@ -107,6 +107,22 @@ final class PlaceURLParserTests: XCTestCase {
         XCTAssertNil(PlaceURLParser.parse(URL(string: "https://example.com/foo?q=1,2")!, sharedText: nil))
     }
 
+    func testShortLinkHostsGcoAndMapsApple() {
+        XCTAssertTrue(PlaceURLParser.isShortLink(URL(string: "https://g.co/kgs/AbC")!))
+        XCTAssertTrue(PlaceURLParser.isShortLink(URL(string: "https://maps.apple/p/XyZ")!))
+    }
+
+    func testAppleMapsAddressOnlyFallsBackToAddressAsName() {
+        let url = URL(string: "https://maps.apple.com/?address=100%20Main%20St&ll=40.7,-73.99")!
+        let p = PlaceURLParser.parse(url, sharedText: nil)
+        XCTAssertEqual(p?.name, "100 Main St")
+        XCTAssertEqual(p?.address, "100 Main St")
+    }
+
+    func testGoogleLookalikeHostRejected() {
+        XCTAssertNil(PlaceURLParser.parse(URL(string: "https://maps.google.evil.example/?q=1,2")!, sharedText: nil))
+    }
+
     // MARK: nameFromSharedText
 
     func testNameFromSharedTextStripsURLAndTrims() {

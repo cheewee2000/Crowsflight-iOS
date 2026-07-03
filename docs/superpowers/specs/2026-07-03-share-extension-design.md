@@ -126,8 +126,11 @@ New method `drainPendingImports`, called from
   index instead (still honors "make it the target").
 - Otherwise call the existing `addNewDestination:newlat:newlng:` — reusing the
   canonical path so plist, `currentDestinationN`, iCloud KVS, and Watch
-  transfer all stay consistent. `lat`/`lng` are passed so they are stored as
-  numbers (matching the seed plist and `editDestination`).
+  transfer all stay consistent. Note: `addNewDestination:` round-trips
+  `lat`/`lng` through `NSUserDefaults setFloat:`/`stringForKey:`, so imported
+  entries store Float32-precision *strings* (e.g. `"40.6914"`), not NSNumber
+  objects. Every reader (main app and Watch) handles both string and number
+  forms via `doubleValue` / the `NSString` branch.
 - Refresh visible UI the same way the existing URL-scheme handler
   (`cwtAppDelegate.m:160-206`) does after an external add.
 
