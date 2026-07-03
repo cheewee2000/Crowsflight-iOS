@@ -115,8 +115,10 @@
 -(void)pinFilterBar{
     UIView *host = self.tableView.superview;
     if (host == nil) return;
-    if (self.filterBar.superview != host) [host addSubview:self.filterBar];
-    [host bringSubviewToFront:self.filterBar];
+    //directly above the table, never higher: the host is also where GZDrawer puts the
+    //sliding screenshot of the main view, and the bar must stay underneath that cover
+    //(bringSubviewToFront here made the bar float over the main view during the slide).
+    [host insertSubview:self.filterBar aboveSubview:self.tableView];
     CGRect f = self.filterBar.frame;
     f.origin = CGPointMake(0, [self topInsetClearingNotch]);
     f.size.width = self.tableView.frame.size.width;
