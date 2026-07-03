@@ -33,13 +33,10 @@ typedef enum {
 }
 @property (nonatomic, assign) id <LRSlidingTableViewCellDelegate> LRViewControllerDelegate;
 @property (nonatomic, assign) LRSlidingTableViewCellSwipeDirection swipeDirection;
-@property (nonatomic, retain) UISwipeGestureRecognizer *lastGestureRecognized;
 
-
-
-/** Slides the content view out to the right to reveal the background view. */
+/** Snaps the content view fully open to reveal the background view. */
 - (void)slideOutContentView;
 
-/** Slides the content view back in to cover the background view. */
+/** Snaps the content view closed to cover the background view. */
 - (void)slideInContentView;
 @end

@@ -11,14 +11,15 @@
 #import "cwtUITableViewController.h"
 
 
-@interface LRSlidingTableViewCell ()
-- (void)addSwipeGestureRecognizer:(UISwipeGestureRecognizerDirection)direction;
+@interface LRSlidingTableViewCell () <UIGestureRecognizerDelegate> {
+    UIPanGestureRecognizer *slidePan;
+    CGFloat panStartX;
+}
 @end
 
 @implementation LRSlidingTableViewCell
 
 @synthesize swipeDirection;
-@synthesize lastGestureRecognized;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -243,113 +244,139 @@
 
 
 
-- (void)handleSwipe:(UISwipeGestureRecognizer *)gesture
-{
-    [self setLastGestureRecognized:gesture];
-    [self slideOutContentView];
-    [self.LRViewControllerDelegate cellDidReceiveSwipe:self];
-}
+#pragma mark Drag-to-reveal
+
+//the content view is dragged with the finger and snaps open/closed on release.
+//all targets are absolute x positions (closed = 0, open = +/- content width) so the
+//snap methods are safe to call from any partial position or on an already-closed cell.
+
+#define kFLICK_VELOCITY 500.0
 
 - (void)setSwipeDirection:(LRSlidingTableViewCellSwipeDirection)direction
 {
     swipeDirection = direction;
-    
+
     NSArray *existingGestures = [self gestureRecognizers];
     for (UIGestureRecognizer *gesture in existingGestures) {
         [self removeGestureRecognizer:gesture];
     }
-    
-    switch (swipeDirection) {
-        case LRSlidingTableViewCellSwipeDirectionLeft:
-            [self addSwipeGestureRecognizer:UISwipeGestureRecognizerDirectionLeft];
+    slidePan = nil;
+
+    if (swipeDirection == LRSlidingTableViewCellSwipeDirectionNone) return;
+
+    slidePan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleSlidePan:)];
+    slidePan.delegate = self;
+    [self addGestureRecognizer:slidePan];
+}
+
+//closed content sits at x=0; these give the drag limits for the configured direction
+- (CGFloat)minContentX
+{
+    if (swipeDirection == LRSlidingTableViewCellSwipeDirectionLeft ||
+        swipeDirection == LRSlidingTableViewCellSwipeDirectionBoth) return -self.contentView.bounds.size.width;
+    return 0;
+}
+
+- (CGFloat)maxContentX
+{
+    if (swipeDirection == LRSlidingTableViewCellSwipeDirectionRight ||
+        swipeDirection == LRSlidingTableViewCellSwipeDirectionBoth) return self.contentView.bounds.size.width;
+    return 0;
+}
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    if (gestureRecognizer != slidePan) return YES;
+    CGPoint v = [slidePan velocityInView:self];
+    //vertical drags belong to the table's scrolling
+    if (fabs(v.x) <= fabs(v.y)) return NO;
+    //when closed, only a drag toward the reveal side may begin
+    CGFloat x = self.contentView.frame.origin.x;
+    if (fabs(x) < 0.5) {
+        if (v.x > 0 && [self maxContentX] == 0) return NO;
+        if (v.x < 0 && [self minContentX] == 0) return NO;
+    }
+    return YES;
+}
+
+- (void)handleSlidePan:(UIPanGestureRecognizer *)gr
+{
+    switch (gr.state) {
+        case UIGestureRecognizerStateBegan:
+            panStartX = self.contentView.frame.origin.x;
+            //lets the controller close any other open cell and remember this one
+            [self.LRViewControllerDelegate cellDidReceiveSwipe:self];
             break;
-        case LRSlidingTableViewCellSwipeDirectionRight:
-            [self addSwipeGestureRecognizer:UISwipeGestureRecognizerDirectionRight];
+
+        case UIGestureRecognizerStateChanged: {
+            CGFloat x = panStartX + [gr translationInView:self].x;
+            x = MAX([self minContentX], MIN([self maxContentX], x));
+            CGRect f = self.contentView.frame;
+            f.origin.x = x;
+            self.contentView.frame = f;
             break;
-        case LRSlidingTableViewCellSwipeDirectionBoth:
-            [self addSwipeGestureRecognizer:UISwipeGestureRecognizerDirectionLeft];
-            [self addSwipeGestureRecognizer:UISwipeGestureRecognizerDirectionRight];
+        }
+
+        case UIGestureRecognizerStateEnded:
+        case UIGestureRecognizerStateCancelled:
+        case UIGestureRecognizerStateFailed: {
+            CGFloat x = self.contentView.frame.origin.x;
+            CGFloat vx = (gr.state == UIGestureRecognizerStateEnded) ? [gr velocityInView:self].x : 0;
+            CGFloat w = self.contentView.bounds.size.width;
+            CGFloat target;
+            if (fabs(vx) > kFLICK_VELOCITY) {
+                //flick decides: toward the reveal side opens, back toward center closes
+                if (vx > 0) target = [self maxContentX];
+                else target = [self minContentX];
+            } else {
+                //no flick: settle to whichever end is nearer
+                if (x > w * 0.5) target = [self maxContentX];
+                else if (x < -w * 0.5) target = [self minContentX];
+                else target = 0;
+            }
+            [self snapContentViewToX:target];
+            break;
+        }
+
         default:
             break;
     }
 }
 
-- (void)addSwipeGestureRecognizer:(UISwipeGestureRecognizerDirection)direction;
+- (void)snapContentViewToX:(CGFloat)targetX
 {
-  UISwipeGestureRecognizer *swipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
-  swipeGesture.direction = direction;
-  [self addGestureRecognizer:swipeGesture];
-}
-
-
-#pragma mark Sliding content view
-
-#define kBOUNCE_DISTANCE 20.0
-
-void LR_offsetView(UIView *view, CGFloat offsetX, CGFloat offsetY)
-{
-  view.frame = CGRectOffset(view.frame, offsetX, offsetY);
+    [UIView animateWithDuration:0.2
+                          delay:0
+                        options:UIViewAnimationOptionCurveEaseOut|UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowUserInteraction
+                     animations:^{
+                         CGRect f = self.contentView.frame;
+                         f.origin.x = targetX;
+                         self.contentView.frame = f;
+                     }
+                     completion:NULL];
 }
 
 - (void)slideOutContentView;
 {
-  CGFloat offsetX;
-  
-  switch (self.lastGestureRecognized.direction) {
-    case UISwipeGestureRecognizerDirectionLeft:
-      offsetX = -self.contentView.frame.size.width;
-      break;
-    case UISwipeGestureRecognizerDirectionRight:
-      offsetX = self.contentView.frame.size.width;
-      break;
-    default:
-      @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Unhandled gesture direction" userInfo:[NSDictionary dictionaryWithObject:self.lastGestureRecognized forKey:@"lastGestureRecognized"]];
-      break;
-  }
-
-  [UIView animateWithDuration:0.2 
-                        delay:0 
-                      options:UIViewAnimationOptionCurveEaseOut 
-                   animations:^{ LR_offsetView(self.contentView, offsetX, 0); } 
-                   completion:NULL];
+    CGFloat target = [self maxContentX];
+    if (target == 0) target = [self minContentX];
+    [self snapContentViewToX:target];
 }
 
 - (void)slideInContentView;
 {
-    CGFloat offsetX, bounceDistance;
-    
-    switch (self.lastGestureRecognized.direction) {
-        case UISwipeGestureRecognizerDirectionLeft:
-            offsetX = self.contentView.frame.size.width;
-            bounceDistance = -kBOUNCE_DISTANCE;
-            break;
-        case UISwipeGestureRecognizerDirectionRight:
-            offsetX = -self.contentView.frame.size.width;
-            bounceDistance = kBOUNCE_DISTANCE;
-            break;
-        default:
-            @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Unhandled gesture direction" userInfo:[NSDictionary dictionaryWithObject:self.lastGestureRecognized forKey:@"lastGestureRecognized"]];
-            break;
-    }
-    
-    [UIView animateWithDuration:0.1
-                          delay:0
-                        options:UIViewAnimationOptionCurveEaseOut|UIViewAnimationOptionAllowUserInteraction
-                     animations:^{ LR_offsetView(self.contentView, offsetX, 0); }
-                     completion:^(BOOL f) {
-                         
-                         [UIView animateWithDuration:0.1 delay:0
-                                             options:UIViewAnimationOptionCurveLinear
-                                          animations:^{ LR_offsetView(self.contentView, bounceDistance, 0); }
-                                          completion:^(BOOL f) {
-                                              
-                                              [UIView animateWithDuration:0.1 delay:0
-                                                                  options:UIViewAnimationOptionCurveLinear
-                                                               animations:^{ LR_offsetView(self.contentView, -bounceDistance, 0); } 
-                                                               completion:NULL];
-                                          }
-                          ];   
-                     }];
+    //already closed: nothing to animate (the controller calls this on stale "active" cells)
+    if (fabs(self.contentView.frame.origin.x) < 0.5) return;
+    [self snapContentViewToX:0];
+}
+
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    [self.contentView.layer removeAllAnimations];
+    CGRect f = self.contentView.frame;
+    f.origin.x = 0;
+    self.contentView.frame = f;
 }
 
 @end
