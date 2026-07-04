@@ -45,7 +45,17 @@
     
     
     //main arrow
-    self.arrow=[[cwtArrow alloc] initWithFrame:CGRectMake(0,0, screen.size.height*1.5,screen.size.height*1.5)];
+    //cwtArrow draws a translucent yellow arc whose thickest stroke reaches its farthest
+    //extent at r + thickness/2 from the view centre. In cwtArrow drawRect: thickness =
+    //screenH*0.5 and r = 60 + thickness/2, so the outer stroke edge = 60 + screenH*0.5.
+    //Those sizes derive from the screen and fixed constants (NOT self.bounds), so the
+    //drawing is pixel-identical regardless of frame size — the frame only has to contain
+    //that radius. The view rotates about its centre (set in viewDidLayoutSubviews to
+    //distanceText.center), so a square of 2×extent+margin fully contains it through 360°.
+    //Old frame was screenH*1.5 square (~3800px@3x, ~59MB backing store); this ~halves it.
+    CGFloat arrowExtent = 60.0 + screen.size.height*0.5;   //max radial extent of the drawing
+    CGFloat arrowSize   = 2.0*(arrowExtent + 20.0);        //+20pt margin for anti-aliasing/line width
+    self.arrow=[[cwtArrow alloc] initWithFrame:CGRectMake(0,0, arrowSize, arrowSize)];
     //[self.arrow setCenter:CGPointMake(screen.size.width*.5, screen.size.height*.5)];
     self.arrow.backgroundColor=[UIColor clearColor];
     //the arrow is pure display and is re-animated on every heading tick; an animating
@@ -132,9 +142,11 @@
                                            [UIImage imageNamed:@"satellite_0000.png"], nil];
     self.satSearchImage.animationDuration = 2.0f;
     self.satSearchImage.animationRepeatCount = 0;
-    [self.satSearchImage startAnimating];
     [self.view addSubview: self.satSearchImage];
+    //start hidden AND not animating; a hidden UIImageView still burns cycles animating,
+    //×3 loaded pages, so startAnimating/stopAnimating is now paired with every hidden toggle
     self.satSearchImage.hidden=TRUE;
+    [self.satSearchImage stopAnimating];
     
     [self updateHeading];
     
@@ -145,6 +157,11 @@
 
 
 -(void)viewWillDisappear:(BOOL)animated{
+    //page left the screen (manual appearance forwarding from the pager). Stop the
+    //self-restarting spinArc loop so offscreen pages don't animate, and mark the page
+    //offscreen so location broadcasts don't restart the spinner for it.
+    self.onscreen=FALSE;
+    self.spinning=FALSE;
     [self.arrow setAlpha:0.0];
     [self.arrow setHidden:TRUE];
 }
@@ -156,7 +173,10 @@
 }
 
 
--(void)viewWillAppear:(BOOL)animated{    
+-(void)viewWillAppear:(BOOL)animated{
+    //page is (re)appearing; allow the spinner to run again. loadLocation below calls
+    //updateDistanceWithLatLng, which restarts spinArc if still in the positioning state.
+    self.onscreen=TRUE;
     //check if page is in bounds
 //    if( [[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"]>= dele.nDestinations ) {
 //        [[NSUserDefaults standardUserDefaults] setInteger:dele.nDestinations-1 forKey:@"currentDestinationN"];
@@ -253,26 +273,32 @@
     //near destination
     if( self.distance<= 20.0 && self.distance>=0 && dele.accuracy>0){
         self.satSearchImage.hidden=TRUE;
+        [self.satSearchImage stopAnimating];
         self.accuracyText.text=  @"ARRIVED" ;
         [self rotateArc:duration degrees:self.locBearing-dele.heading];
         self.spinning=FALSE;
     }
-    
+
     //positioning
     else if( (self.distance<= dele.accuracy*.5 && dele.accuracy > 20.0) || dele.accuracy<=0 || dele.headingAccuracy<0){
         self.accuracyText.text=@"";
         self.satSearchImage.hidden=FALSE;
-        if(self.spinning==FALSE) {
+        [self.satSearchImage startAnimating];
+        //only spin when this page is actually onscreen. The pager broadcasts location
+        //ticks to all loaded pages (current ±1), and offscreen pages must not run the
+        //self-restarting spinArc loop. It restarts naturally on viewWillAppear -> loadLocation.
+        if(self.spinning==FALSE && self.onscreen) {
             [self spinArc];
             self.spinning=TRUE;
         }
     }
-    
+
     //normal pointing state
     else{
         //arc max set to 10km
         //self.progress = self.distance / 10000.0  * [self.arcProgressView maxArc];
         self.satSearchImage.hidden=TRUE;
+        [self.satSearchImage stopAnimating];
         [self rotateArc:duration degrees:self.locBearing-dele.heading];
         self.spinning=FALSE;
         

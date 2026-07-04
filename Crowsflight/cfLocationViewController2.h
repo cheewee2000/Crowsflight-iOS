@@ -54,6 +54,7 @@
 @property (nonatomic) int lastSpread;
 
 @property (nonatomic) BOOL spinning;
+@property (nonatomic) BOOL onscreen;
 
 -(void)loadLocation;
 
