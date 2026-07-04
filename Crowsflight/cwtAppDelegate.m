@@ -84,17 +84,18 @@
     // deferring preserves the same pre-callback default as before.
     dispatch_async(dispatch_get_main_queue(), ^{
         self.reachability = [Reachability reachabilityForInternetConnection];
+        __weak __typeof(self) weakSelf = self;
         self.reachability.reachableBlock = ^(Reachability *r) {
 #ifdef DEBUG
             NSLog(@"REACHABLE!");
 #endif
-            self.hasInternet = YES;
+            weakSelf.hasInternet = YES;
         };
         self.reachability.unreachableBlock = ^(Reachability *r) {
 #ifdef DEBUG
             NSLog(@"UNREACHABLE!");
 #endif
-            self.hasInternet = NO;
+            weakSelf.hasInternet = NO;
         };
         [self.reachability startNotifier];
     });
