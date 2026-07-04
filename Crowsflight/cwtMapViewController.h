@@ -33,6 +33,13 @@
     //SystemSoundID audioSelect3;
 
     BOOL locationLoaded;
+    // One-shot: on a cold first open the MKMapView may not have produced an
+    // MKUserLocation yet when updateMap runs, so setUserTrackingMode can no-op.
+    // Arm this in updateMap and engage FollowWithHeading once in didUpdateUserLocation.
+    BOOL wantsFollowOnFirstFix;
+    // Current-destination pin, remembered so its callout can be re-selected
+    // after the tracking-mode hand-off (which can drop the selection).
+    cwtAnnotation *selectedAnnotation;
     CAShapeLayer *beam;
     CGPoint startPosition;
     MKCoordinateRegion region;

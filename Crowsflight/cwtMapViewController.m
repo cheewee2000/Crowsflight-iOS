@@ -31,11 +31,25 @@
 }
 
 -(void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation{
-    
+
     if(locationLoaded==false){
-        
+
         [self updateMap];
         locationLoaded=true;
+    }
+
+    // One-shot: guarantee compass-follow engages on the cold first open once the
+    // map has produced a real MKUserLocation. setUserTrackingMode inside updateMap
+    // can silently no-op if it ran before the map had a fix, which used to leave
+    // the map stuck in the pin-fit fallback with tracking mode None.
+    if(wantsFollowOnFirstFix
+       && CLLocationCoordinate2DIsValid(userLocation.coordinate)
+       && !(userLocation.coordinate.latitude == 0.0 && userLocation.coordinate.longitude == 0.0)){
+        wantsFollowOnFirstFix = NO;
+        if(self.mapView.userTrackingMode != MKUserTrackingModeFollowWithHeading){
+            [self.mapView setUserTrackingMode:MKUserTrackingModeFollowWithHeading animated:YES];
+        }
+        [self.mapView selectAnnotation:selectedAnnotation animated:YES];
     }
 }
 
@@ -175,65 +189,56 @@
         }
         
         // NEW BEHAVIOR (non-search branch):
-        // Always open the map centered on the USER and oriented by the compass,
-        // no matter how far the destination is. We size the initial visible rect
-        // as a SQUARE centered on the user, large enough that the current pin
-        // stays on-screen at ANY map rotation, then hand off to
-        // MKUserTrackingModeFollowWithHeading (which recenters on the user and
-        // rotates the map with the device heading).
+        // Open the map centered on the USER and oriented by the compass at
+        // MapKit's default FollowWithHeading altitude, no matter how far the
+        // destination is (far destinations behave EXACTLY like near ones).
+        //
+        // Source the fix from the app delegate's always-on location manager, NOT
+        // from the map's own showsUserLocation plumbing: the map VC is lazy-created
+        // on first open and showsUserLocation only turns on in viewWillAppear, so
+        // mapView.userLocation.coordinate is still (0,0) on a cold first open. The
+        // compass app has had a live fix long before the map ever opened.
+        //
+        // We only compute a modest initial region (so there's no pin-fit flash
+        // before tracking engages); engaging FollowWithHeading immediately resets
+        // the camera to its default follow altitude anyway, so no span math is
+        // needed. The pin-fit fallback is kept ONLY for fix==nil (fresh install /
+        // permissions pending), where FollowWithHeading engages later via the
+        // one-shot in didUpdateUserLocation.
 
-        if(currentAnnotation != nil){
+        CLLocation *fix = dele.locationManager.location;
+        BOOL haveUserFix = (fix != nil
+                            && CLLocationCoordinate2DIsValid(fix.coordinate)
+                            && !(fix.coordinate.latitude == 0.0 && fix.coordinate.longitude == 0.0));
 
-            CLLocationCoordinate2D userCoord = self.mapView.userLocation.coordinate;
-            MKMapPoint userPoint = MKMapPointForCoordinate(userCoord);
-            MKMapPoint pinPoint  = MKMapPointForCoordinate(currentAnnotation.coordinate);
-
-            // A fresh sim / pending-permission state reports (0,0); centering there
-            // would show the Gulf of Guinea, so treat it as "no fix yet".
-            BOOL haveUserFix = !(userCoord.latitude == 0.0 && userCoord.longitude == 0.0);
-
-            if(haveUserFix){
-                // Half-span >= straight-line map-point distance (user->pin) * margin.
-                // Using the diagonal distance (not per-axis) means the pin can rotate
-                // to any bearing and still fall inside the square rect.
-                double dx = pinPoint.x - userPoint.x;
-                double dy = pinPoint.y - userPoint.y;
-                double dist = sqrt(dx*dx + dy*dy);
-                double halfSpan = dist * 1.15;
-
-                // Minimum half-span so a pin sitting on top of the user isn't a
-                // degenerate zero-size rect (keeps a sane close-in zoom).
-                if(halfSpan < 500.0) halfSpan = 500.0;
-
-                double span = halfSpan * 2.0;
-
-                // Antipodal / huge-distance sanity clamp: never exceed the valid
-                // world rect. Still centered on the user as much as possible.
-                double worldSize = MKMapRectWorld.size.width;
-                if(span > worldSize) span = worldSize;
-
-                zoomRect = MKMapRectMake(userPoint.x - span * 0.5,
-                                         userPoint.y - span * 0.5,
-                                         span, span);
-            }
-            else {
-                // No usable fix yet: fit the pin (reusing the old "tooBig" pin-fit
-                // size of ~9000) rather than centering on a bogus 0,0.
-                // FollowWithHeading below recenters automatically once a real fix
-                // arrives (MapKit handles this).
-                double span = 9000.0;
-                zoomRect = MKMapRectMake(pinPoint.x - span * 0.5,
-                                         pinPoint.y - span * 0.5,
-                                         span, span);
-            }
-
+        if(haveUserFix){
+            // Modest initial region centered on the user (~matches the follow
+            // altitude, ~5km) so there is no pin-fit flash before tracking engages.
+            MKCoordinateRegion userRegion = MKCoordinateRegionMakeWithDistance(fix.coordinate, 3000, 3000);
+            [self.mapView setRegion:userRegion animated:NO];
+        }
+        else if(currentAnnotation != nil){
+            // No usable fix yet: fit the pin (~9000 map points) rather than
+            // centering on a bogus (0,0). FollowWithHeading recenters once a real
+            // fix arrives (the one-shot in didUpdateUserLocation engages it).
+            MKMapPoint pinPoint = MKMapPointForCoordinate(currentAnnotation.coordinate);
+            double span = 9000.0;
+            zoomRect = MKMapRectMake(pinPoint.x - span * 0.5,
+                                     pinPoint.y - span * 0.5,
+                                     span, span);
             [self.mapView setVisibleMapRect:zoomRect animated:NO];
         }
 
-        // Callout still pops for the current destination (nil = harmless no-op).
+        // Remember the destination pin so its callout can be re-selected after the
+        // tracking-mode hand-off (see the one-shot in didUpdateUserLocation).
+        selectedAnnotation = currentAnnotation;
+
+        // Callout pops for the current destination (nil = harmless no-op).
         [self.mapView selectAnnotation:currentAnnotation animated:YES];
 
-        // ALWAYS orient by compass, at any distance (removed the old <9000 gate).
+        // ALWAYS orient by compass, at any distance. On a cold open the map may
+        // not have an MKUserLocation yet, so arm the one-shot too.
+        wantsFollowOnFirstFix = YES;
         [self.mapView setUserTrackingMode:MKUserTrackingModeFollowWithHeading animated:YES];
 
     }
