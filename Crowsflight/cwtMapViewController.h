@@ -51,6 +51,15 @@
     BOOL followEngagePending;
     int  followRetryCount;
     int  followArmGeneration;
+    // Pin-visible zoom clamp while following: engaging FollowWithHeading resets
+    // the camera to its default ~5km altitude, discarding any region we set, so
+    // far pins scroll off screen. We clamp the map's cameraZoomRange MIN
+    // center-coordinate distance to K * (user->pin meters) so the follow camera
+    // is forced UP to a pin-visible altitude (at any compass rotation) while
+    // MapKit still owns centering + rotation; it tightens as the user
+    // approaches. Records the user->pin distance the clamp was last computed
+    // for (0 = no clamp active); re-clamped when it drifts >15%.
+    double followClampUserPinDistance;
     // Current-destination pin, remembered so its callout can be re-selected
     // after the tracking-mode hand-off (which can drop the selection).
     cwtAnnotation *selectedAnnotation;
