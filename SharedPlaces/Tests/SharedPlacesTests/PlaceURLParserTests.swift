@@ -58,6 +58,15 @@ final class PlaceURLParserTests: XCTestCase {
         XCTAssertEqual(p?.lng ?? 0, -73.975540, accuracy: 1e-6)
     }
 
+    func testGoogleSearchPathCoordinateURL() {
+        // What maps.app.goo.gl short links from the iOS app's share button (entry=tts)
+        // expand to: coordinates in the path, ",+" separated, nothing in the query.
+        let url = URL(string: "https://www.google.com/maps/search/-33.918017,+18.430922?entry=tts&ucbcb=1")!
+        let p = PlaceURLParser.parse(url, sharedText: nil)
+        XCTAssertEqual(p?.lat ?? 0, -33.918017, accuracy: 1e-6)
+        XCTAssertEqual(p?.lng ?? 0, 18.430922, accuracy: 1e-6)
+    }
+
     func testGoogleTextQueryGivesNameWithoutCoords() {
         let url = URL(string: "https://maps.google.com/?q=Fort+Greene+Park")!
         let p = PlaceURLParser.parse(url, sharedText: nil)

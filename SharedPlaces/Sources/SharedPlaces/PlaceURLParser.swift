@@ -96,11 +96,16 @@ public enum PlaceURLParser {
         // Coordinates, best source first:
         // 1. !3d<lat>!4d<lng> — the place pin (take the LAST occurrence in the data blob)
         // 2. q= / query= containing "lat,lng"
-        // 3. @lat,lng — viewport center
+        // 3. /maps/search/<lat>,+<lng> — what the iOS app's share short links expand to
+        // 4. @lat,lng — viewport center
         if let m = matches(of: "!3d(-?[0-9]+\\.?[0-9]*)!4d(-?[0-9]+\\.?[0-9]*)", in: s).last {
             place.lat = Double(m[1])
             place.lng = Double(m[2])
         } else if let ll = latLngPair(queryValue(comps, "q") ?? queryValue(comps, "query")) {
+            place.lat = ll.0
+            place.lng = ll.1
+        } else if let i = parts.firstIndex(of: "search"), i + 1 < parts.count,
+                  let ll = latLngPair(parts[i + 1]) {
             place.lat = ll.0
             place.lng = ll.1
         } else if let m = matches(of: "@(-?[0-9]+\\.?[0-9]*),(-?[0-9]+\\.?[0-9]*)", in: s).first {
