@@ -180,13 +180,6 @@
     [self.view addSubview:self.instructions];
     
     //[self initW3wSDK];
-    
-    if ([WCSession isSupported]) {
-    WCSession *session = [WCSession defaultSession];
-    session.delegate = self;
-
-    [session activateSession];
-    }
 
 
 }

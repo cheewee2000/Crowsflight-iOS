@@ -21,6 +21,7 @@
 @interface cwtAppDelegate ()<UIAlertViewDelegate,CLLocationManagerDelegate,UIAppearanceContainer,WCSessionDelegate>{//,MTStatusBarOverlayDelegate>
     WCSession *session;
 }
+@property (nonatomic, strong) Reachability *reachability;
 @end
 
 @implementation cwtAppDelegate
@@ -78,38 +79,37 @@
     
     
 
-    // Allocate a reachability object
-    Reachability* reach = [Reachability reachabilityWithHostname:@"www.google.com"];
-    
+    // Defer Reachability setup off the critical launch path — runs after the first frame.
+    // hasInternet defaults to NO (BOOL zero-init); callbacks fire async regardless, so
+    // deferring preserves the same pre-callback default as before.
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.reachability = [Reachability reachabilityForInternetConnection];
+        self.reachability.reachableBlock = ^(Reachability *r) {
+#ifdef DEBUG
+            NSLog(@"REACHABLE!");
+#endif
+            self.hasInternet = YES;
+        };
+        self.reachability.unreachableBlock = ^(Reachability *r) {
+#ifdef DEBUG
+            NSLog(@"UNREACHABLE!");
+#endif
+            self.hasInternet = NO;
+        };
+        [self.reachability startNotifier];
+    });
 
-
-
-    
-    
-    // Set the blocks
-    reach.reachableBlock = ^(Reachability*reach)
-    {
-        NSLog(@"REACHABLE!");
-        self.hasInternet=TRUE;
-    };
-    
-    reach.unreachableBlock = ^(Reachability*reach)
-    {
-        NSLog(@"UNREACHABLE!");
-        self.hasInternet=FALSE;
-
-    };
-    
-    // Start the notifier, which will cause the reachability object to retain itself!
-    [reach startNotifier];
-    
-
-    //iCloud
-    NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateKeyValuePairs:) name:NSUbiquitousKeyValueStoreDidChangeExternallyNotification object:store];
-    
-    // Synchronize Store
-    [store synchronize];
+    // Defer iCloud KVS observer + sync off the critical launch path.
+    // loadmyLocations already ran synchronously above, so the KVS callback
+    // can safely overwrite locationDictionaryArray whenever it fires.
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(updateKeyValuePairs:)
+                                                     name:NSUbiquitousKeyValueStoreDidChangeExternallyNotification
+                                                   object:store];
+        [store synchronize];
+    });
     
     [self activateASession];
 
@@ -221,10 +221,6 @@
 	//load destination list
 	NSLog(@"The array count: %i", (int)[self.locationDictionaryArray count]);
 	self.nDestinations=(int)[self.locationDictionaryArray count];
-        
-    
-    [self transferLocations];
-
 
 
 }
@@ -659,15 +655,20 @@ static NSString * const kPendingImportsKey = @"pendingImports";
 }
 
 -(void)transferLocations{
+    if (![WCSession isSupported]) return;
+    WCSession *ws = [WCSession defaultSession];
+    if (ws.activationState != WCSessionActivationStateActivated ||
+        !ws.isPaired || !ws.isWatchAppInstalled) return;
+
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory , NSUserDomainMask, YES);
     NSString *documentsDir = [paths objectAtIndex:0];
     NSString *docPath = [documentsDir stringByAppendingString:@"/locationList.plist"];
     NSURL *url = [[NSURL alloc] initFileURLWithPath:docPath];
-            
+
     //WCSessionFileTransfer *fileTransfer =
-    [[WCSession defaultSession] transferFile:url metadata:nil];
+    [ws transferFile:url metadata:nil];
     NSLog(@"file transfer started");
-    
+
 }
 
 
