@@ -196,6 +196,17 @@
 -(void)viewDidLayoutSubviews{
     self.arrow.center=CGPointMake(self.distanceText.center.x, self.distanceText.center.y);
     self.arcProgressView.center=CGPointMake(self.distanceText.center.x, self.distanceText.center.y);
+
+    //keep the telemetry readout and page counter flush with the toolbar top (44pt icon
+    //row plus home-indicator inset, matching cwtViewController3's bar) instead of the
+    //pre-notch h-55 bottom they were created with
+    CGFloat safeBottom = self.view.window ? self.view.window.safeAreaInsets.bottom
+                                          : dele.window.safeAreaInsets.bottom;
+    CGFloat barTop = self.view.bounds.size.height - (44 + MAX(safeBottom, 11.0f));
+    CGRect dt = self.displayText.frame;
+    self.displayText.frame = CGRectMake(dt.origin.x, barTop - dt.size.height, dt.size.width, dt.size.height);
+    CGRect pn = self.pageNText.frame;
+    self.pageNText.frame = CGRectMake(pn.origin.x, barTop - pn.size.height, pn.size.width, pn.size.height);
 }
 
 -(void)loadArc{

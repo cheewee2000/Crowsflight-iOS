@@ -242,16 +242,22 @@
 -(void)setInstructionPosition{
     int instructionN=(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"mainInstructions"];
     CGRect screen = [[UIScreen mainScreen] bounds];
+    CGFloat w = screen.size.width;
+    CGFloat h = screen.size.height;
 
-    NSLog(@"instn %i",instructionN);
-    if(instructionN==0) [self.instructions setFrame:CGRectMake(0,screen.size.height*.5+60, screen.size.width, screen.size.width)];
-    
-    else if(instructionN==4) [self.instructions setFrame:CGRectMake(0,screen.size.height*.15, screen.size.width, screen.size.width)];
-    else if(instructionN==5) [self.instructions setFrame:CGRectMake(0, screen.size.height*.5-screen.size.width-50, screen.size.width, screen.size.width)];
-    else if(instructionN==6) [self.instructions setFrame:CGRectMake(0, screen.size.height-60-50-screen.size.width, screen.size.width, screen.size.width)];
-    else [self.instructions setFrame:CGRectMake(0, screen.size.height-screen.size.width-44, screen.size.width, screen.size.width)];
-    
+    //each bubble is a w x w image whose arrow tip sits at a fixed fraction of the square:
+    //down-arrows end 316/320 of the way down, up-arrows 2/320 from the top. the old code
+    //placed the squares with pre-notch constants; anchor the tips to the live frames of
+    //their targets instead so they stay attached when the bar/safe areas move.
+    CGFloat downTip = w * (316.0f/320.0f);
+    CGFloat upTip   = w * (2.0f/320.0f);
+    CGFloat barTop  = CGRectGetMinY(cfButtonBar.frame);
 
+    if(instructionN==0)      [self.instructions setFrame:CGRectMake(0, h*.5+62-upTip, w, w)];                              //up at the distance disc bottom
+    else if(instructionN==4) [self.instructions setFrame:CGRectMake(0, h*.1+30-upTip, w, w)];                              //up at the title text (title y=h*.1, ~22pt tall, 8pt gap)
+    else if(instructionN==5) [self.instructions setFrame:CGRectMake(0, h*.5-w-50, w, w)];                                  //down at the disc top (centre-anchored, unchanged)
+    else if(instructionN==6) [self.instructions setFrame:CGRectMake(0, CGRectGetMinY(moreInfo.frame)+16-downTip, w, w)];   //down at the more-info button
+    else                     [self.instructions setFrame:CGRectMake(0, barTop+7-downTip, w, w)];                           //down at the toolbar icons (steps 1-3)
 }
 
 
@@ -461,12 +467,17 @@
     CGFloat w = self.view.bounds.size.width;
     CGFloat h = self.view.bounds.size.height;
 
-    CGFloat barH = 55 + safeBottom;
+    //44pt icon row plus whichever is deeper: the home-indicator inset or the original
+    //11pt breathing space below the icons (the 2013 bar was 55pt on inset-less phones)
+    CGFloat barH = 44 + MAX(safeBottom, 11.0f);
     cfButtonBar.frame = CGRectMake(0, h - barH, w, barH);
     cfButtonBar.layer.shadowPath = [UIBezierPath bezierPathWithRect:cfButtonBar.bounds].CGPath;
 
     CGRect mi = moreInfo.frame;
-    moreInfo.frame = CGRectMake(mi.origin.x, h - 80.0 - mi.size.height - safeBottom, mi.size.width, mi.size.height);
+    moreInfo.frame = CGRectMake(mi.origin.x, CGRectGetMinY(cfButtonBar.frame) - 25.0 - mi.size.height, mi.size.width, mi.size.height);
+
+    //the instruction bubbles anchor to the bar and more-info frames finalized above
+    [self setInstructionPosition];
 
     //keep the pager and its loaded pages in step with the root view's size
     if (!CGRectEqualToRect(self.pagerScroll.frame, self.view.bounds)) {
