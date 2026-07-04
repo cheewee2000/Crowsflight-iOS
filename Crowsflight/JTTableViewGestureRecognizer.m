@@ -303,7 +303,7 @@ CGFloat const JTTableViewRowAnimationDuration          = 0.25;       // Rough gu
         [self.tableView endUpdates];
 
         // Start timer to prepare for auto scrolling
-        self.movingTimer = [NSTimer timerWithTimeInterval:1/8 target:self selector:@selector(scrollTable) userInfo:nil repeats:YES];
+        self.movingTimer = [NSTimer timerWithTimeInterval:0.125 target:self selector:@selector(scrollTable) userInfo:nil repeats:YES];
         [[NSRunLoop mainRunLoop] addTimer:self.movingTimer forMode:NSDefaultRunLoopMode];
 
     } else if (recognizer.state == UIGestureRecognizerStateEnded) {
