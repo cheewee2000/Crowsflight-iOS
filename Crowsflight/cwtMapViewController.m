@@ -30,6 +30,26 @@
     return self;
 }
 
+// Arm the "until it sticks" follow-engagement guard (non-search open paths only).
+// Bumps the generation so any timers scheduled by a previous open become stale,
+// and schedules an absolute 5s safety disarm: if the engage never confirms (e.g.
+// the user deliberately pans within the open window), the guard can never fight
+// the user for more than a few seconds.
+-(void)armFollowGuard{
+    followEngagePending = YES;
+    followRetryCount = 0;
+    followArmGeneration++;
+    int gen = followArmGeneration;
+    __weak cwtMapViewController *weakSelf = self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)),
+                   dispatch_get_main_queue(), ^{
+        cwtMapViewController *strongSelf = weakSelf;
+        if(strongSelf != nil && strongSelf->followArmGeneration == gen){
+            strongSelf->followEngagePending = NO;
+        }
+    });
+}
+
 -(void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation{
 
     if(locationLoaded==false){
@@ -49,10 +69,7 @@
         if(self.mapView.userTrackingMode != MKUserTrackingModeFollowWithHeading){
             // Arm the "until it sticks" guard for the non-search open path (the
             // search branch manages its own tracking and must stay undisturbed).
-            if(!wasSearchView){
-                followEngagePending = YES;
-                followRetryCount = 0;
-            }
+            if(!wasSearchView) [self armFollowGuard];
             [self.mapView setUserTrackingMode:MKUserTrackingModeFollowWithHeading animated:YES];
         }
         [self.mapView selectAnnotation:selectedAnnotation animated:YES];
@@ -69,46 +86,51 @@
 
 }
 
--(void) viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
-
-    // The drawer-push transition is definitively over here — the proven-good
-    // window in which an animated setUserTrackingMode:FollowWithHeading actually
-    // sticks. If the engagement never took during the transition, re-assert it now.
-    if(followEngagePending){
-        if(self.mapView.userTrackingMode != MKUserTrackingModeFollowWithHeading){
-            [self.mapView setUserTrackingMode:MKUserTrackingModeFollowWithHeading animated:YES];
-        }else{
-            // Already engaged — nothing left to guard.
-            followEngagePending = NO;
-        }
-    }
-}
-
 // "Armed until it sticks" resolver for the follow-mode engagement. See the
-// followEngagePending / followRetryCount comments in the header.
+// followEngagePending / followRetryCount / followArmGeneration comments in the
+// header. Key trace fact (cold open): MapKit reports mode 2 here IMMEDIATELY on
+// request, then delivers the real drop to 0 ~115ms later — so a mode-2 callback
+// is only a CANDIDATE success and must survive a delayed confirm before disarm.
+// (No viewDidAppear re-assert: on the cold path viewDidAppear fires ~100ms BEFORE
+// updateMap ever arms the guard, so it could never help there.)
 -(void)mapView:(MKMapView *)aMapView didChangeUserTrackingMode:(MKUserTrackingMode)mode animated:(BOOL)animated{
 
     if(!followEngagePending) return;   // not guarding — honor whatever the map does
 
+    __weak cwtMapViewController *weakSelf = self;
+    int gen = followArmGeneration;
+
     if(mode == MKUserTrackingModeFollowWithHeading){
-        // Engagement stuck. Disarm so a later deliberate user pan (which drops the
-        // mode to None) is never fought.
-        followEngagePending = NO;
-        followRetryCount = 0;
+        // Candidate success. Confirm after 0.7s: if the mode is STILL
+        // FollowWithHeading, it genuinely stuck — disarm so a later deliberate
+        // user pan (mode -> None) is never fought. If it was dropped in the
+        // meantime, stay armed; the None-revert path below handles the retry.
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.7 * NSEC_PER_SEC)),
+                       dispatch_get_main_queue(), ^{
+            cwtMapViewController *strongSelf = weakSelf;
+            if(strongSelf != nil
+               && strongSelf->followArmGeneration == gen
+               && strongSelf->followEngagePending
+               && strongSelf.mapView.userTrackingMode == MKUserTrackingModeFollowWithHeading){
+                strongSelf->followEngagePending = NO;
+                strongSelf->followRetryCount = 0;
+            }
+        });
         return;
     }
 
     if(mode == MKUserTrackingModeNone){
-        // MapKit dropped the animated engagement (e.g. during the drawer-push
-        // transition). Re-engage once on the next runloop turn, bounded so a
-        // genuinely-failing engage can't loop forever.
+        // MapKit dropped the engagement (the drawer-push transition window).
+        // Re-engage after 0.3s — proven to stick once the transition is over —
+        // bounded so a genuinely-failing engage can't loop forever.
         if(followRetryCount < 3){
             followRetryCount++;
-            __weak cwtMapViewController *weakSelf = self;
-            dispatch_async(dispatch_get_main_queue(), ^{
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)),
+                           dispatch_get_main_queue(), ^{
                 cwtMapViewController *strongSelf = weakSelf;
-                if(strongSelf != nil && strongSelf->followEngagePending){
+                if(strongSelf != nil
+                   && strongSelf->followArmGeneration == gen
+                   && strongSelf->followEngagePending){
                     [strongSelf.mapView setUserTrackingMode:MKUserTrackingModeFollowWithHeading animated:YES];
                 }
             });
@@ -298,10 +320,7 @@
         // drops during the drawer-push transition gets re-asserted (this block
         // runs for search too, so gate the guard on the non-search path only).
         wantsFollowOnFirstFix = YES;
-        if(!wasSearchView){
-            followEngagePending = YES;
-            followRetryCount = 0;
-        }
+        if(!wasSearchView) [self armFollowGuard];
         [self.mapView setUserTrackingMode:MKUserTrackingModeFollowWithHeading animated:YES];
 
     }

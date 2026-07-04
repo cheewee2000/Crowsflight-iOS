@@ -39,14 +39,18 @@
     BOOL wantsFollowOnFirstFix;
     // Follow-engagement guard: MapKit can silently DROP an animated
     // setUserTrackingMode:FollowWithHeading requested DURING the drawer-push
-    // transition (cold first open reads mode 2 momentarily, then reverts to 0).
-    // Stay ARMED until the mode is observed to actually stick
-    // (didChangeUserTrackingMode == FollowWithHeading); if it reverts to None while
-    // still armed, re-engage once on the main queue, bounded by followRetryCount so
-    // a genuinely-failing engage can't loop. Disarming on the first observed
-    // FollowWithHeading guarantees a later deliberate user pan still exits follow.
+    // transition. Cold-open trace: didChangeUserTrackingMode reports mode 2
+    // IMMEDIATELY ON REQUEST (not on stick), then the real drop to 0 lands
+    // ~115ms later — so success must be CONFIRMED after a delay, never on the
+    // first mode-2 callback. Stay ARMED until a mode-2 observation survives a
+    // ~0.7s confirm; on a None-revert while still armed, re-engage after ~0.3s,
+    // bounded by followRetryCount (proven: engages ~300ms+ after the transition
+    // always stick). followArmGeneration invalidates stale timers from a prior
+    // open, and a 5s safety disarm scheduled at arming caps how long a user pan
+    // inside the open window can ever be fought.
     BOOL followEngagePending;
     int  followRetryCount;
+    int  followArmGeneration;
     // Current-destination pin, remembered so its callout can be re-selected
     // after the tracking-mode hand-off (which can drop the selection).
     cwtAnnotation *selectedAnnotation;
