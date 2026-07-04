@@ -47,6 +47,12 @@
        && !(userLocation.coordinate.latitude == 0.0 && userLocation.coordinate.longitude == 0.0)){
         wantsFollowOnFirstFix = NO;
         if(self.mapView.userTrackingMode != MKUserTrackingModeFollowWithHeading){
+            // Arm the "until it sticks" guard for the non-search open path (the
+            // search branch manages its own tracking and must stay undisturbed).
+            if(!wasSearchView){
+                followEngagePending = YES;
+                followRetryCount = 0;
+            }
             [self.mapView setUserTrackingMode:MKUserTrackingModeFollowWithHeading animated:YES];
         }
         [self.mapView selectAnnotation:selectedAnnotation animated:YES];
@@ -61,6 +67,56 @@
     [super viewWillAppear:NO];
 
 
+}
+
+-(void) viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+
+    // The drawer-push transition is definitively over here — the proven-good
+    // window in which an animated setUserTrackingMode:FollowWithHeading actually
+    // sticks. If the engagement never took during the transition, re-assert it now.
+    if(followEngagePending){
+        if(self.mapView.userTrackingMode != MKUserTrackingModeFollowWithHeading){
+            [self.mapView setUserTrackingMode:MKUserTrackingModeFollowWithHeading animated:YES];
+        }else{
+            // Already engaged — nothing left to guard.
+            followEngagePending = NO;
+        }
+    }
+}
+
+// "Armed until it sticks" resolver for the follow-mode engagement. See the
+// followEngagePending / followRetryCount comments in the header.
+-(void)mapView:(MKMapView *)aMapView didChangeUserTrackingMode:(MKUserTrackingMode)mode animated:(BOOL)animated{
+
+    if(!followEngagePending) return;   // not guarding — honor whatever the map does
+
+    if(mode == MKUserTrackingModeFollowWithHeading){
+        // Engagement stuck. Disarm so a later deliberate user pan (which drops the
+        // mode to None) is never fought.
+        followEngagePending = NO;
+        followRetryCount = 0;
+        return;
+    }
+
+    if(mode == MKUserTrackingModeNone){
+        // MapKit dropped the animated engagement (e.g. during the drawer-push
+        // transition). Re-engage once on the next runloop turn, bounded so a
+        // genuinely-failing engage can't loop forever.
+        if(followRetryCount < 3){
+            followRetryCount++;
+            __weak cwtMapViewController *weakSelf = self;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                cwtMapViewController *strongSelf = weakSelf;
+                if(strongSelf != nil && strongSelf->followEngagePending){
+                    [strongSelf.mapView setUserTrackingMode:MKUserTrackingModeFollowWithHeading animated:YES];
+                }
+            });
+        }else{
+            // Give up rather than fight the map indefinitely.
+            followEngagePending = NO;
+        }
+    }
 }
 
 -(void) updateMap{
@@ -237,8 +293,15 @@
         [self.mapView selectAnnotation:currentAnnotation animated:YES];
 
         // ALWAYS orient by compass, at any distance. On a cold open the map may
-        // not have an MKUserLocation yet, so arm the one-shot too.
+        // not have an MKUserLocation yet, so arm the one-shot too. Also arm the
+        // "until it sticks" guard so a FollowWithHeading engagement that MapKit
+        // drops during the drawer-push transition gets re-asserted (this block
+        // runs for search too, so gate the guard on the non-search path only).
         wantsFollowOnFirstFix = YES;
+        if(!wasSearchView){
+            followEngagePending = YES;
+            followRetryCount = 0;
+        }
         [self.mapView setUserTrackingMode:MKUserTrackingModeFollowWithHeading animated:YES];
 
     }

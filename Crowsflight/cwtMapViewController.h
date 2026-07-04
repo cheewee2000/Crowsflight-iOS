@@ -37,6 +37,16 @@
     // MKUserLocation yet when updateMap runs, so setUserTrackingMode can no-op.
     // Arm this in updateMap and engage FollowWithHeading once in didUpdateUserLocation.
     BOOL wantsFollowOnFirstFix;
+    // Follow-engagement guard: MapKit can silently DROP an animated
+    // setUserTrackingMode:FollowWithHeading requested DURING the drawer-push
+    // transition (cold first open reads mode 2 momentarily, then reverts to 0).
+    // Stay ARMED until the mode is observed to actually stick
+    // (didChangeUserTrackingMode == FollowWithHeading); if it reverts to None while
+    // still armed, re-engage once on the main queue, bounded by followRetryCount so
+    // a genuinely-failing engage can't loop. Disarming on the first observed
+    // FollowWithHeading guarantees a later deliberate user pan still exits follow.
+    BOOL followEngagePending;
+    int  followRetryCount;
     // Current-destination pin, remembered so its callout can be re-selected
     // after the tracking-mode hand-off (which can drop the selection).
     cwtAnnotation *selectedAnnotation;
