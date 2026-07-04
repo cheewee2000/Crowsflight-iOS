@@ -50,6 +50,33 @@
 }
 
 
+//lazy getter: the map drawer owns an MKMapView with showsUserLocation, expensive to
+//spin up at launch for a drawer the user may never open. First access (openMapView or
+//the search flow) builds it with the same initial (0,0) frame the GZDrawer transition
+//expects before it animates the drawer in - identical to the old eager viewDidLoad setup.
+- (cwtMapViewController *)mapViewController {
+    if (!_mapViewController) {
+        _mapViewController = [[cwtMapViewController alloc] init];
+        CGRect frame = _mapViewController.view.frame;
+        frame.origin = CGPointMake(0, 0);
+        _mapViewController.view.frame = frame;
+    }
+    return _mapViewController;
+}
+
+//create/decode the compass background lazily the first time it must actually be shown.
+//Inserted directly beneath compass-n so the z-order (very back of the view, below the
+//pager and toolbar) and center match the original eager layout exactly.
+- (void)ensureCompassImage {
+    if (self.compassImage) return;
+    UIImageView *bg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"compass-background"]];
+    bg.center = self.compassN.center;
+    bg.transform = self.compassN.transform;
+    self.compassImage = bg;
+    [self.view insertSubview:self.compassImage belowSubview:self.compassN];
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -67,10 +94,11 @@
     self.view.layer.masksToBounds=NO;
     
     //add compass
-    self.compassImage=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"compass-background"]];
-    self.compassImage.center=CGPointMake(screen.size.width*.5, screen.size.height*.5);
-    [self.view addSubview:self.compassImage];
-    
+    //compass-background is 1300x1300 (~6.8MB decoded) and is hidden in the common
+    //case (showInfo==FALSE). It is created lazily the first time it must actually be
+    //shown (see -ensureCompassImage), so launch never decodes it. compass-n (the small
+    //"N" marker) is still created eagerly here so the lazy background can be inserted
+    //directly beneath it, preserving the original z-order.
     self.compassN=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"compass-n"]];
     self.compassN.center=CGPointMake(screen.size.width*.5, screen.size.height*.5);
     [self.view addSubview:self.compassN];
@@ -149,12 +177,8 @@
     
     
     //map
-    // create and reuse for later the mapViewController
-    self.mapViewController = [[cwtMapViewController alloc] init];
-                          CGRect frame = self.mapViewController.view.frame;
-                            frame.origin = CGPointMake(0, 0);
-                            self.mapViewController.view.frame = frame;
-    
+    //mapViewController (and its MKMapView with showsUserLocation) is created lazily on
+    //first open via the -mapViewController getter, not eagerly at launch.
 
     
     
@@ -306,9 +330,10 @@
         [self.compassImage setHidden:YES];
     }
     else {
+        [self ensureCompassImage];
         [self.compassImage setAlpha: 1.0f];
         [self.compassImage setHidden:NO];
-        
+
     }
     
     
@@ -398,7 +423,7 @@
         causeStr = @"device";
     }
     // check the application’s explicit authorization status:
-    else if ([[[CLLocationManager alloc] init] authorizationStatus] == kCLAuthorizationStatusDenied)
+    else if (dele.locationManager.authorizationStatus == kCLAuthorizationStatusDenied)
     {
         causeStr = @"app";
     }
@@ -571,9 +596,10 @@
     
     if(self.showInfo){
         //[self.audioMore play];
+        [self ensureCompassImage];
         [self.compassImage setHidden:FALSE];
         [self.compassImage setAlpha: 0.0f];
-        
+
     }else{
         
         //[self.audioLess play];
