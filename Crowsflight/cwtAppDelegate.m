@@ -21,6 +21,7 @@
 @interface cwtAppDelegate ()<UIAlertViewDelegate,CLLocationManagerDelegate,UIAppearanceContainer,WCSessionDelegate>{//,MTStatusBarOverlayDelegate>
     WCSession *session;
 }
+@property (nonatomic, strong) Reachability *reachability;
 @end
 
 @implementation cwtAppDelegate
@@ -78,38 +79,38 @@
     
     
 
-    // Allocate a reachability object
-    Reachability* reach = [Reachability reachabilityWithHostname:@"www.google.com"];
-    
+    // Defer Reachability setup off the critical launch path — runs after the first frame.
+    // hasInternet defaults to NO (BOOL zero-init); callbacks fire async regardless, so
+    // deferring preserves the same pre-callback default as before.
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.reachability = [Reachability reachabilityForInternetConnection];
+        __weak __typeof(self) weakSelf = self;
+        self.reachability.reachableBlock = ^(Reachability *r) {
+#ifdef DEBUG
+            NSLog(@"REACHABLE!");
+#endif
+            weakSelf.hasInternet = YES;
+        };
+        self.reachability.unreachableBlock = ^(Reachability *r) {
+#ifdef DEBUG
+            NSLog(@"UNREACHABLE!");
+#endif
+            weakSelf.hasInternet = NO;
+        };
+        [self.reachability startNotifier];
+    });
 
-
-
-    
-    
-    // Set the blocks
-    reach.reachableBlock = ^(Reachability*reach)
-    {
-        NSLog(@"REACHABLE!");
-        self.hasInternet=TRUE;
-    };
-    
-    reach.unreachableBlock = ^(Reachability*reach)
-    {
-        NSLog(@"UNREACHABLE!");
-        self.hasInternet=FALSE;
-
-    };
-    
-    // Start the notifier, which will cause the reachability object to retain itself!
-    [reach startNotifier];
-    
-
-    //iCloud
-    NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateKeyValuePairs:) name:NSUbiquitousKeyValueStoreDidChangeExternallyNotification object:store];
-    
-    // Synchronize Store
-    [store synchronize];
+    // Defer iCloud KVS observer + sync off the critical launch path.
+    // loadmyLocations already ran synchronously above, so the KVS callback
+    // can safely overwrite locationDictionaryArray whenever it fires.
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(updateKeyValuePairs:)
+                                                     name:NSUbiquitousKeyValueStoreDidChangeExternallyNotification
+                                                   object:store];
+        [store synchronize];
+    });
     
     [self activateASession];
 
@@ -221,10 +222,6 @@
 	//load destination list
 	NSLog(@"The array count: %i", (int)[self.locationDictionaryArray count]);
 	self.nDestinations=(int)[self.locationDictionaryArray count];
-        
-    
-    [self transferLocations];
-
 
 
 }
@@ -612,27 +609,33 @@ static NSString * const kPendingImportsKey = @"pendingImports";
     
     
 
-    // Create the manager object
-    self.locationManager = [[CLLocationManager alloc] init];
-    self.locationManager.delegate = self;
-    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
-        [self.locationManager requestWhenInUseAuthorization];
+    // Create the manager object once; re-use on subsequent activations.
+    if (self.locationManager == nil) {
+        self.locationManager = [[CLLocationManager alloc] init];
+        self.locationManager.delegate = self;
+        if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+            [self.locationManager requestWhenInUseAuthorization];
+        }
+
+        // This is the most important property to set for the manager. It ultimately determines how the manager will
+        // attempt to acquire location and thus, the amount of power that will be consumed.
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
+
+        // Deliver location updates only when the user has moved at least 5 metres.
+        self.locationManager.distanceFilter = 5;
+
+        // Deliver heading updates only when the bearing changes by at least 1 degree.
+        self.locationManager.headingFilter = 1;
+
+        // App is foreground-only for location (updates stopped on resign-active), so
+        // auto-pause saves little but risks a stale distance display after the user
+        // stands still (no pauseLocationUpdates/resumeLocationUpdates delegate handling exists).
+        self.locationManager.activityType = CLActivityTypeFitness;
+        self.locationManager.pausesLocationUpdatesAutomatically = NO;
     }
 
-    // This is the most important property to set for the manager. It ultimately determines how the manager will
-    // attempt to acquire location and thus, the amount of power that will be consumed.
-    //self.locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation;
-    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-
-    // When "tracking" the user, the distance filter can be used to control the frequency with which location measurements
-    // are delivered by the manager. If the change in distance is less than the filter, a location will not be delivered.
-    self.locationManager.distanceFilter = kCLDistanceFilterNone;
-    
-    // Once configured, the location manager must be "started".
+    // (Re-)start updates every activation; the manager is stopped in applicationWillResignActive:.
     [self.locationManager startUpdatingLocation];
-    
-    //heading
-    self.locationManager.headingFilter = kCLHeadingFilterNone;
     [self.locationManager startUpdatingHeading];
     
 
@@ -655,15 +658,20 @@ static NSString * const kPendingImportsKey = @"pendingImports";
 }
 
 -(void)transferLocations{
+    if (![WCSession isSupported]) return;
+    WCSession *ws = [WCSession defaultSession];
+    if (ws.activationState != WCSessionActivationStateActivated ||
+        !ws.isPaired || !ws.isWatchAppInstalled) return;
+
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory , NSUserDomainMask, YES);
     NSString *documentsDir = [paths objectAtIndex:0];
     NSString *docPath = [documentsDir stringByAppendingString:@"/locationList.plist"];
     NSURL *url = [[NSURL alloc] initFileURLWithPath:docPath];
-            
+
     //WCSessionFileTransfer *fileTransfer =
-    [[WCSession defaultSession] transferFile:url metadata:nil];
+    [ws transferFile:url metadata:nil];
     NSLog(@"file transfer started");
-    
+
 }
 
 

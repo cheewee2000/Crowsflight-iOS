@@ -19,6 +19,7 @@
     if (self) {
     // Initialization code.
         _progress=359;
+        _lastDrawnProgress=-1;   //impossible value so the first updateProgress always draws
         self.maxArc=359;
         //self.showExtras=TRUE;
         //self.showExtras=[[NSUserDefaults standardUserDefaults] boolForKey:@"showInfo"];
@@ -121,8 +122,18 @@
 // set the component's value
 -(void) updateProgress:(CGFloat)newProgress
 {
+    //updateProgress fires on every GPS fix for every loaded page and used to force a full
+    //re-raster unconditionally. Clamp to the same range drawRect renders, then skip the
+    //redraw when the drawn (integer-degree) arc angle is unchanged. The arc is designed in
+    //integer degrees (maxArc=359, clamp to 5), so this is the drawn granularity.
+    CGFloat clamped = newProgress;
+    if(clamped >= self.maxArc) clamped = self.maxArc;
+    if(clamped <= 5)           clamped = 5;
+    int drawn = (int)roundf(clamped);
+    if(drawn == _lastDrawnProgress) return;
+    _lastDrawnProgress = drawn;
 
-    _progress = newProgress;    
+    _progress = newProgress;
     [self setNeedsDisplay];
 }
 

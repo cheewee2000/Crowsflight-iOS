@@ -10,6 +10,7 @@
 
 @interface cwtDrawArc : UIView {
 	CGFloat _progress;
+    int _lastDrawnProgress;
 }
 
 -(void) updateProgress:(CGFloat)newProgress;

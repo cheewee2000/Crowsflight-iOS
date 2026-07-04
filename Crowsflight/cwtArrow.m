@@ -112,6 +112,9 @@
 
 -(void) updateSpread:(CGFloat)newSpread
 {
+    //defense in depth: the controller already dedupes on integer spread, but skip here too
+    //so an unchanged value never re-rasterises this large drawRect backing store
+    if(newSpread == self.spread) return;
     self.spread = newSpread;
     [self setNeedsDisplay];
 }

@@ -40,10 +40,12 @@
 }
 
 -(void) viewWillAppear:(BOOL)animated{
+    //resume the location consumer while the map drawer is visible
+    self.mapView.showsUserLocation = YES;
     if(locationLoaded)[self updateMap];
-    
+
     [super viewWillAppear:NO];
-  
+
 
 }
 
@@ -493,9 +495,11 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    //stop feeding location to the hidden map so it doesn't keep a consumer alive
+    self.mapView.showsUserLocation = NO;
     [self.mapView removeAnnotations:self.mapView.annotations];
     self.annotation = nil;
-    
+
 
 }
 
