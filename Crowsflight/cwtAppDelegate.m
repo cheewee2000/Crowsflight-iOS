@@ -624,8 +624,8 @@ static NSString * const kPendingImportsKey = @"pendingImports";
         // Deliver location updates only when the user has moved at least 5 metres.
         self.locationManager.distanceFilter = 5;
 
-        // Deliver heading updates only when the bearing changes by at least 1 degree.
-        self.locationManager.headingFilter = 1;
+        // Deliver heading updates only when the bearing changes by at least half a degree.
+        self.locationManager.headingFilter = 0.5;
 
         // App is foreground-only for location (updates stopped on resign-active), so
         // auto-pause saves little but risks a stale distance display after the user

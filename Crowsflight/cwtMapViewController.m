@@ -174,24 +174,79 @@
             
         }
         
-        MKMapPoint annotationPoint;
-        
-        //current loc
-        annotationPoint = MKMapPointForCoordinate(self.mapView.userLocation.coordinate);
-        zoomRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 1, 1);
-        //        NSLog(@"f,%f",self.mapView.userLocation.coordinate.latitude,self.mapView.userLocation.coordinate.longitude);
-        
-        
-        //current annotation
-        annotationPoint = MKMapPointForCoordinate(currentAnnotation.coordinate);
-        MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 1, 1);
-        zoomRect = MKMapRectUnion(zoomRect, pointRect);
-        
+        // NEW BEHAVIOR (non-search branch):
+        // Always open the map centered on the USER and oriented by the compass,
+        // no matter how far the destination is. We size the initial visible rect
+        // as a SQUARE centered on the user, large enough that the current pin
+        // stays on-screen at ANY map rotation, then hand off to
+        // MKUserTrackingModeFollowWithHeading (which recenters on the user and
+        // rotates the map with the device heading).
+
+        if(currentAnnotation != nil){
+
+            CLLocationCoordinate2D userCoord = self.mapView.userLocation.coordinate;
+            MKMapPoint userPoint = MKMapPointForCoordinate(userCoord);
+            MKMapPoint pinPoint  = MKMapPointForCoordinate(currentAnnotation.coordinate);
+
+            // A fresh sim / pending-permission state reports (0,0); centering there
+            // would show the Gulf of Guinea, so treat it as "no fix yet".
+            BOOL haveUserFix = !(userCoord.latitude == 0.0 && userCoord.longitude == 0.0);
+
+            if(haveUserFix){
+                // Half-span >= straight-line map-point distance (user->pin) * margin.
+                // Using the diagonal distance (not per-axis) means the pin can rotate
+                // to any bearing and still fall inside the square rect.
+                double dx = pinPoint.x - userPoint.x;
+                double dy = pinPoint.y - userPoint.y;
+                double dist = sqrt(dx*dx + dy*dy);
+                double halfSpan = dist * 1.15;
+
+                // Minimum half-span so a pin sitting on top of the user isn't a
+                // degenerate zero-size rect (keeps a sane close-in zoom).
+                if(halfSpan < 500.0) halfSpan = 500.0;
+
+                double span = halfSpan * 2.0;
+
+                // Antipodal / huge-distance sanity clamp: never exceed the valid
+                // world rect. Still centered on the user as much as possible.
+                double worldSize = MKMapRectWorld.size.width;
+                if(span > worldSize) span = worldSize;
+
+                zoomRect = MKMapRectMake(userPoint.x - span * 0.5,
+                                         userPoint.y - span * 0.5,
+                                         span, span);
+            }
+            else {
+                // No usable fix yet: fit the pin (reusing the old "tooBig" pin-fit
+                // size of ~9000) rather than centering on a bogus 0,0.
+                // FollowWithHeading below recenters automatically once a real fix
+                // arrives (MapKit handles this).
+                double span = 9000.0;
+                zoomRect = MKMapRectMake(pinPoint.x - span * 0.5,
+                                         pinPoint.y - span * 0.5,
+                                         span, span);
+            }
+
+            [self.mapView setVisibleMapRect:zoomRect animated:NO];
+        }
+
+        // Callout still pops for the current destination (nil = harmless no-op).
+        [self.mapView selectAnnotation:currentAnnotation animated:YES];
+
+        // ALWAYS orient by compass, at any distance (removed the old <9000 gate).
+        [self.mapView setUserTrackingMode:MKUserTrackingModeFollowWithHeading animated:YES];
+
     }
     
     
     
     
+    // Search-results branch keeps its classic behavior: union rect + padding,
+    // pin-only "tooBig" fallback for very-far results, and the <9000 heading gate.
+    // (The non-search branch already set its own user-centered rect + FollowWithHeading above.)
+    if(wasSearchView)
+    {
+
     //add padding to map
     float xDiff=zoomRect.size.width*MAP_PADDING-zoomRect.size.width;
     float yDiff=zoomRect.size.height*MAP_PADDING-zoomRect.size.height;
@@ -241,7 +296,9 @@
         [self.mapView setUserTrackingMode:MKUserTrackingModeFollowWithHeading animated:YES];
     }
 
-    
+    } // end if(wasSearchView)
+
+
     //[[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"mapInstructions"];
     
     //if no default, set default to true
