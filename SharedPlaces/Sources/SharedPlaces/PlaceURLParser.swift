@@ -47,6 +47,14 @@ public enum PlaceURLParser {
         guard let comps = URLComponents(url: url, resolvingAgainstBaseURL: false),
               let host = comps.host?.lowercased() else { return nil }
 
+        // EU consent interstitial: the real maps URL rides in ?continue= (queryItems
+        // percent-decodes it once, which is exactly the encoding it carries).
+        if host == "consent.google.com" || host == "consent.youtube.com" {
+            guard let cont = queryValue(comps, "continue"), let inner = URL(string: cont),
+                  inner.host?.lowercased().hasPrefix("consent.") != true else { return nil }
+            return parse(inner, sharedText: sharedText)
+        }
+
         var place: ParsedPlace
         let isGoogleHost = host == "google.com"
             || host.hasSuffix(".google.com")

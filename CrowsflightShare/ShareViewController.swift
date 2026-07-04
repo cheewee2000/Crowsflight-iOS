@@ -73,33 +73,49 @@ class ShareViewController: UIViewController {
             userInfo: [NSLocalizedDescriptionKey: "Cancelled"]))
     }
 
+    // MARK: - Diagnostics (share runs are invisible from the debugger — leave a trail
+    // in the app group that `devicectl device copy from` can pull off the phone)
+
+    private func diag(_ s: String) {
+        guard let suite = UserDefaults(suiteName: appGroupID) else { return }
+        var lines = suite.stringArray(forKey: "shareDiagnostics") ?? []
+        lines.append(s)
+        suite.set(Array(lines.suffix(60)), forKey: "shareDiagnostics")
+    }
+
     // MARK: - Resolution pipeline
 
     private func resolveSharedItem() {
         let providers = (extensionContext?.inputItems as? [NSExtensionItem])?
             .flatMap { $0.attachments ?? [] } ?? []
+        diag("--- share \(Date()) providers: \(providers.map { $0.registeredTypeIdentifiers })")
 
         if let p = providers.first(where: { $0.hasItemConformingToTypeIdentifier(UTType.url.identifier) }) {
-            p.loadItem(forTypeIdentifier: UTType.url.identifier, options: nil) { [weak self] item, _ in
+            p.loadItem(forTypeIdentifier: UTType.url.identifier, options: nil) { [weak self] item, err in
+                self?.diag("url item: \(type(of: item)) \(String(describing: item).prefix(300)) err: \(String(describing: err))")
                 DispatchQueue.main.async { self?.handle(url: item as? URL, text: nil) }
             }
         } else if let p = providers.first(where: { $0.hasItemConformingToTypeIdentifier(UTType.plainText.identifier) }) {
-            p.loadItem(forTypeIdentifier: UTType.plainText.identifier, options: nil) { [weak self] item, _ in
+            p.loadItem(forTypeIdentifier: UTType.plainText.identifier, options: nil) { [weak self] item, err in
                 let text = item as? String
+                self?.diag("text item: \(type(of: item)) \(String(describing: item).prefix(300)) err: \(String(describing: err))")
                 DispatchQueue.main.async {
                     self?.handle(url: text.flatMap { PlaceURLParser.extractURL(from: $0) }, text: text)
                 }
             }
         } else {
+            diag("no url/text provider")
             fail()
         }
     }
 
     private func handle(url: URL?, text: String?) {
-        guard let url = url else { return fail() }
+        guard let url = url else { diag("handle: no url"); return fail() }
+        diag("handle url: \(url.absoluteString.prefix(300)) shortLink: \(PlaceURLParser.isShortLink(url))")
         if PlaceURLParser.isShortLink(url) {
             expand(url) { [weak self] expanded in
                 guard let self = self else { return }
+                self.diag("expanded: \(expanded?.absoluteString.prefix(300) ?? "nil")")
                 guard let expanded = expanded else { return self.fail("Couldn't load that link — is the network on?") }
                 self.parseAndFinish(url: expanded, text: text)
             }
@@ -118,7 +134,9 @@ class ShareViewController: UIViewController {
     }
 
     private func parseAndFinish(url: URL, text: String?) {
-        guard let place = PlaceURLParser.parse(url, sharedText: text) else { return fail() }
+        let parsed = PlaceURLParser.parse(url, sharedText: text)
+        diag("parsed: name=\(parsed?.name ?? "nil") lat=\(String(describing: parsed?.lat)) lng=\(String(describing: parsed?.lng))")
+        guard let place = parsed else { return fail() }
         let name = place.name ?? ""
 
         if place.coordinatesValid && !name.isEmpty {

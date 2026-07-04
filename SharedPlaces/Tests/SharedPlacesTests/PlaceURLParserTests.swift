@@ -67,6 +67,14 @@ final class PlaceURLParserTests: XCTestCase {
         XCTAssertEqual(p?.lng ?? 0, 18.430922, accuracy: 1e-6)
     }
 
+    func testGoogleConsentInterstitialUnwrapsContinueURL() {
+        // In the EU, short-link expansion lands on consent.google.com with the real
+        // maps URL (once-encoded) in ?continue=. Captured from a live device share.
+        let url = URL(string: "https://consent.google.com/ml?continue=https://maps.google.com/maps?q%3DCentral%2BMarket,%2BAdami%25C4%258D-Lundrovo%2Bnabre%25C5%25BEje%2B6,%2B1000%2BLjubljana,%2BSlovenia%26ftid%3D0x47652d62d01c6f81:0x70682918d39c1781%26entry%3Dgps&gl=SI&m=0&pc=m&hl=en")!
+        let p = PlaceURLParser.parse(url, sharedText: nil)
+        XCTAssertEqual(p?.name, "Central Market, Adamič-Lundrovo nabrežje 6, 1000 Ljubljana, Slovenia")
+    }
+
     func testGoogleTextQueryGivesNameWithoutCoords() {
         let url = URL(string: "https://maps.google.com/?q=Fort+Greene+Park")!
         let p = PlaceURLParser.parse(url, sharedText: nil)
