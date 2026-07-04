@@ -283,7 +283,7 @@
     else if( (self.distance<= dele.accuracy*.5 && dele.accuracy > 20.0) || dele.accuracy<=0 || dele.headingAccuracy<0){
         self.accuracyText.text=@"";
         self.satSearchImage.hidden=FALSE;
-        [self.satSearchImage startAnimating];
+        if (![self.satSearchImage isAnimating]) [self.satSearchImage startAnimating];
         //only spin when this page is actually onscreen. The pager broadcasts location
         //ticks to all loaded pages (current ±1), and offscreen pages must not run the
         //self-restarting spinArc loop. It restarts naturally on viewWillAppear -> loadLocation.

@@ -627,9 +627,11 @@ static NSString * const kPendingImportsKey = @"pendingImports";
         // Deliver heading updates only when the bearing changes by at least 1 degree.
         self.locationManager.headingFilter = 1;
 
-        // Allow iOS to pause location delivery automatically when the user is stationary.
+        // App is foreground-only for location (updates stopped on resign-active), so
+        // auto-pause saves little but risks a stale distance display after the user
+        // stands still (no pauseLocationUpdates/resumeLocationUpdates delegate handling exists).
         self.locationManager.activityType = CLActivityTypeFitness;
-        self.locationManager.pausesLocationUpdatesAutomatically = YES;
+        self.locationManager.pausesLocationUpdatesAutomatically = NO;
     }
 
     // (Re-)start updates every activation; the manager is stopped in applicationWillResignActive:.
