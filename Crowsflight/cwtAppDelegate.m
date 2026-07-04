@@ -612,27 +612,31 @@ static NSString * const kPendingImportsKey = @"pendingImports";
     
     
 
-    // Create the manager object
-    self.locationManager = [[CLLocationManager alloc] init];
-    self.locationManager.delegate = self;
-    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
-        [self.locationManager requestWhenInUseAuthorization];
+    // Create the manager object once; re-use on subsequent activations.
+    if (self.locationManager == nil) {
+        self.locationManager = [[CLLocationManager alloc] init];
+        self.locationManager.delegate = self;
+        if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+            [self.locationManager requestWhenInUseAuthorization];
+        }
+
+        // This is the most important property to set for the manager. It ultimately determines how the manager will
+        // attempt to acquire location and thus, the amount of power that will be consumed.
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
+
+        // Deliver location updates only when the user has moved at least 5 metres.
+        self.locationManager.distanceFilter = 5;
+
+        // Deliver heading updates only when the bearing changes by at least 1 degree.
+        self.locationManager.headingFilter = 1;
+
+        // Allow iOS to pause location delivery automatically when the user is stationary.
+        self.locationManager.activityType = CLActivityTypeFitness;
+        self.locationManager.pausesLocationUpdatesAutomatically = YES;
     }
 
-    // This is the most important property to set for the manager. It ultimately determines how the manager will
-    // attempt to acquire location and thus, the amount of power that will be consumed.
-    //self.locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation;
-    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-
-    // When "tracking" the user, the distance filter can be used to control the frequency with which location measurements
-    // are delivered by the manager. If the change in distance is less than the filter, a location will not be delivered.
-    self.locationManager.distanceFilter = kCLDistanceFilterNone;
-    
-    // Once configured, the location manager must be "started".
+    // (Re-)start updates every activation; the manager is stopped in applicationWillResignActive:.
     [self.locationManager startUpdatingLocation];
-    
-    //heading
-    self.locationManager.headingFilter = kCLHeadingFilterNone;
     [self.locationManager startUpdatingHeading];
     
 
