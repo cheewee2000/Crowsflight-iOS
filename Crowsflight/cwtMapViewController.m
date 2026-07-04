@@ -61,6 +61,45 @@
     });
 }
 
+// Enforcement watchdog for a clamp raise. Sim-traced: a raised zoom-range min
+// applied while the follow camera is mid-glide (e.g. still descending to a
+// previously lowered min — glides run for many seconds) is silently SWALLOWED
+// by MapKit: no tracking-mode event, camera settles below the min, pin off
+// screen. Re-applying mid-glide is swallowed again (proved with 3x2s retries),
+// but a raise on a SETTLED camera reliably enforces (with the 2->1->2 bounce
+// the 0.6s auto-upgrade repairs). So: poll every 2s (up to 15 checks ~30s),
+// and only re-apply once two consecutive camera readings match (settled).
+// token = the user->pin distance this clamp was computed for, so any newer
+// clamp supersedes pending verifies.
+-(void)verifyFollowZoomClampMin:(double)minCam token:(double)token attempt:(int)attempt prevCam:(double)prevCam{
+    if(followClampUserPinDistance != token) return;   // superseded by a newer clamp
+    if(self.mapView.userTrackingMode == MKUserTrackingModeNone) return; // left follow
+    double cam = self.mapView.camera.centerCoordinateDistance;
+    if(cam >= minCam * 0.98) return;                  // enforced
+    if(attempt >= 15) return;                         // give up; next drift re-clamps
+    BOOL settled = (fabs(cam - prevCam) < MAX(1.0, cam * 0.005));
+    if(settled){
+        // NUDGE the value: MapKit only re-enforces the min against the current
+        // camera when the zoom-range VALUE CHANGES — re-setting the identical
+        // min is a no-op (sim-proved: 8 identical re-kicks ignored; a 0.2m
+        // different value enforced immediately). +attempt+1 meters is
+        // negligible vs the km-scale mins but always registers as a change.
+        double nudgedMin = minCam + (double)(attempt + 1);
+        NSLog(@"follow zoom clamp re-kick %d -> min %.0fm (settled cam %.0fm)", attempt + 1, nudgedMin, cam);
+        MKMapCameraZoomRange *zr = [[MKMapCameraZoomRange alloc] initWithMinCenterCoordinateDistance:nudgedMin];
+        [self.mapView setCameraZoomRange:zr animated:YES];
+    }
+    int gen = followArmGeneration;
+    __weak cwtMapViewController *weakSelf = self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)),
+                   dispatch_get_main_queue(), ^{
+        cwtMapViewController *strongSelf = weakSelf;
+        if(strongSelf != nil && strongSelf->followArmGeneration == gen){
+            [strongSelf verifyFollowZoomClampMin:minCam token:token attempt:attempt + 1 prevCam:cam];
+        }
+    });
+}
+
 // Apply (or refresh) the pin-visible zoom clamp for the current destination pin.
 // force==NO only re-clamps once the user->pin distance has drifted >15% since the
 // last clamp (auto zoom-in as the user approaches, without thrashing the camera).
@@ -76,9 +115,44 @@
     }
     double minCam = FOLLOW_ZOOM_K * d;
     if(minCam < FOLLOW_ZOOM_MIN_DISTANCE) minCam = FOLLOW_ZOOM_MIN_DISTANCE;
+    // Animation choice, sim-traced (device feedback on the old always-animated
+    // order was rotate -> forced un-rotate -> rotate):
+    // - OPEN path (not yet tracking): animated:NO — clamp lands silently BEFORE
+    //   the follow engage, which then animates zoom+center+rotation as ONE
+    //   motion. Traced: single "-> 2" transition, no mode-1.
+    // - LOWERING the min while tracking (user approaching): animated:NO — the
+    //   follow camera glides down to the new min with NO tracking-mode event
+    //   (flash-free auto zoom-in, and enforcement is automatic).
+    // - RAISING the min while tracking (user moving away): MapKit silently
+    //   IGNORES an animated:NO raise (camera stays below min, pin lost), so it
+    //   must be animated:YES — enforced, at the cost of one 2->1->2 bounce that
+    //   the 0.6s auto-upgrade repairs (~0.6s north-up in this rare case).
+    // The synchronous re-assert below is cheap insurance only; in traces the
+    // 2->1 drop always arrives asynchronously via the delegate.
+    BOOL wasFollowing = (self.mapView.userTrackingMode == MKUserTrackingModeFollowWithHeading);
+    BOOL animatedClamp = (wasFollowing && minCam > self.mapView.camera.centerCoordinateDistance);
     MKMapCameraZoomRange *zr = [[MKMapCameraZoomRange alloc] initWithMinCenterCoordinateDistance:minCam];
-    [self.mapView setCameraZoomRange:zr animated:YES];
+    [self.mapView setCameraZoomRange:zr animated:animatedClamp];
+    NSLog(@"follow zoom clamp -> min %.0fm (user->pin %.0fm)", minCam, d);
+    if(wasFollowing && self.mapView.userTrackingMode != MKUserTrackingModeFollowWithHeading){
+        [self.mapView setUserTrackingMode:MKUserTrackingModeFollowWithHeading animated:NO];
+    }
     followClampUserPinDistance = d;
+
+    // Raises while tracking can be swallowed if they race an in-flight camera
+    // glide (sim-traced): schedule the settle-aware enforcement watchdog.
+    if(animatedClamp){
+        double camNow = self.mapView.camera.centerCoordinateDistance;
+        int gen = followArmGeneration;
+        __weak cwtMapViewController *weakSelf = self;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)),
+                       dispatch_get_main_queue(), ^{
+            cwtMapViewController *strongSelf = weakSelf;
+            if(strongSelf != nil && strongSelf->followArmGeneration == gen){
+                [strongSelf verifyFollowZoomClampMin:minCam token:d attempt:0 prevCam:camNow];
+            }
+        });
+    }
 }
 
 // Remove the clamp and restore MapKit's default (unrestricted) zoom range so
@@ -107,16 +181,20 @@
         if(self.mapView.userTrackingMode != MKUserTrackingModeFollowWithHeading){
             // Arm the "until it sticks" guard for the non-search open path (the
             // search branch manages its own tracking and must stay undisturbed).
-            if(!wasSearchView) [self armFollowGuard];
+            // ORDER MATTERS: apply the pin-visible zoom clamp BEFORE engaging
+            // follow, so the engage animates zoom+center+rotation as ONE motion
+            // (clamping after the engage forced a visible un-rotate/re-rotate).
+            if(!wasSearchView){
+                [self armFollowGuard];
+                [self updateFollowZoomClampForFix:userLocation.location force:YES];
+            }
             [self.mapView setUserTrackingMode:MKUserTrackingModeFollowWithHeading animated:YES];
         }
         [self.mapView selectAnnotation:selectedAnnotation animated:YES];
     }
-
-    // Keep the destination pin visible while following: clamp on the first real
-    // fix (covers the no-fix cold open, where updateMap couldn't clamp) and
-    // re-clamp as the user moves (>15% distance drift tightens/loosens the view).
-    if(!wasSearchView
+    // Otherwise: keep the destination pin visible while following — re-clamp as
+    // the user moves (>15% distance drift tightens/loosens the view).
+    else if(!wasSearchView
        && self.mapView.userTrackingMode == MKUserTrackingModeFollowWithHeading
        && userLocation.location != nil
        && CLLocationCoordinate2DIsValid(userLocation.coordinate)
@@ -143,6 +221,8 @@
 // (No viewDidAppear re-assert: on the cold path viewDidAppear fires ~100ms BEFORE
 // updateMap ever arms the guard, so it could never help there.)
 -(void)mapView:(MKMapView *)aMapView didChangeUserTrackingMode:(MKUserTrackingMode)mode animated:(BOOL)animated{
+
+    NSLog(@"map trackingMode -> %ld (animated=%d)", (long)mode, animated);
 
     // Sim-measured gotcha: applying/animating the zoom clamp can knock MapKit
     // from FollowWithHeading down to plain Follow (heading lost, still user-
@@ -401,13 +481,15 @@
         wantsFollowOnFirstFix = YES;
         if(!wasSearchView){
             [self armFollowGuard];
-            [self.mapView setUserTrackingMode:MKUserTrackingModeFollowWithHeading animated:YES];
-            // Pin-visible zoom: clamp now if we already have a fix (engaging
-            // follow resets the camera to its default ~5km altitude, so this is
-            // what keeps a far pin on screen). The no-fix fallback gets clamped
-            // from didUpdateUserLocation when the first real fix lands.
+            // Pin-visible zoom: clamp BEFORE engaging follow (order matters —
+            // engaging resets the camera to its default ~5km altitude, and
+            // clamping afterwards forced a visible un-rotate/re-rotate bounce;
+            // with the clamp already in place the engage animates
+            // zoom+center+rotation as ONE motion). The no-fix fallback gets
+            // clamped from didUpdateUserLocation when the first real fix lands.
             if(haveUserFix) [self updateFollowZoomClampForFix:fix force:YES];
             else followClampUserPinDistance = 0.0;
+            [self.mapView setUserTrackingMode:MKUserTrackingModeFollowWithHeading animated:YES];
         }else{
             // Search opens keep classic free zoom — make sure no clamp lingers
             // from a previous destination open.
