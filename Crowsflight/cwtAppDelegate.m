@@ -309,28 +309,39 @@
     // in most cases you will not want to rely on cached measurements
     NSTimeInterval locationAge = -[newLocation.timestamp timeIntervalSinceNow];
     if (locationAge > 5.0) return; //5 seconds
-    
+
+    [self ingestLocation:newLocation];
+}
+
+// Apply a fix to app-delegate state and refresh the per-page UI. Shared by the
+// live location callback and applicationDidBecomeActive: (which re-delivers the
+// manager's cached last fix so the arrow/distance render instantly on resume
+// instead of showing the satellite-search state until a fresh callback arrives).
+- (void)ingestLocation:(CLLocation *)newLocation {
+
+    if (newLocation == nil) return;
+
     // test that the horizontal accuracy does not indicate an invalid measurement
     self.accuracy=newLocation.horizontalAccuracy;
     if (self.accuracy < 0) return;
-    
+
     //simply get the speed provided by the phone from newLocation
     self.speed = newLocation.speed;
-    
+
     self.altitude= newLocation.altitude;
     self.altitudeAccuracy= newLocation.verticalAccuracy;
 
     // update the display with the new location data
-    
+
     self.myLat=newLocation.coordinate.latitude;
     self.myLng=newLocation.coordinate.longitude;
 
     [(cwtViewController3*)self.window.rootViewController updateViewControllersWithLatLng: (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"]];
-    
+
     //[(cwtMapViewController*)self.viewController.mapViewController centerDeviceLocation];
     //[(cwtMapViewController*)self.viewController.mapViewController.mapView setCenterCoordinate:newLocation.coordinate animated:YES];
 
-    
+
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading {
@@ -601,13 +612,16 @@ static NSString * const kPendingImportsKey = @"pendingImports";
 
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     [UIApplication sharedApplication].idleTimerDisabled = YES;
-    
-    self.heading=999;
-    self.headingAccuracy=-2;
-    self.lastHeadingAccuracy=-3;
 
-    
-    
+    // NOTE: do NOT reset headingAccuracy here. On resume from background all of
+    // myLat/myLng/accuracy/heading/headingAccuracy survived, so the stale-but-valid
+    // values are the correct resume state. Forcing headingAccuracy=-2 on every
+    // activation made the per-page UI fall back to the satellite-search state until
+    // a fresh heading callback arrived. The -2 sentinel is set once at launch
+    // (didFinishLaunching); the first fresh heading callback (sub-second once
+    // updates restart below) corrects the accuracy either way.
+
+
 
     // Create the manager object once; re-use on subsequent activations.
     if (self.locationManager == nil) {
@@ -637,7 +651,15 @@ static NSString * const kPendingImportsKey = @"pendingImports";
     // (Re-)start updates every activation; the manager is stopped in applicationWillResignActive:.
     [self.locationManager startUpdatingLocation];
     [self.locationManager startUpdatingHeading];
-    
+
+    // Instant-ready on resume: immediately re-deliver the manager's cached last fix
+    // so the arrow/distance render without waiting for a fresh location callback
+    // (which can take a few seconds on a real device). Guarded so it is a no-op on a
+    // true cold start (manager.location == nil) and before the UI exists — in that
+    // case the searching state shows exactly as before until the first fix.
+    if (self.window.rootViewController != nil && self.locationManager.location != nil) {
+        [self ingestLocation:self.locationManager.location];
+    }
 
 }
 
