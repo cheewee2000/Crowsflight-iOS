@@ -1818,7 +1818,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = "Crowsflight-Watchj WatchKit Extension/Crowsflight-Watchj WatchKit Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.8.2;
+				CURRENT_PROJECT_VERSION = 1.9.0;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_ASSET_PATHS = "\"Crowsflight-Watchj WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = L6DVQR8JB9;
@@ -1833,7 +1833,7 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 CWandT. All rights reserved.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Please allow location permissions so Crowsflight could point to your destination.";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.8.2;
+				MARKETING_VERSION = 1.9.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cwandt.crowsflight.watchkitapp.watchkitextension;
@@ -1865,7 +1865,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Crowsflight-Watchj WatchKit Extension/Crowsflight-Watchj WatchKit Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.8.2;
+				CURRENT_PROJECT_VERSION = 1.9.0;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"Crowsflight-Watchj WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = L6DVQR8JB9;
@@ -1881,7 +1881,7 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 CWandT. All rights reserved.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Please allow location permissions so Crowsflight could point to your destination.";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.8.2;
+				MARKETING_VERSION = 1.9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cwandt.crowsflight.watchkitapp.watchkitextension;
@@ -1915,7 +1915,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.8.2;
+				CURRENT_PROJECT_VERSION = 1.9.0;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = L6DVQR8JB9;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -1925,7 +1925,7 @@
 				IBSC_MODULE = Crowsflight_Watchj_WatchKit_Extension;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.cwandt.crowsflight;
-				MARKETING_VERSION = 1.8.2;
+				MARKETING_VERSION = 1.9.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cwandt.crowsflight.watchkitapp;
@@ -1961,7 +1961,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.8.2;
+				CURRENT_PROJECT_VERSION = 1.9.0;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = L6DVQR8JB9;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1972,7 +1972,7 @@
 				IBSC_MODULE = Crowsflight_Watchj_WatchKit_Extension;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.cwandt.crowsflight;
-				MARKETING_VERSION = 1.8.2;
+				MARKETING_VERSION = 1.9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cwandt.crowsflight.watchkitapp;
@@ -2246,7 +2246,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.8.2;
+				CURRENT_PROJECT_VERSION = 1.9.0;
 				DEVELOPMENT_TEAM = L6DVQR8JB9;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2265,7 +2265,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Crowsflight\"",
 				);
-				MARKETING_VERSION = 1.8.2;
+				MARKETING_VERSION = 1.9.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cwandt.crowsflight;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2288,7 +2288,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.8.2;
+				CURRENT_PROJECT_VERSION = 1.9.0;
 				DEVELOPMENT_TEAM = L6DVQR8JB9;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2307,7 +2307,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Crowsflight\"",
 				);
-				MARKETING_VERSION = 1.8.2;
+				MARKETING_VERSION = 1.9.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cwandt.crowsflight;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2326,12 +2326,12 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_ENTITLEMENTS = CrowsflightShare/CrowsflightShare.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.8.2;
+				CURRENT_PROJECT_VERSION = 1.9.0;
 				DEVELOPMENT_TEAM = L6DVQR8JB9;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = CrowsflightShare/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.8.2;
+				MARKETING_VERSION = 1.9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cwandt.crowsflight.share;
 				PRODUCT_NAME = CrowsflightShare;
 				SDKROOT = iphoneos;
@@ -2348,12 +2348,12 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_ENTITLEMENTS = CrowsflightShare/CrowsflightShare.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.8.2;
+				CURRENT_PROJECT_VERSION = 1.9.0;
 				DEVELOPMENT_TEAM = L6DVQR8JB9;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = CrowsflightShare/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.8.2;
+				MARKETING_VERSION = 1.9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cwandt.crowsflight.share;
 				PRODUCT_NAME = CrowsflightShare;
 				SDKROOT = iphoneos;
