@@ -49,9 +49,9 @@ public enum PlaceURLParser {
 
         // EU consent interstitial: the real maps URL rides in ?continue= (queryItems
         // percent-decodes it once, which is exactly the encoding it carries).
-        if host == "consent.google.com" || host == "consent.youtube.com" {
+        if isConsentHost(host) {
             guard let cont = queryValue(comps, "continue"), let inner = URL(string: cont),
-                  inner.host?.lowercased().hasPrefix("consent.") != true else { return nil }
+                  !isConsentHost(inner.host) else { return nil }
             return parse(inner, sharedText: sharedText)
         }
 
@@ -147,6 +147,11 @@ public enum PlaceURLParser {
     }
 
     // MARK: - Helpers
+
+    private static func isConsentHost(_ host: String?) -> Bool {
+        let h = host?.lowercased()
+        return h == "consent.google.com" || h == "consent.youtube.com"
+    }
 
     private static func queryValue(_ comps: URLComponents, _ name: String) -> String? {
         comps.queryItems?.first { $0.name == name }?.value

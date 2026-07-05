@@ -6,6 +6,8 @@ class ShareViewController: UIViewController {
 
     private let appGroupID = "group.com.cwandt.crowsflight"
     private let pendingImportsKey = "pendingImports"
+    private let diagnosticsKey = "shareDiagnostics"
+    private lazy var appGroupSuite = UserDefaults(suiteName: appGroupID)
 
     private let card = UIView()
     private let statusLabel = UILabel()
@@ -77,10 +79,14 @@ class ShareViewController: UIViewController {
     // in the app group that `devicectl device copy from` can pull off the phone)
 
     private func diag(_ s: String) {
-        guard let suite = UserDefaults(suiteName: appGroupID) else { return }
-        var lines = suite.stringArray(forKey: "shareDiagnostics") ?? []
-        lines.append(s)
-        suite.set(Array(lines.suffix(60)), forKey: "shareDiagnostics")
+        guard let suite = appGroupSuite else { return }
+        var lines = suite.stringArray(forKey: diagnosticsKey) ?? []
+        lines.append(String(s.prefix(300)))
+        suite.set(Array(lines.suffix(60)), forKey: diagnosticsKey)
+    }
+
+    private func diagItem(_ kind: String, _ item: Any?, _ err: Error?) {
+        diag("\(kind) item: \(type(of: item)) err: \(String(describing: err)) value: \(String(describing: item))")
     }
 
     // MARK: - Resolution pipeline
@@ -92,13 +98,13 @@ class ShareViewController: UIViewController {
 
         if let p = providers.first(where: { $0.hasItemConformingToTypeIdentifier(UTType.url.identifier) }) {
             p.loadItem(forTypeIdentifier: UTType.url.identifier, options: nil) { [weak self] item, err in
-                self?.diag("url item: \(type(of: item)) \(String(describing: item).prefix(300)) err: \(String(describing: err))")
+                self?.diagItem("url", item, err)
                 DispatchQueue.main.async { self?.handle(url: item as? URL, text: nil) }
             }
         } else if let p = providers.first(where: { $0.hasItemConformingToTypeIdentifier(UTType.plainText.identifier) }) {
             p.loadItem(forTypeIdentifier: UTType.plainText.identifier, options: nil) { [weak self] item, err in
                 let text = item as? String
-                self?.diag("text item: \(type(of: item)) \(String(describing: item).prefix(300)) err: \(String(describing: err))")
+                self?.diagItem("text", item, err)
                 DispatchQueue.main.async {
                     self?.handle(url: text.flatMap { PlaceURLParser.extractURL(from: $0) }, text: text)
                 }
@@ -111,11 +117,12 @@ class ShareViewController: UIViewController {
 
     private func handle(url: URL?, text: String?) {
         guard let url = url else { diag("handle: no url"); return fail() }
-        diag("handle url: \(url.absoluteString.prefix(300)) shortLink: \(PlaceURLParser.isShortLink(url))")
-        if PlaceURLParser.isShortLink(url) {
+        let isShortLink = PlaceURLParser.isShortLink(url)
+        diag("handle shortLink: \(isShortLink) url: \(url.absoluteString)")
+        if isShortLink {
             expand(url) { [weak self] expanded in
                 guard let self = self else { return }
-                self.diag("expanded: \(expanded?.absoluteString.prefix(300) ?? "nil")")
+                self.diag("expanded: \(expanded?.absoluteString ?? "nil")")
                 guard let expanded = expanded else { return self.fail("Couldn't load that link — is the network on?") }
                 self.parseAndFinish(url: expanded, text: text)
             }
@@ -135,7 +142,7 @@ class ShareViewController: UIViewController {
 
     private func parseAndFinish(url: URL, text: String?) {
         let parsed = PlaceURLParser.parse(url, sharedText: text)
-        diag("parsed: name=\(parsed?.name ?? "nil") lat=\(String(describing: parsed?.lat)) lng=\(String(describing: parsed?.lng))")
+        diag("parsed: \(String(describing: parsed))")
         guard let place = parsed else { return fail() }
         let name = place.name ?? ""
 
@@ -169,7 +176,8 @@ class ShareViewController: UIViewController {
 
     private func finish(name: String, address: String, lat: Double, lng: Double) {
         cancelButton.isHidden = true
-        guard let suite = UserDefaults(suiteName: appGroupID) else {
+        diag("finish: queued \(name)")
+        guard let suite = appGroupSuite else {
             return fail("App Group unavailable — check signing.")
         }
         var queue = suite.array(forKey: pendingImportsKey) as? [[String: Any]] ?? []
@@ -189,6 +197,7 @@ class ShareViewController: UIViewController {
     }
 
     private func fail(_ message: String = "Couldn't read a location from this share.") {
+        diag("fail: \(message)")
         spinner.stopAnimating()
         statusLabel.text = message
         cancelButton.isHidden = false
