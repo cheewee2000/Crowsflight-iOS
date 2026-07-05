@@ -267,6 +267,9 @@
 		68F535B21FCFF624CAB9E6FD /* Crowsflight Share.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E889B99D5A174C00D31E23BE /* Crowsflight Share.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7E14D05349A8E2DC00D3A22B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFA4F39F60A2564611E1AD11 /* Foundation.framework */; };
 		9F77407A19BE06D3EFB6E445 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0ACC92A5B5E18A238104F8 /* ShareViewController.swift */; };
+		BF11ACE000000000000A0001 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = FE11ACE000000000000A0001 /* PrivacyInfo.xcprivacy */; };
+		BF11ACE000000000000A0002 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = FE11ACE000000000000A0002 /* PrivacyInfo.xcprivacy */; };
+		BF11ACE000000000000A0003 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = FE11ACE000000000000A0003 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -638,6 +641,9 @@
 		C1017596AB0E1E3E9CC362CF /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E889B99D5A174C00D31E23BE /* Crowsflight Share.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Crowsflight Share.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFA4F39F60A2564611E1AD11 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		FE11ACE000000000000A0001 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		FE11ACE000000000000A0002 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		FE11ACE000000000000A0003 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -820,6 +826,7 @@
 				4426BF7128C76D1600485FF2 /* ComplicationController.swift */,
 				4426BF7328C76D1700485FF2 /* Assets.xcassets */,
 				4426BF7828C76D1700485FF2 /* Info.plist */,
+				FE11ACE000000000000A0003 /* PrivacyInfo.xcprivacy */,
 				4426BF7928C76D1700485FF2 /* PushNotificationPayload.apns */,
 				4426BF7528C76D1700485FF2 /* Preview Content */,
 			);
@@ -1128,6 +1135,7 @@
 				442A5356178287CC008A1687 /* cfLocationViewController2.h */,
 				442A5357178287CC008A1687 /* cfLocationViewController2.m */,
 				44DAE02317359AC900C17F07 /* Crowsflight-Info.plist */,
+				FE11ACE000000000000A0001 /* PrivacyInfo.xcprivacy */,
 				445273DA1A36196E00807504 /* Launch Screen.xib */,
 				4491D8B31A34F25900C56401 /* Images.xcassets */,
 				4424DA1117BE8502005FBBC6 /* Settings.bundle */,
@@ -1208,6 +1216,7 @@
 			children = (
 				5A0ACC92A5B5E18A238104F8 /* ShareViewController.swift */,
 				C1017596AB0E1E3E9CC362CF /* Info.plist */,
+				FE11ACE000000000000A0002 /* PrivacyInfo.xcprivacy */,
 				8052D05C01CECDA468C76A4F /* CrowsflightShare.entitlements */,
 			);
 			name = CrowsflightShare;
@@ -1402,6 +1411,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF11ACE000000000000A0002 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1419,6 +1429,7 @@
 			files = (
 				4426BF7728C76D1700485FF2 /* Preview Assets.xcassets in Resources */,
 				4426BF7428C76D1700485FF2 /* Assets.xcassets in Resources */,
+				BF11ACE000000000000A0003 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1440,6 +1451,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF11ACE000000000000A0001 /* PrivacyInfo.xcprivacy in Resources */,
 				44DAE02617359AC900C17F07 /* InfoPlist.strings in Resources */,
 				44DAE02E17359AC900C17F07 /* Default.png in Resources */,
 				44DAE03017359AC900C17F07 /* Default@2x.png in Resources */,
