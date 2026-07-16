@@ -54,7 +54,7 @@ struct DialView: View {
                         p.move(to: CGPoint(x: c.x, y: c.y - (r + t / 2)))
                         p.addLine(to: CGPoint(x: c.x, y: c.y))
                     }
-                    .stroke(red, lineWidth: max(1.5, u * 0.05))
+                    .stroke(Color(white: 0.55), lineWidth: 0.75)
                     Text("N").font(.system(size: max(9, u * 0.22), weight: .bold))
                         .foregroundColor(red)
                         .position(x: c.x, y: c.y - (r + t / 2) - u * 0.22)

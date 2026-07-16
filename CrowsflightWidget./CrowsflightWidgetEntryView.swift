@@ -35,15 +35,14 @@ struct CrowsflightWidgetEntryView: View {
             let numberSize = u * 0.52
             ZStack {
                 DialView(model: model, underlayRadius: u)
-                // Destination name near the top.
-                Text(model.destinationName)
+                // Destination name near the top (all caps).
+                Text(model.destinationName.uppercased())
                     .font(.system(size: u * 0.30, weight: .light))
                     .foregroundColor(name).lineLimit(1)
                     .position(x: geo.size.width / 2, y: geo.size.height / 2 - u * 1.9)
-                // Centered readout: accuracy / number / unit.
+                // Centered readout: number / unit.
                 VStack(spacing: 1) {
-                    Text(model.accuracyText).font(.system(size: u * 0.16, weight: .light)).foregroundColor(accuracy)
-                    Text(model.distanceValue).font(.system(size: numberSize, weight: .thin)).foregroundColor(number)
+                    Text(model.distanceValue).font(.system(size: numberSize, weight: .light)).foregroundColor(number)
                     Text(model.distanceUnit).font(.system(size: u * 0.15, weight: .light)).foregroundColor(number.opacity(0.85))
                 }
                 .opacity(model.isStale ? 0.45 : 1)
