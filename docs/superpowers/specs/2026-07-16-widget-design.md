@@ -84,9 +84,9 @@ On each timeline request:
    budget, use it as the user position and recompute; otherwise fall back to the
    snapshot's `userLat/userLng/accuracy/timestamp`.
 3. Compute the render model (all math ported 1:1 from the app):
-   - **distance** — great-circle using the app's Earth radius constants
-     (`EARTH_RAD_M 3956.0` mi / `EARTH_RAD_KM 6367.0` km,
-     `cfLocationViewController2.m:12-13`).
+   - **distance** — `CLLocation.distance(from:)` in meters, matching the app
+     (`cfLocationViewController2.m:265`, `[locA distanceFromLocation:locB]`). The
+     `EARTH_RAD_*` constants in the app are legacy/unused.
    - **bearing** — `atan2(sin(dLon)·cos(lat2), cos(lat1)·sin(lat2) −
      sin(lat1)·cos(lat2)·cos(dLon))`, normalized to 0–360
      (`cfLocationViewController2.m:436-440`).
