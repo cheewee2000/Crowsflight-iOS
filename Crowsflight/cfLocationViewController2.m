@@ -9,6 +9,7 @@
 #import "cfLocationViewController2.h"
 #import "cwtAppDelegate.h"
 #import "cwtViewController3.h"
+#import "Crowsflight-Swift.h"
 #define EARTH_RAD_M 3956.0
 #define EARTH_RAD_KM 6367.0
 #define DEGREES_TO_RADIANS(angle) (angle / 180.0 * M_PI)
@@ -358,9 +359,25 @@
             
         }
     }
-    
+
+    // Feed the home-screen widget with the freshest destination + user fix.
+    {
+        NSString *destName = [[NSUserDefaults standardUserDefaults] stringForKey:@"currentDestination"];
+        if (destName == nil) destName = @"";
+        NSInteger n = [[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"];
+        [WidgetBridge writeSnapshotWithName:destName
+                                    destLat:self.dlat
+                                    destLng:self.dlng
+                                      index:n
+                                      count:dele.nDestinations
+                                    userLat:dele.myLat
+                                    userLng:dele.myLng
+                                   accuracy:dele.accuracy
+                                      units:dele.units];
+    }
+
     //if(self.maxDistance<0) [self calculateMaxDist];
-    
+
     //NSLog(@"%.2f",RADIANS_TO_DEGREES([self getBearing]));
 }
 

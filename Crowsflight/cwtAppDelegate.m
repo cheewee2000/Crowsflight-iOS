@@ -15,7 +15,7 @@
 //#import "NVSlideMenuController.h"
 #import "QuartzCore/CALayer.h"
 #import "cwtMapViewController.h"
-//#import "Crowsflight-Swift.h"
+#import "Crowsflight-Swift.h"
 
 
 @interface cwtAppDelegate ()<UIAlertViewDelegate,CLLocationManagerDelegate,UIAppearanceContainer,WCSessionDelegate>{//,MTStatusBarOverlayDelegate>
@@ -135,7 +135,19 @@
 
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options {
-    
+
+    // Widget deep link: crowsflight://destination/<n> selects that destination.
+    if ([[url scheme] isEqualToString:@"crowsflight"] && [[url host] isEqualToString:@"destination"]) {
+        NSInteger n = [[[url path] lastPathComponent] integerValue];
+        if (n >= 0 && n < self.nDestinations) {
+            [[NSUserDefaults standardUserDefaults] setInteger:n forKey:@"currentDestinationN"];
+            if (self.viewController) {
+                [self.viewController flipToPage:n];
+            }
+        }
+        return YES;
+    }
+
 	//cout<<url;
 	//NSString * urlString= [[NSString alloc] initWithUTF8String:url.c_str()];
     //NSString *urlString = [[url host] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -594,9 +606,11 @@ static NSString * const kPendingImportsKey = @"pendingImports";
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
+    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-    
+
+    // Refresh the home-screen widget from the latest snapshot as we background.
+    [WidgetBridge reloadAll];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
