@@ -110,9 +110,12 @@ One `View` parameterized by `WidgetFamily`, supporting `.systemSmall`,
 2. **White underlay circle** — `#f9f9f9` (`white:.975`, `cwtDrawArc.m:115`), radius
    `underlayRadius`, masks the cone behind the readout.
 3. **Blue track** — 1px full circle, `#00BAFF` (`rgb(0,.73,1)`), radius `r`.
-4. **Blue progress arc** — thick stroke width `t`, `#00BAFF`, from the top "0" tick,
-   swept `360 − progress` clockwise. Plus the small "0" tick at top.
-5. **Readout** — centered stack: accuracy (`± N'`), distance number
+4. **Blue progress arc** — thick stroke width `t`, `#00BAFF`, from the top tick,
+   swept `360 − progress` clockwise. Plus the small tick at top.
+5. **North tick (`N`)** — an `N` label in the arc's cyan (`#00BAFF`) just above the
+   top tick at 12 o'clock. The widget is north-up, so this fixes the orientation
+   reference: the cone points to the destination's bearing measured clockwise from N.
+6. **Readout** — centered stack: accuracy (`± N'`), distance number
    (HelveticaNeue-Light), unit label; destination name at top; `n/total` page
    indicator bottom-right; "updated Xm ago" bottom-left.
 
