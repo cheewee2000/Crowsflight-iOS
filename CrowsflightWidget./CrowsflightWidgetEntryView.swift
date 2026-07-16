@@ -12,7 +12,7 @@ struct CrowsflightWidgetEntryView: View {
     @Environment(\.widgetFamily) var family
     let entry: CrowsflightEntry
 
-    private let field = Color(red: 0xF9/255, green: 0xF9/255, blue: 0xF8/255)
+    private let field = Color(red: 0xF9/255, green: 0xF9/255, blue: 0xF9/255)
     private let number = Color(white: 0.1)
     private let name = Color(white: 0.2)
     private let accuracy = Color(white: 0.33)

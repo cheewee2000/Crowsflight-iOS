@@ -38,6 +38,9 @@ private struct WidgetSnapshot: Codable {
                               index: Int, count: Int,
                               userLat: Double, userLng: Double, accuracy: Double,
                               units: String) {
+        // Don't clobber the last-known-good fix with a "no fix yet" (0,0) reading —
+        // the widget should keep showing whatever location the app last saw.
+        if userLat == 0 && userLng == 0 { return }
         guard let defaults = UserDefaults(suiteName: suiteName) else { return }
         let snap = WidgetSnapshot(
             destinationName: name, destLat: destLat, destLng: destLng,
