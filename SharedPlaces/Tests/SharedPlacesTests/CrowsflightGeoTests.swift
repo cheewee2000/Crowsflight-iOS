@@ -30,6 +30,8 @@ final class CrowsflightGeoTests: XCTestCase {
         XCTAssertEqual(CrowsflightGeo.arcProgress(distanceMeters: 1), 5, accuracy: 0.0001)
         // Very large distance → ~259 per the formula (asymptotic, does not reach 359).
         XCTAssertEqual(CrowsflightGeo.arcProgress(distanceMeters: 5_000_000), 259, accuracy: 1.0)
+        // Astronomically large distance hits the 359 ceiling clamp.
+        XCTAssertEqual(CrowsflightGeo.arcProgress(distanceMeters: 1_000_000_000), 359, accuracy: 0.0001)
     }
 
     func testSweptIsThreeSixtyMinusProgress() {
