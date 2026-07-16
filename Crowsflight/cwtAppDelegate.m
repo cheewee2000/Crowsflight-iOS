@@ -612,8 +612,32 @@ static NSString * const kPendingImportsKey = @"pendingImports";
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 
-    // Refresh the home-screen widget from the latest snapshot as we background.
+    // Write a fresh snapshot for the CURRENT destination before backgrounding, so the
+    // widget reflects whatever the user was just viewing (the per-update write only
+    // fires on location ticks, which may not happen right after switching places).
+    [self refreshWidgetSnapshot];
     [WidgetBridge reloadAll];
+}
+
+// Publish the current destination + last-known fix to the widget's app group.
+- (void)refreshWidgetSnapshot {
+    NSInteger n = [[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"];
+    if (n < 0 || n >= (NSInteger)[self.locationDictionaryArray count]) return;
+    NSDictionary *d = [self.locationDictionaryArray objectAtIndex:n];
+    NSString *name = [d objectForKey:@"searchedText"];
+    if (![name isKindOfClass:[NSString class]]) name = @"";
+    double dlat = [[d objectForKey:@"lat"] doubleValue];
+    double dlng = [[d objectForKey:@"lng"] doubleValue];
+    [WidgetBridge writeSnapshotWithName:name
+                                destLat:dlat
+                                destLng:dlng
+                                  index:n
+                                  count:self.nDestinations
+                                userLat:self.myLat
+                                userLng:self.myLng
+                               accuracy:self.accuracy
+                                  units:self.units
+                                 course:self.course];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
