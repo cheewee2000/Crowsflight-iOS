@@ -361,19 +361,30 @@
     }
 
     // Feed the home-screen widget with the freshest destination + user fix.
+    // Pull name/coords from the current destination's dict so the title always
+    // matches the selection (the "currentDestination" default only updates on
+    // add/edit, not when switching between saved places).
     {
-        NSString *destName = [[NSUserDefaults standardUserDefaults] stringForKey:@"currentDestination"];
-        if (destName == nil) destName = @"";
         NSInteger n = [[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"];
+        NSString *destName = @"";
+        double destLat = self.dlat, destLng = self.dlng;
+        if (n >= 0 && n < (NSInteger)[dele.locationDictionaryArray count]) {
+            NSDictionary *d = [dele.locationDictionaryArray objectAtIndex:n];
+            NSString *nm = [d objectForKey:@"searchedText"];
+            if ([nm isKindOfClass:[NSString class]]) destName = nm;
+            destLat = [[d objectForKey:@"lat"] doubleValue];
+            destLng = [[d objectForKey:@"lng"] doubleValue];
+        }
         [WidgetBridge writeSnapshotWithName:destName
-                                    destLat:self.dlat
-                                    destLng:self.dlng
+                                    destLat:destLat
+                                    destLng:destLng
                                       index:n
                                       count:dele.nDestinations
                                     userLat:dele.myLat
                                     userLng:dele.myLng
                                    accuracy:dele.accuracy
-                                      units:dele.units];
+                                      units:dele.units
+                                     course:dele.course];
     }
 
     //if(self.maxDistance<0) [self calculateMaxDist];

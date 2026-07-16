@@ -33,6 +33,7 @@
 @property (nonatomic) float headingAccuracy;
 @property (nonatomic) float lastHeadingAccuracy;
 @property (nonatomic) float speed;
+@property (nonatomic) float course;// course over ground, degrees from north; <0 when invalid
 @property (nonatomic) float altitude;
 @property (nonatomic) float altitudeAccuracy;
 

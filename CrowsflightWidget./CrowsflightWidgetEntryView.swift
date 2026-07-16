@@ -16,7 +16,6 @@ struct CrowsflightWidgetEntryView: View {
     private let number = Color(white: 0.1)
     private let name = Color(white: 0.2)
     private let accuracy = Color(white: 0.33)
-    private let monoGray = Color(white: 0.54)
 
     var body: some View {
         ZStack {
@@ -49,9 +48,6 @@ struct CrowsflightWidgetEntryView: View {
                 }
                 .opacity(model.isStale ? 0.45 : 1)
                 .position(x: geo.size.width / 2, y: geo.size.height / 2)
-                // Page + freshness.
-                Text(model.pageText).font(.system(size: u * 0.15, design: .monospaced)).foregroundColor(monoGray)
-                    .position(x: geo.size.width - u * 0.5, y: geo.size.height - u * 0.4)
             }
         }
         .padding(family == .systemSmall ? 2 : 6)
@@ -70,17 +66,22 @@ struct CrowsflightWidgetEntryView: View {
 struct CrowsflightWidget_Previews: PreviewProvider {
     static let staleModel = RenderModel(
         destinationName: "Home", distanceValue: "2.30", distanceUnit: "MILES",
-        accuracyText: "± 48'", bearingDegrees: 42, progress: 104, sweptDegrees: 256,
+        accuracyText: "± 48'", bearingDegrees: 42, headingDegrees: 0, progress: 104, sweptDegrees: 256,
         spreadDegrees: 30, pageText: "1/5", isStale: true)
+
+    static let movingModel = RenderModel(
+        destinationName: "Studio", distanceValue: "0.80", distanceUnit: "MILES",
+        accuracyText: "± 32'", bearingDegrees: 42, headingDegrees: 90, progress: 60, sweptDegrees: 300,
+        spreadDegrees: 24, pageText: "2/5", isStale: false)
 
     static var previews: some View {
         Group {
             CrowsflightWidgetEntryView(entry: CrowsflightEntry(date: .now, model: Provider.sampleModel, destinationIndex: 0))
                 .previewContext(WidgetPreviewContext(family: .systemSmall))
-                .previewDisplayName("Small")
-            CrowsflightWidgetEntryView(entry: CrowsflightEntry(date: .now, model: Provider.sampleModel, destinationIndex: 0))
-                .previewContext(WidgetPreviewContext(family: .systemMedium))
-                .previewDisplayName("Medium")
+                .previewDisplayName("Small (north-up)")
+            CrowsflightWidgetEntryView(entry: CrowsflightEntry(date: .now, model: movingModel, destinationIndex: 1))
+                .previewContext(WidgetPreviewContext(family: .systemSmall))
+                .previewDisplayName("Small (course-up)")
             CrowsflightWidgetEntryView(entry: CrowsflightEntry(date: .now, model: staleModel, destinationIndex: 0))
                 .previewContext(WidgetPreviewContext(family: .systemLarge))
                 .previewDisplayName("Large stale")

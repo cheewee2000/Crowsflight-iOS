@@ -46,13 +46,13 @@ struct Provider: TimelineProvider {
             destinationCount: snap.destinationCount,
             destLat: snap.destLat, destLng: snap.destLng,
             userLat: snap.userLat, userLng: snap.userLng, accuracyMeters: snap.accuracyMeters,
-            units: snap.units, fixTimestamp: snap.timestamp, now: Date(),
+            units: snap.units, course: snap.course, fixTimestamp: snap.timestamp, now: Date(),
             staleThreshold: Self.staleThreshold)
         return CrowsflightEntry(date: Date(), model: model, destinationIndex: snap.destinationIndex)
     }
 
     static let sampleModel = RenderModel(
         destinationName: "Home", distanceValue: "2.30", distanceUnit: "MILES",
-        accuracyText: "± 48'", bearingDegrees: 42, progress: 104, sweptDegrees: 256,
+        accuracyText: "± 48'", bearingDegrees: 42, headingDegrees: 0, progress: 104, sweptDegrees: 256,
         spreadDegrees: 30, pageText: "1/5", isStale: false)
 }

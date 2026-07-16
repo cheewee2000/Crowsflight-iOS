@@ -26,6 +26,6 @@ struct CrowsflightWidget_: Widget {
         }
         .configurationDisplayName("Crowsflight")
         .description("Distance and bearing to your current destination.")
-        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
+        .supportedFamilies([.systemSmall, .systemLarge])
     }
 }

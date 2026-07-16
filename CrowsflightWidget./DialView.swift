@@ -27,29 +27,37 @@ struct DialView: View {
             let r = u * 1.583                 // ring radius
             let t = u * 0.333                 // arc thickness
             let coneR = hypot(geo.size.width, geo.size.height) // reach past edges
+            let heading = model.headingDegrees                 // 0 = north-up; else course-up
+            let nAngle = -heading * .pi / 180                  // north's angle from the top
+            let nRadius = r + t / 2 + u * 0.30
             ZStack {
-                // 1. Cone wedge, rotated to the north-up bearing.
+                // 1. Cone wedge → destination bearing relative to travel direction.
                 ConeShape(halfAngleDegrees: model.spreadDegrees, radius: coneR)
                     .fill(cone.opacity(0.7))
-                    .rotationEffect(.degrees(model.bearingDegrees), anchor: .center)
+                    .rotationEffect(.degrees(model.bearingDegrees - heading), anchor: .center)
                     .opacity(model.isStale ? 0.5 : 1)
                 // 2. White underlay masks the cone behind the readout.
                 Circle().fill(field).frame(width: u * 2, height: u * 2)
                 // 3. Thin track ring.
                 Circle().stroke(blue, lineWidth: 1).frame(width: r * 2, height: r * 2)
-                // 4. Thick progress arc from the top, swept 360 - progress.
+                // 4. Thick distance arc (fixed gauge). Mirrored to sweep like the app.
                 ProgressArc(sweptDegrees: model.sweptDegrees)
                     .stroke(blue, style: StrokeStyle(lineWidth: t, lineCap: .butt))
                     .frame(width: r * 2, height: r * 2)
+                    .scaleEffect(x: -1, y: 1)
                     .opacity(model.isStale ? 0.4 : 1)
-                // 5. North tick + label at 12 o'clock.
+                // 5. North indicator: tick rotates around the ring to point at true north.
                 Path { p in
                     p.move(to: CGPoint(x: c.x, y: c.y - r - t / 2))
                     p.addLine(to: CGPoint(x: c.x, y: c.y - r + t / 2))
-                }.stroke(blue, lineWidth: 1)
+                }
+                .stroke(blue, lineWidth: 1)
+                .rotationEffect(.degrees(-heading), anchor: .center)
+                // N label stays upright, positioned around the ring at north.
                 Text("N").font(.system(size: max(9, u * 0.18), weight: .semibold))
                     .foregroundColor(blue)
-                    .position(x: c.x, y: c.y - r - t / 2 - u * 0.16)
+                    .position(x: c.x + nRadius * CGFloat(sin(nAngle)),
+                              y: c.y - nRadius * CGFloat(cos(nAngle)))
             }
         }
     }

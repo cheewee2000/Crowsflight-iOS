@@ -67,7 +67,7 @@ final class CrowsflightGeoTests: XCTestCase {
     func testMakeRenderModelStaleFlag() {
         let fresh = makeRenderModel(destinationName: "Home", destinationIndex: 0, destinationCount: 5,
             destLat: 40.6892, destLng: -74.0445, userLat: 40.7128, userLng: -74.0060,
-            accuracyMeters: 14.6, units: "m",
+            accuracyMeters: 14.6, units: "m", course: -1,
             fixTimestamp: Date(timeIntervalSince1970: 1000),
             now: Date(timeIntervalSince1970: 1000 + 60), staleThreshold: 30 * 60)
         XCTAssertFalse(fresh.isStale)
@@ -75,9 +75,26 @@ final class CrowsflightGeoTests: XCTestCase {
 
         let stale = makeRenderModel(destinationName: "Home", destinationIndex: 0, destinationCount: 5,
             destLat: 40.6892, destLng: -74.0445, userLat: 40.7128, userLng: -74.0060,
-            accuracyMeters: 14.6, units: "m",
+            accuracyMeters: 14.6, units: "m", course: -1,
             fixTimestamp: Date(timeIntervalSince1970: 1000),
             now: Date(timeIntervalSince1970: 1000 + 31 * 60), staleThreshold: 30 * 60)
         XCTAssertTrue(stale.isStale)
+    }
+
+    func testHeadingUsesCourseWhenValidElseZero() {
+        // Valid course (moving) → heading follows travel direction.
+        let moving = makeRenderModel(destinationName: "Home", destinationIndex: 0, destinationCount: 5,
+            destLat: 40.6892, destLng: -74.0445, userLat: 40.7128, userLng: -74.0060,
+            accuracyMeters: 14.6, units: "m", course: 137,
+            fixTimestamp: Date(timeIntervalSince1970: 1000),
+            now: Date(timeIntervalSince1970: 1000 + 60), staleThreshold: 30 * 60)
+        XCTAssertEqual(moving.headingDegrees, 137, accuracy: 0.0001)
+        // Invalid course (stationary, -1) → north-up (heading 0).
+        let still = makeRenderModel(destinationName: "Home", destinationIndex: 0, destinationCount: 5,
+            destLat: 40.6892, destLng: -74.0445, userLat: 40.7128, userLng: -74.0060,
+            accuracyMeters: 14.6, units: "m", course: -1,
+            fixTimestamp: Date(timeIntervalSince1970: 1000),
+            now: Date(timeIntervalSince1970: 1000 + 60), staleThreshold: 30 * 60)
+        XCTAssertEqual(still.headingDegrees, 0, accuracy: 0.0001)
     }
 }

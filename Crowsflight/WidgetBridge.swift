@@ -25,6 +25,7 @@ private struct WidgetSnapshot: Codable {
     var userLng: Double
     var accuracyMeters: Double
     var units: String
+    var course: Double
     var timestamp: Date
 }
 
@@ -33,11 +34,11 @@ private struct WidgetSnapshot: Codable {
     private static let suiteName = "group.com.cwandt.crowsflight"
     private static let key = "widgetSnapshot"
 
-    @objc(writeSnapshotWithName:destLat:destLng:index:count:userLat:userLng:accuracy:units:)
+    @objc(writeSnapshotWithName:destLat:destLng:index:count:userLat:userLng:accuracy:units:course:)
     static func writeSnapshot(name: String, destLat: Double, destLng: Double,
                               index: Int, count: Int,
                               userLat: Double, userLng: Double, accuracy: Double,
-                              units: String) {
+                              units: String, course: Double) {
         // Don't clobber the last-known-good fix with a "no fix yet" (0,0) reading —
         // the widget should keep showing whatever location the app last saw.
         if userLat == 0 && userLng == 0 { return }
@@ -46,7 +47,7 @@ private struct WidgetSnapshot: Codable {
             destinationName: name, destLat: destLat, destLng: destLng,
             destinationIndex: index, destinationCount: count,
             userLat: userLat, userLng: userLng, accuracyMeters: accuracy,
-            units: units, timestamp: Date())
+            units: units, course: course, timestamp: Date())
         guard let data = try? JSONEncoder().encode(snap) else { return }
         defaults.set(data, forKey: key)
         if #available(iOS 14.0, *) { WidgetCenter.shared.reloadAllTimelines() }

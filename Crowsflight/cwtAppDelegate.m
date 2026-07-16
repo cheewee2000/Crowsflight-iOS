@@ -340,6 +340,9 @@
     //simply get the speed provided by the phone from newLocation
     self.speed = newLocation.speed;
 
+    // course over ground (direction of travel) — used to fake a heading in the widget
+    self.course = newLocation.course;
+
     self.altitude= newLocation.altitude;
     self.altitudeAccuracy= newLocation.verticalAccuracy;
 

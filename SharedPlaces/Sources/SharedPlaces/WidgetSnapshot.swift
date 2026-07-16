@@ -10,12 +10,14 @@ public struct WidgetSnapshot: Codable, Equatable {
     public var userLng: Double
     public var accuracyMeters: Double
     public var units: String
+    /// Course over ground in degrees from north; < 0 when invalid (stationary/unknown).
+    public var course: Double
     public var timestamp: Date
 
     public init(destinationName: String, destLat: Double, destLng: Double,
                 destinationIndex: Int, destinationCount: Int,
                 userLat: Double, userLng: Double, accuracyMeters: Double,
-                units: String, timestamp: Date) {
+                units: String, course: Double, timestamp: Date) {
         self.destinationName = destinationName
         self.destLat = destLat
         self.destLng = destLng
@@ -25,6 +27,7 @@ public struct WidgetSnapshot: Codable, Equatable {
         self.userLng = userLng
         self.accuracyMeters = accuracyMeters
         self.units = units
+        self.course = course
         self.timestamp = timestamp
     }
 }
