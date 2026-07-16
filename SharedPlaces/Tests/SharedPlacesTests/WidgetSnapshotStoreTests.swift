@@ -14,3 +14,23 @@ final class WidgetSnapshotStoreTests: XCTestCase {
         XCTAssertEqual(decoded, snap)
     }
 }
+
+extension WidgetSnapshotStoreTests {
+    func testWriteThenReadReturnsEqualSnapshot() throws {
+        let defaults = UserDefaults(suiteName: "test.crowsflight.widget")!
+        defaults.removePersistentDomain(forName: "test.crowsflight.widget")
+        let snap = WidgetSnapshot(
+            destinationName: "Studio", destLat: 40.7, destLng: -73.9,
+            destinationIndex: 2, destinationCount: 4,
+            userLat: 40.71, userLng: -74.0, accuracyMeters: 9.0,
+            units: "m", timestamp: Date(timeIntervalSince1970: 1_700_000_000))
+        WidgetSnapshotStore.write(snap, to: defaults)
+        XCTAssertEqual(WidgetSnapshotStore.read(from: defaults), snap)
+    }
+
+    func testReadReturnsNilWhenEmpty() {
+        let defaults = UserDefaults(suiteName: "test.crowsflight.empty")!
+        defaults.removePersistentDomain(forName: "test.crowsflight.empty")
+        XCTAssertNil(WidgetSnapshotStore.read(from: defaults))
+    }
+}
