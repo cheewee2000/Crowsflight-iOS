@@ -384,7 +384,8 @@
                                     userLng:dele.myLng
                                    accuracy:dele.accuracy
                                       units:dele.units
-                                     course:dele.course];
+                                     course:dele.course
+                                    heading:(dele.headingAccuracy >= 0 ? dele.heading : -1)];
     }
 
     //if(self.maxDistance<0) [self calculateMaxDist];

@@ -46,7 +46,7 @@ struct Provider: TimelineProvider {
             destinationCount: snap.destinationCount,
             destLat: snap.destLat, destLng: snap.destLng,
             userLat: snap.userLat, userLng: snap.userLng, accuracyMeters: snap.accuracyMeters,
-            units: snap.units, course: snap.course, fixTimestamp: snap.timestamp, now: Date(),
+            units: snap.units, course: snap.course, heading: snap.heading, fixTimestamp: snap.timestamp, now: Date(),
             staleThreshold: Self.staleThreshold)
         return CrowsflightEntry(date: Date(), model: model, destinationIndex: snap.destinationIndex)
     }

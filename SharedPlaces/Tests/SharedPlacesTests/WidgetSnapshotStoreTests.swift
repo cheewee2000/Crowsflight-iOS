@@ -33,4 +33,17 @@ extension WidgetSnapshotStoreTests {
         defaults.removePersistentDomain(forName: "test.crowsflight.empty")
         XCTAssertNil(WidgetSnapshotStore.read(from: defaults))
     }
+
+    func testSnapshotPreservesHeadingThroughStore() throws {
+        let defaults = UserDefaults(suiteName: "test.crowsflight.heading")!
+        defaults.removePersistentDomain(forName: "test.crowsflight.heading")
+        let snap = WidgetSnapshot(
+            destinationName: "Home", destLat: 40.681, destLng: -73.95,
+            destinationIndex: 0, destinationCount: 5,
+            userLat: 40.71, userLng: -74.0, accuracyMeters: 14.6,
+            units: "m", course: 12, heading: 250,
+            timestamp: Date(timeIntervalSince1970: 1_700_000_000))
+        WidgetSnapshotStore.write(snap, to: defaults)
+        XCTAssertEqual(WidgetSnapshotStore.read(from: defaults)?.heading, 250)
+    }
 }

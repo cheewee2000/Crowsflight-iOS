@@ -97,4 +97,20 @@ final class CrowsflightGeoTests: XCTestCase {
             now: Date(timeIntervalSince1970: 1000 + 60), staleThreshold: 30 * 60)
         XCTAssertEqual(still.headingDegrees, 0, accuracy: 0.0001)
     }
+
+    func testHeadingPrefersDeviceHeadingThenCourseThenNorth() {
+        func model(course: Double, heading: Double) -> RenderModel {
+            makeRenderModel(destinationName: "Home", destinationIndex: 0, destinationCount: 5,
+                destLat: 40.6892, destLng: -74.0445, userLat: 40.7128, userLng: -74.0060,
+                accuracyMeters: 14.6, units: "m", course: course, heading: heading,
+                fixTimestamp: Date(timeIntervalSince1970: 1000),
+                now: Date(timeIntervalSince1970: 1060), staleThreshold: 30 * 60)
+        }
+        // Valid heading wins over valid course (dial inherits the app's compass).
+        XCTAssertEqual(model(course: 137, heading: 250).headingDegrees, 250, accuracy: 0.0001)
+        // Invalid heading falls back to valid course.
+        XCTAssertEqual(model(course: 137, heading: -1).headingDegrees, 137, accuracy: 0.0001)
+        // Both invalid → north-up.
+        XCTAssertEqual(model(course: -1, heading: -1).headingDegrees, 0, accuracy: 0.0001)
+    }
 }

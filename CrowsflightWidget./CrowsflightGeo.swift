@@ -60,8 +60,9 @@ public struct RenderModel: Equatable {
     public var distanceUnit: String
     public var accuracyText: String
     public var bearingDegrees: Double
-    /// Effective "up" heading for the dial: course over ground when moving, else 0
-    /// (north-up). The cone points to `bearingDegrees - headingDegrees`.
+    /// Effective "up" heading for the dial: the app's device compass heading when
+    /// valid, else course over ground, else 0 (north-up). The cone points to
+    /// `bearingDegrees - headingDegrees`.
     public var headingDegrees: Double
     public var progress: Double
     public var sweptDegrees: Double
@@ -73,23 +74,24 @@ public struct RenderModel: Equatable {
 public func makeRenderModel(destinationName: String, destinationIndex: Int, destinationCount: Int,
                             destLat: Double, destLng: Double,
                             userLat: Double, userLng: Double, accuracyMeters: Double,
-                            units: String, course: Double, fixTimestamp: Date, now: Date,
+                            units: String, course: Double, heading: Double = -1,
+                            fixTimestamp: Date, now: Date,
                             staleThreshold: TimeInterval) -> RenderModel {
     let dist = CrowsflightGeo.distanceMeters(userLat: userLat, userLng: userLng, destLat: destLat, destLng: destLng)
     let bearing = CrowsflightGeo.bearingDegrees(userLat: userLat, userLng: userLng, destLat: destLat, destLng: destLng)
     let progress = CrowsflightGeo.arcProgress(distanceMeters: dist)
     let text = CrowsflightGeo.distanceText(distanceMeters: dist, units: units)
-    // Fake compass: when the last fix had a valid course over ground, orient the dial
-    // to the direction of travel so the cone reads "ahead / left / right". Otherwise
-    // fall back to north-up (heading 0).
-    let heading = course >= 0 ? course : 0
+    // Dial "up": inherit the app's device compass heading (what the arrow showed at
+    // exit) when valid; else fall back to course over ground (direction of travel);
+    // else north-up. Values < 0 are invalid.
+    let dialUp = heading >= 0 ? heading : (course >= 0 ? course : 0)
     return RenderModel(
         destinationName: destinationName,
         distanceValue: text.value,
         distanceUnit: text.unit,
         accuracyText: CrowsflightGeo.accuracyText(accuracyMeters: accuracyMeters, units: units),
         bearingDegrees: bearing,
-        headingDegrees: heading,
+        headingDegrees: dialUp,
         progress: progress,
         sweptDegrees: CrowsflightGeo.sweptDegrees(progress: progress),
         spreadDegrees: CrowsflightGeo.spreadDegrees(distanceMeters: dist, accuracyMeters: accuracyMeters),

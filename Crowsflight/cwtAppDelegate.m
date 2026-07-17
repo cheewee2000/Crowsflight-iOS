@@ -637,7 +637,8 @@ static NSString * const kPendingImportsKey = @"pendingImports";
                                 userLng:self.myLng
                                accuracy:self.accuracy
                                   units:self.units
-                                 course:self.course];
+                                 course:self.course
+                                heading:(self.headingAccuracy >= 0 ? self.heading : -1)];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
