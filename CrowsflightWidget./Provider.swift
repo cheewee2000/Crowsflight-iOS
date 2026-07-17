@@ -28,25 +28,33 @@ struct Provider: TimelineProvider {
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<CrowsflightEntry>) -> Void) {
-        // Re-render periodically so "updated Xm ago" and stale-dimming stay current
-        // even though the distance only changes when the app writes a new snapshot.
-        let entry = makeEntry()
-        let next = Date().addingTimeInterval(15 * 60)
-        completion(Timeline(entries: [entry], policy: .after(next)))
+        // Fetch a fresh one-shot fix so the widget updates between app sessions
+        // (NSWidgetWantsLocation). Falls back to the app snapshot on failure /
+        // timeout / no authorization; the fetcher always completes exactly once.
+        // The system may also skip delivery when the widget hasn't been visible
+        // recently ("in use" window) — same fallback covers that.
+        let fetcher = WidgetLocationFetcher()
+        fetcher.fetch(timeout: 8) { fix in
+            _ = fetcher // keep the fetcher (and its CLLocationManager) alive
+            let entry = makeEntry(fresh: fix)
+            let next = Date().addingTimeInterval(15 * 60)
+            completion(Timeline(entries: [entry], policy: .after(next)))
+        }
     }
 
-    private func makeEntry() -> CrowsflightEntry {
+    private func makeEntry(fresh: FreshFix? = nil) -> CrowsflightEntry {
         guard let defaults = UserDefaults(suiteName: WidgetSnapshotStore.suiteName),
               let snap = WidgetSnapshotStore.read(from: defaults) else {
             return CrowsflightEntry(date: Date(), model: nil, destinationIndex: nil)
         }
+        let fix = resolveFix(snapshot: snap, fresh: fresh)
         let model = makeRenderModel(
             destinationName: snap.destinationName,
             destinationIndex: snap.destinationIndex,
             destinationCount: snap.destinationCount,
             destLat: snap.destLat, destLng: snap.destLng,
-            userLat: snap.userLat, userLng: snap.userLng, accuracyMeters: snap.accuracyMeters,
-            units: snap.units, course: snap.course, heading: snap.heading, fixTimestamp: snap.timestamp, now: Date(),
+            userLat: fix.userLat, userLng: fix.userLng, accuracyMeters: fix.accuracyMeters,
+            units: snap.units, course: fix.course, heading: fix.heading, fixTimestamp: fix.timestamp, now: Date(),
             staleThreshold: Self.staleThreshold)
         return CrowsflightEntry(date: Date(), model: model, destinationIndex: snap.destinationIndex)
     }
