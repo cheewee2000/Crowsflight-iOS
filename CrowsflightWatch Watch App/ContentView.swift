@@ -9,6 +9,7 @@ struct ContentView: View {
     @EnvironmentObject var location: WatchLocationProvider
 
     @State private var selection = 0
+    @Environment(\.scenePhase) private var scenePhase
 
     private let field = Color(red: 0xF9/255, green: 0xF9/255, blue: 0xF9/255)
     private let name = Color(white: 0.2)
@@ -34,6 +35,13 @@ struct ContentView: View {
             }
         }
         .onAppear { location.start() }
+        .onChange(of: scenePhase) { _, phase in
+            switch phase {
+            case .active: location.start()
+            case .background: location.stop()
+            default: break
+            }
+        }
     }
 
     private func message(_ text: String) -> some View {
