@@ -1,18 +1,16 @@
-//
-//  CrowsflightWatchApp.swift
-//  CrowsflightWatch Watch App
-//
-//  Created by Che-Wei Wang on 7/19/26.
-//  Copyright © 2026 CWandT. All rights reserved.
-//
-
+// CrowsflightWatch Watch App/CrowsflightWatchApp.swift
 import SwiftUI
 
 @main
-struct CrowsflightWatch_Watch_AppApp: App {
+struct CrowsflightWatchApp: App {
+    @StateObject private var store = WatchDestinationStore()
+    @StateObject private var location = WatchLocationProvider()
+
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(store)
+                .environmentObject(location)
         }
     }
 }
