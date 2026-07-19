@@ -50,6 +50,7 @@
 -(void)editDestination:(NSString *)name newlat:(double)_lat newlng:(double)_lng;
 -(void)iCloudSync;
 -(void)drainPendingImports;
+-(void)transferLocations;
 
 
 @property (nonatomic) BOOL hasInternet;

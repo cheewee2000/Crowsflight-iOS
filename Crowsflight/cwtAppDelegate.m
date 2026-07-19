@@ -722,20 +722,17 @@ static NSString * const kPendingImportsKey = @"pendingImports";
 }
 
 -(void)transferLocations{
-    if (![WCSession isSupported]) return;
-    WCSession *ws = [WCSession defaultSession];
-    if (ws.activationState != WCSessionActivationStateActivated ||
-        !ws.isPaired || !ws.isWatchAppInstalled) return;
-
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory , NSUserDomainMask, YES);
-    NSString *documentsDir = [paths objectAtIndex:0];
-    NSString *docPath = [documentsDir stringByAppendingString:@"/locationList.plist"];
-    NSURL *url = [[NSURL alloc] initFileURLWithPath:docPath];
-
-    //WCSessionFileTransfer *fileTransfer =
-    [ws transferFile:url metadata:nil];
-    NSLog(@"file transfer started");
-
+    NSMutableArray<NSString *> *names = [NSMutableArray array];
+    NSMutableArray<NSNumber *> *lats = [NSMutableArray array];
+    NSMutableArray<NSNumber *> *lngs = [NSMutableArray array];
+    for (NSDictionary *d in self.locationDictionaryArray) {
+        NSString *name = [d objectForKey:@"searchedText"];
+        [names addObject:[name isKindOfClass:[NSString class]] ? name : @""];
+        [lats addObject:@([[d objectForKey:@"lat"] doubleValue])];
+        [lngs addObject:@([[d objectForKey:@"lng"] doubleValue])];
+    }
+    [WatchSyncBridge pushDestinationsWithNames:names lats:lats lngs:lngs
+                                         units:(self.units ?: @"m")];
 }
 
 

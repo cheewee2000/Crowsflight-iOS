@@ -635,6 +635,7 @@
     if([dele.units isEqual:@"m"])dele.units=@"km";
     else dele.units=@"m";
     [[NSUserDefaults standardUserDefaults] setObject:dele.units forKey:@"units"];
+    [dele transferLocations];
     [self updateDistanceWithLatLng:0];
     
     [dele.viewController nextInstruction:6];
