@@ -538,7 +538,13 @@
                 if(dist<402.336) //.25 miles in meters
                     distanceString= [NSString stringWithFormat:@"%.1f\'",dist*3.28084];
                 else  distanceString= [NSString stringWithFormat:@"%.2fmi",dist*0.000621371];
-                
+
+            }
+            else if([dele.units isEqual:@"nm"]){
+                if(dist<185.2) //.1 nautical miles in meters
+                    distanceString= [NSString stringWithFormat:@"%.0fyd",dist*1.0936133];
+                else  distanceString= [NSString stringWithFormat:@"%.2fnm",dist/1852.0];
+
             }
             else {
                 if(dist<1000) distanceString= [NSString stringWithFormat:@"%.1fm",dist];
@@ -1066,7 +1072,13 @@
                 if(dist<402.336) //.25 miles in meters
                     distanceString= [NSString stringWithFormat:@"%.1f\'",dist*3.28084];
                 else  distanceString= [NSString stringWithFormat:@"%.2fmi",dist*0.000621371];
-                
+
+            }
+            else if([dele.units isEqual:@"nm"]){
+                if(dist<185.2) //.1 nautical miles in meters
+                    distanceString= [NSString stringWithFormat:@"%.0fyd",dist*1.0936133];
+                else  distanceString= [NSString stringWithFormat:@"%.2fnm",dist/1852.0];
+
             }
             else {
                 if(dist<1000) distanceString= [NSString stringWithFormat:@"%.1fm",dist];

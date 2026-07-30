@@ -26,7 +26,7 @@
 @property (strong, nonatomic) cwtViewController3 *viewController;
 @property (nonatomic, strong) NSMutableArray *locationDictionaryArray;
 @property (nonatomic, strong) CLLocationManager *locationManager;
-@property (nonatomic, strong) NSString *units;// m = 0, km = 1
+@property (nonatomic, strong) NSString *units;// "m" = imperial, "km" = metric, "nm" = nautical
 @property (nonatomic) float myLat;
 @property (nonatomic) float myLng;
 @property (nonatomic) float heading;

@@ -416,6 +416,9 @@
         if([dele.units isEqual:@"m"]){
             mess=[NSString stringWithFormat:@"± %i\'",(int)(dele.accuracy*3.2808399 )] ;
         }
+        else if([dele.units isEqual:@"nm"]){
+            mess=[NSString stringWithFormat:@"± %iyd",(int)(dele.accuracy*1.0936133 )] ;
+        }
         else {
             mess=[NSString stringWithFormat:@"± %im",(int)dele.accuracy ];
         }
