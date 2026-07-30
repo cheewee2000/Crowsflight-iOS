@@ -59,9 +59,17 @@ final class CrowsflightGeoTests: XCTestCase {
         XCTAssertEqual(near.value, "500"); XCTAssertEqual(near.unit, "METERS")
     }
 
+    func testDistanceTextNautical() {
+        let far = CrowsflightGeo.distanceText(distanceMeters: 3704, units: "nm")
+        XCTAssertEqual(far.value, "2.00"); XCTAssertEqual(far.unit, "NM")
+        let near = CrowsflightGeo.distanceText(distanceMeters: 100, units: "nm")
+        XCTAssertEqual(near.value, "109"); XCTAssertEqual(near.unit, "YARDS")
+    }
+
     func testAccuracyText() {
         XCTAssertEqual(CrowsflightGeo.accuracyText(accuracyMeters: 14.6, units: "m"), "± 47'")
         XCTAssertEqual(CrowsflightGeo.accuracyText(accuracyMeters: 14.6, units: "km"), "± 14m")
+        XCTAssertEqual(CrowsflightGeo.accuracyText(accuracyMeters: 14.6, units: "nm"), "± 15yd")
     }
 
     func testMakeRenderModelStaleFlag() {

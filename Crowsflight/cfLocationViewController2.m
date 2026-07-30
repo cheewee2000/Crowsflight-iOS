@@ -307,6 +307,9 @@
         if([dele.units isEqual:@"m"]){
             self.accuracyText.text=[NSString stringWithFormat:@"± %i'",(int)(dele.accuracy*3.2808399) ];
         }
+        else if([dele.units isEqual:@"nm"]){
+            self.accuracyText.text=[NSString stringWithFormat:@"± %iyd",(int)(dele.accuracy*1.0936133) ];
+        }
         else {
             self.accuracyText.text=[NSString stringWithFormat:@"± %im",(int)dele.accuracy ];
         }
@@ -345,7 +348,18 @@
             self.distanceText.text= [NSString stringWithFormat:@"%.2f",self.distance*0.000621371];
             self.unitText.text=@"MILES";
         }
-        
+
+    }
+    else if([dele.units isEqual:@"nm"]){
+        if(self.distance<185.2){ //.1 nautical miles in meters
+            self.distanceText.text= [NSString stringWithFormat:@"%i",(int)(self.distance*1.0936133)];
+            self.unitText.text=@"YARDS";
+
+        }else{
+            self.distanceText.text= [NSString stringWithFormat:@"%.2f",self.distance/1852.0];
+            self.unitText.text=@"NM";
+        }
+
     }
     else {
         if(self.distance<1000){
@@ -593,7 +607,13 @@
         speedString=[NSString stringWithFormat:@"%.2fmph",speed*.621371f];
         altitudeString=[NSString stringWithFormat:@"%.2fft ±%.2f",dele.altitude*3.28084,dele.altitudeAccuracy*3.28084];
         currentString=[NSString stringWithFormat:@"%f,%f ±%.2fft",dele.myLat,dele.myLng, (int)dele.accuracy*3.28084];
-        
+
+    }else if([dele.units isEqual:@"nm"]){
+
+        speedString=[NSString stringWithFormat:@"%.2fkts",speed*.539957f];
+        altitudeString=[NSString stringWithFormat:@"%.2fft ±%.2f",dele.altitude*3.28084,dele.altitudeAccuracy*3.28084];
+        currentString=[NSString stringWithFormat:@"%f,%f ±%iyd",dele.myLat,dele.myLng, (int)(dele.accuracy*1.0936133)];
+
     }else{
         
         speedString=[NSString stringWithFormat:@"%.2fkph",speed];
@@ -632,7 +652,9 @@
 
 - (void) pickUnits{
     //NSLog(@"switch Units");
+    // cycle imperial -> metric -> nautical
     if([dele.units isEqual:@"m"])dele.units=@"km";
+    else if([dele.units isEqual:@"km"])dele.units=@"nm";
     else dele.units=@"m";
     [[NSUserDefaults standardUserDefaults] setObject:dele.units forKey:@"units"];
     [dele transferLocations];

@@ -42,6 +42,10 @@ public enum CrowsflightGeo {
         if units == "m" {
             if d < 402.336 { return (String(format: "%i", Int(d * 3.28084)), "FEET") }
             return (String(format: "%.2f", d * 0.000621371), "MILES")
+        } else if units == "nm" {
+            // Marine convention: short ranges in yards, then nautical miles.
+            if d < 185.2 { return (String(format: "%i", Int(d * 1.0936133)), "YARDS") }
+            return (String(format: "%.2f", d / 1852), "NM")
         } else {
             if d < 1000 { return (String(format: "%i", Int(d)), "METERS") }
             return (String(format: "%.2f", d / 1000), "KM")
@@ -50,6 +54,7 @@ public enum CrowsflightGeo {
 
     public static func accuracyText(accuracyMeters a: Double, units: String) -> String {
         if units == "m" { return String(format: "± %i'", Int(a * 3.2808399)) }
+        if units == "nm" { return String(format: "± %iyd", Int(a * 1.0936133)) }
         return String(format: "± %im", Int(a))
     }
 }
