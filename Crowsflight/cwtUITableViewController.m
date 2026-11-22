@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 CW&T. All rights reserved.
 //
 
+#import "cwtAppDelegate.h"
 #import "cwtUITableViewController.h"
 #import "cwtViewController3.h"
 @implementation cwtUITableViewController
@@ -22,16 +23,16 @@
 
         //CGRect screen = [[UIScreen mainScreen] applicationFrame];
         //CGRect screenBounds = [[UIScreen mainScreen] applicationFrame];
-        CGRect screenBounds = [[UIScreen mainScreen] bounds];
+        CGRect screenBounds = CFScreenBounds();
         
-        self.tableView.frame=CGRectMake(0, 0, screenBounds.size.width-40, screenBounds.size.height);
+        self.tableView.frame=CGRectMake(0, 0, CFListWidth(), screenBounds.size.height);
         
         [self.tableView setSeparatorStyle:(UITableViewCellSeparatorStyleNone)];
         [self.tableView setBackgroundColor:[UIColor colorWithRed:1.0 green:78/255.0f blue:36/255.0f alpha:1]];
         
         dele = (cwtAppDelegate*) [[UIApplication sharedApplication] delegate];
         
-        self.filterBar = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, screenBounds.size.width-40, 44)];
+        self.filterBar = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, CFListWidth(), 44)];
         self.filterBar.delegate=self;
 
         
@@ -57,7 +58,7 @@
         self.filterBar.borderStyle = UITextBorderStyleNone;
         self.filterBar.returnKeyType=UIReturnKeySearch;
 
-        UIView * statusBackground=[[UIView alloc] initWithFrame:CGRectMake(0, -100, [[UIScreen mainScreen] bounds].size.width, 100)];
+        UIView * statusBackground=[[UIView alloc] initWithFrame:CGRectMake(0, -100, CFScreenBounds().size.width, 100)];
         //match the main compass screen's background tone (and the filter bar itself) so the
         //notch/status strip reads as one continuous surface instead of a brighter white band
         [statusBackground setBackgroundColor:[UIColor colorWithWhite:.95 alpha:1]];
@@ -247,7 +248,7 @@
 
 -(void)setInstructionPosition{
     int instructionN=(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"listInstructions"];
-    CGRect screen = [[UIScreen mainScreen] bounds];
+    CGRect screen = CFScreenBounds();
     
     NSLog(@"instn %i",instructionN);
     
@@ -360,7 +361,7 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
 
-    int screenWidth=[UIScreen mainScreen].bounds.size.width;
+    int screenWidth=CFScreenBounds().size.width;
 
     if(!self.isFiltered){
     float yPos=0;
@@ -370,7 +371,7 @@
 
     int animationStart=250;
     int animationBottomPos=60;
-    int animationFrame=[[UIScreen mainScreen] bounds].size.height-(h-y)-yPos-animationStart;
+    int animationFrame=CFScreenBounds().size.height-(h-y)-yPos-animationStart;
     
     //NSLog(@"animation Frame %i",animationFrame);
     
@@ -383,7 +384,7 @@
     
     NSString *strImgeName = [NSString stringWithFormat:@"walk-%i.png", walkAnimFrame];
     [walkAnimView setImage:[UIImage imageNamed:strImgeName]];
-    [walkAnimView setFrame:CGRectMake(0, [[UIScreen mainScreen] bounds].size.height-(h-y)-animationBottomPos, screenWidth, screenWidth*.25)];
+    [walkAnimView setFrame:CGRectMake(0, CFScreenBounds().size.height-(h-y)-animationBottomPos, screenWidth, screenWidth*.25)];
     
     
     int doorAnimFrame=animationFrame;
@@ -392,8 +393,8 @@
     
     strImgeName = [NSString stringWithFormat:@"walk-d%i.png", doorAnimFrame];
     [doorAnimView setImage:[UIImage imageNamed:strImgeName]];
-    [doorAnimView setFrame:CGRectMake(0, [[UIScreen mainScreen] bounds].size.height-(h-y)-animationBottomPos, screenWidth, screenWidth*.25)];
-    [doorBackground setFrame:CGRectMake(0, [[UIScreen mainScreen] bounds].size.height-(h-y)-animationBottomPos, 41 ,screenWidth*.25)];
+    [doorAnimView setFrame:CGRectMake(0, CFScreenBounds().size.height-(h-y)-animationBottomPos, screenWidth, screenWidth*.25)];
+    [doorBackground setFrame:CGRectMake(0, CFScreenBounds().size.height-(h-y)-animationBottomPos, 41 ,screenWidth*.25)];
 
     
     if(animationFrame>=maxWalkFrames){
@@ -407,7 +408,7 @@
         
         strImgeName = [NSString stringWithFormat:@"walk-d%i.png", doorAnimFrame];
         [doorAnimView setImage:[UIImage imageNamed:strImgeName]];
-        [doorAnimView setFrame:CGRectMake(0, [[UIScreen mainScreen] bounds].size.height-(h-y)-animationBottomPos, screenWidth,screenWidth*.25)];
+        [doorAnimView setFrame:CGRectMake(0, CFScreenBounds().size.height-(h-y)-animationBottomPos, screenWidth,screenWidth*.25)];
            
     }
     if(h>10 && animationFrame>=maxWalkFrames+6){
@@ -471,8 +472,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    float lineWidth=[UIScreen mainScreen].bounds.size.width-40;
-    float screenWidth=[UIScreen mainScreen].bounds.size.width;
+    float lineWidth=CFListWidth();
+    float screenWidth=CFScreenBounds().size.width;
 
     if(indexPath.section==0){
 
@@ -927,14 +928,14 @@
         [cell addSubview:walkAnimView];
 
         doorBackground=[[UIImageView alloc] init];
-        [doorBackground setFrame:CGRectMake(0, [[UIScreen mainScreen] bounds].size.height, screenWidth ,80)];
+        [doorBackground setFrame:CGRectMake(0, CFScreenBounds().size.height, screenWidth ,80)];
         [doorBackground setBackgroundColor:[UIColor colorWithRed:1.0 green:78/255.0f blue:36/255.0f alpha:1]];
         [cell addSubview:doorBackground];
 
         
         
          doorAnimView=[[UIImageView alloc] init];
-        [doorAnimView setFrame:CGRectMake(0, [[UIScreen mainScreen] bounds].size.height, screenWidth,80)];
+        [doorAnimView setFrame:CGRectMake(0, CFScreenBounds().size.height, screenWidth,80)];
         [doorAnimView setImage:[UIImage imageNamed:@"walk-walk.png"]];
         [cell addSubview:doorAnimView];
         
@@ -1051,7 +1052,7 @@
 
             float lotDist=(log(1+dist)/log(100))*.275-.2;
 
-            float lineWidth=[UIScreen mainScreen].bounds.size.width-40;
+            float lineWidth=CFListWidth();
             
             UIView *progressBar = [[UIView alloc] initWithFrame:CGRectMake(0,0, lineWidth*lotDist, 60-1)];
             [cell.contentView addSubview:progressBar];

@@ -37,7 +37,13 @@
     //int thickness=210;
     //int r=100+10+thickness*.5;
 
-    int thickness=[[UIScreen mainScreen] bounds].size.height*.5;//255;
+    //geometry follows the view's own bounds (not the screen) so the wedge re-fits when the
+    //window resizes, e.g. folding/unfolding an iPhone Duo. the owner sizes this view as a
+    //square of 2*(extent+20), extent being the outer stroke edge; the inner edge stays 60pt
+    //from the centre.
+    x=self.bounds.size.width*.5;
+    y=self.bounds.size.height*.5;
+    int thickness=x-20-60;
     int r=60+thickness*.5;
 
     //CGRect screen = [[UIScreen mainScreen] applicationFrame];

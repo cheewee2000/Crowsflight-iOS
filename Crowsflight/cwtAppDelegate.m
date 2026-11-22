@@ -7,6 +7,7 @@
 ////#import <Crashlytics/Crashlytics.h>
 
 #import "cwtAppDelegate.h"
+#import "UINavigationController+GZDrawer.h"
 #import "cwtViewController3.h"
 #import "cwtUITableViewController.h"
 //#import "cwtIAP.h"
@@ -46,12 +47,46 @@
     }
 }
 
+//the window changed size (iPhone Duo folded/unfolded, or moved between its cover and inner
+//displays). an open list/map drawer slides a screenshot of the old-size compass aside, so
+//it cannot follow the new size: close it and let the compass re-lay out.
+//ponytail: closes the drawer rather than re-flowing it in place; re-push it after the
+//resize if staying in the list/map across a fold ever matters.
+- (void)windowSizeMayHaveChanged:(UIWindowScene *)windowScene {
+    static CGSize lastSize;
+    CGSize size = windowScene.coordinateSpace.bounds.size;
+    if (CGSizeEqualToSize(size, lastSize)) return;
+    BOOL first = CGSizeEqualToSize(lastSize, CGSizeZero);
+    lastSize = size;
+    if (!first) [[self app].navController popDrawerViewController:NO];
+}
+
+//iOS 26+
+- (void)windowScene:(UIWindowScene *)windowScene didUpdateEffectiveGeometry:(UIWindowSceneGeometry *)previousEffectiveGeometry {
+    [self windowSizeMayHaveChanged:windowScene];
+}
+
+//iOS 15-25
+- (void)windowScene:(UIWindowScene *)windowScene didUpdateCoordinateSpace:(id<UICoordinateSpace>)previousCoordinateSpace interfaceOrientation:(UIInterfaceOrientation)previousInterfaceOrientation traitCollection:(UITraitCollection *)previousTraitCollection {
+    [self windowSizeMayHaveChanged:windowScene];
+}
+
 - (void)sceneDidBecomeActive:(UIScene *)scene { [[self app] applicationDidBecomeActive:[UIApplication sharedApplication]]; }
 - (void)sceneWillResignActive:(UIScene *)scene { [[self app] applicationWillResignActive:[UIApplication sharedApplication]]; }
 - (void)sceneDidEnterBackground:(UIScene *)scene { [[self app] applicationDidEnterBackground:[UIApplication sharedApplication]]; }
 - (void)sceneWillEnterForeground:(UIScene *)scene { [[self app] applicationWillEnterForeground:[UIApplication sharedApplication]]; }
 
 @end
+
+CGRect CFScreenBounds(void) {
+    UIWindow *window = ((cwtAppDelegate *)[UIApplication sharedApplication].delegate).window;
+    return window ? window.bounds : [UIScreen mainScreen].bounds;
+}
+
+CGFloat CFListWidth(void) {
+    UIWindow *window = ((cwtAppDelegate *)[UIApplication sharedApplication].delegate).window;
+    return CFScreenBounds().size.width - MAX(40.0, window.safeAreaInsets.right);
+}
 
 @implementation cwtAppDelegate
 

@@ -6,6 +6,7 @@
 //  Copyright 2011 LJR Software Limited. All rights reserved.
 //
 
+#import "cwtAppDelegate.h"
 #import "LRSlidingTableViewCell.h"
 #import <MapKit/MapKit.h>
 #import "cwtUITableViewController.h"
@@ -31,7 +32,7 @@
     defaultBackgroundView.backgroundColor = [UIColor colorWithRed:1 green:1 blue:0 alpha:1];
     self.backgroundView = defaultBackgroundView;
       
-      float cellWidth=[UIScreen mainScreen].bounds.size.width-40;
+      float cellWidth=CFListWidth();
 
       float imgH=35;
       

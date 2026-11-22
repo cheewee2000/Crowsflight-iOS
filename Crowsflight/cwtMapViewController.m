@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 CW&T. All rights reserved.
 //
 
+#import "cwtAppDelegate.h"
 #import "cwtMapViewController.h"
 #import "cwtViewController3.h"
 #import "SIAlertView.h"
@@ -824,14 +825,23 @@
 }
 
 
+//this drawer is created once and cached, so its map follows the live view size instead of
+//the size it was first shown at (the window resizes when an iPhone Duo folds/unfolds)
+-(void)viewDidLayoutSubviews{
+    [super viewDidLayoutSubviews];
+    CGSize size = self.view.bounds.size;
+    mapView.frame = CGRectMake(40, 0, size.width-40, size.height);
+    self.mapButton.frame = CGRectMake(size.width-60, size.height-60, 44, 44);
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     
     mapView=[[MKMapView alloc] init];
-    //mapView.frame=[[UIScreen mainScreen] bounds];
-    CGRect screen = [[UIScreen mainScreen] bounds];
+    //mapView.frame=CFScreenBounds();
+    CGRect screen = CFScreenBounds();
     mapView.frame=CGRectMake(40, 0, screen.size.width-40, screen.size.height);
 
     mapView.showsUserLocation = YES;

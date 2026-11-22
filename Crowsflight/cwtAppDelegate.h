@@ -14,6 +14,17 @@
 
 
 
+//size of the app's window. use this instead of [UIScreen mainScreen].bounds: on an
+//iPhone Duo the window is not necessarily the size of the main screen (cover vs inner
+//display) and it changes when the phone folds/unfolds.
+CGRect CFScreenBounds(void);
+
+//width of the list drawer: the window minus the strip of compass left showing beside it.
+//that strip is 40pt, or the right safe-area inset when that is wider - the iPhone Duo's
+//cover screen keeps its camera and status items in an 84pt column down the right edge,
+//so the strip widens to hold them and the list rows stay clear.
+CGFloat CFListWidth(void);
+
 @class cwtViewController3;
 
 @interface cwtAppDelegate : UIResponder <UIApplicationDelegate>{

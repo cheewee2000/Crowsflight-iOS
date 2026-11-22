@@ -28,7 +28,7 @@ NSString *const SIAlertViewDidDismissNotification = @"SIAlertViewDidDismissNotif
 #define CONTENT_PADDING_TOP 45
 #define CONTENT_PADDING_BOTTOM 0
 #define BUTTON_HEIGHT 44
-#define CONTAINER_WIDTH 320 //replaced with [[UIScreen mainScreen] bounds].size.width
+#define CONTAINER_WIDTH 320 //replaced with CFScreenBounds().size.width
 #define BUTTON_TOP_PADDING 40;
 
 @class SIAlertBackgroundWindow;
@@ -273,7 +273,7 @@ static SIAlertView *__si_alert_current_view;
     
     
     if (!__si_alert_background_window) {
-        __si_alert_background_window = [[SIAlertBackgroundWindow alloc] initWithFrame:[UIScreen mainScreen].bounds
+        __si_alert_background_window = [[SIAlertBackgroundWindow alloc] initWithFrame:CFScreenBounds()
                                                                              andStyle:[SIAlertView currentAlertView].backgroundStyle];
         
         
@@ -373,7 +373,7 @@ static SIAlertView *__si_alert_current_view;
     viewController.alertView = self;
     
     if (!self.alertWindow) {
-        UIWindow *window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+        UIWindow *window = [[UIWindow alloc] initWithFrame:CFScreenBounds()];
         window.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         window.opaque = NO;
         window.windowLevel = UIWindowLevelAlert;
@@ -682,7 +682,7 @@ static SIAlertView *__si_alert_current_view;
     
     CGFloat height = [self preferredHeight];
     //CGFloat height = self.containerHeight;
-    CGFloat left = (self.bounds.size.width - [[UIScreen mainScreen] bounds].size.width) * 0.5;
+    CGFloat left = (self.bounds.size.width - CFScreenBounds().size.width) * 0.5;
     //CGFloat top = (self.bounds.size.height - height) * 0.5;
     CGFloat top=self.topPosition;
     //stop at the safe area top (notch/status bar) instead of a hardcoded y=0
@@ -690,7 +690,7 @@ static SIAlertView *__si_alert_current_view;
     if(top<safeInsets.top) top=safeInsets.top;
     
     self.containerView.transform = CGAffineTransformIdentity;
-    self.containerView.frame = CGRectMake(left, top, [[UIScreen mainScreen] bounds].size.width, height);
+    self.containerView.frame = CGRectMake(left, top, CFScreenBounds().size.width, height);
     self.containerView.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:self.containerView.bounds cornerRadius:self.containerView.layer.cornerRadius].CGPath;
     
     CGFloat y = CONTENT_PADDING_TOP;
@@ -792,7 +792,7 @@ static SIAlertView *__si_alert_current_view;
 //        CGSize size = [self.title sizeWithFont:self.titleLabel.font
 //                                   minFontSize:self.titleLabel.font.pointSize * self.titleLabel.minimumScaleFactor
 //                                actualFontSize:nil
-//                                      forWidth:[[UIScreen mainScreen] bounds].size.width - CONTENT_PADDING_LEFT * 2
+//                                      forWidth:CFScreenBounds().size.width - CONTENT_PADDING_LEFT * 2
 //                                 lineBreakMode:self.titleLabel.lineBreakMode];
 //        
     
@@ -818,7 +818,7 @@ static SIAlertView *__si_alert_current_view;
     if (self.messageLabel) {
 //        CGFloat maxHeight = MESSAGE_MAX_LINE_COUNT * self.messageLabel.font.lineHeight;
 //        CGSize size = [self.message sizeWithFont:self.messageLabel.font
-//                               constrainedToSize:CGSizeMake([[UIScreen mainScreen] bounds].size.width - CONTENT_PADDING_LEFT * 2, maxHeight)
+//                               constrainedToSize:CGSizeMake(CFScreenBounds().size.width - CONTENT_PADDING_LEFT * 2, maxHeight)
 //                                   lineBreakMode:self.messageLabel.lineBreakMode];
 //        
         NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
@@ -870,7 +870,7 @@ static SIAlertView *__si_alert_current_view;
          forControlEvents:UIControlEventTouchDown];
         [button setTitle:@"" forState:UIControlStateNormal];
     
-        CGRect screen = [[UIScreen mainScreen] bounds];
+        CGRect screen = CFScreenBounds();
         
         button.frame = CGRectMake(0,0,screen.size.width,screen.size.height);
         
@@ -896,7 +896,7 @@ static SIAlertView *__si_alert_current_view;
 -(void)addSearchField{
 
     cwtAppDelegate* dele=(cwtAppDelegate *)[[UIApplication sharedApplication] delegate];
-    CGRect screen = [[UIScreen mainScreen] bounds];
+    CGRect screen = CFScreenBounds();
 
     CGFloat height = [self preferredHeight];
 
@@ -1007,7 +1007,7 @@ static SIAlertView *__si_alert_current_view;
 //    
 //    [spinner startAnimating];
 
-    CGRect screen = [[UIScreen mainScreen] bounds];
+    CGRect screen = CFScreenBounds();
 
     self.progressPie = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
     self.progressPie.center=CGPointMake(screen.size.width/2.0, 150);

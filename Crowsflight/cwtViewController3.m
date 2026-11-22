@@ -258,9 +258,8 @@
 
 -(void)setInstructionPosition{
     int instructionN=(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"mainInstructions"];
-    CGRect screen = [[UIScreen mainScreen] bounds];
-    CGFloat w = screen.size.width;
-    CGFloat h = screen.size.height;
+    CGFloat w = self.view.bounds.size.width;
+    CGFloat h = self.view.bounds.size.height;
 
     //each bubble is a w x w image whose arrow tip sits at a fixed fraction of the square:
     //down-arrows end 316/320 of the way down, up-arrows 2/320 from the top. the old code
@@ -491,8 +490,17 @@
     cfButtonBar.frame = CGRectMake(0, h - barH, w, barH);
     cfButtonBar.layer.shadowPath = [UIBezierPath bezierPathWithRect:cfButtonBar.bounds].CGPath;
 
+    //compass and toolbar icons follow the live view width (it changes when an iPhone Duo
+    //folds/unfolds). icons are the bar's subviews in creation order: hamburger, pin, map
+    self.compassN.center = CGPointMake(w*.5, h*.5);
+    self.compassImage.center = self.compassN.center;
+    NSArray<UIView *> *icons = cfButtonBar.subviews;
+    icons[0].frame = CGRectMake(w*.07, 0, 44, 44);
+    icons[1].frame = CGRectMake(w*.5-22, 0, 44, 44);
+    icons[2].frame = CGRectMake(w-44-w*.07, 0, 44, 44);
+
     CGRect mi = moreInfo.frame;
-    moreInfo.frame = CGRectMake(mi.origin.x, CGRectGetMinY(cfButtonBar.frame) - 25.0 - mi.size.height, mi.size.width, mi.size.height);
+    moreInfo.frame = CGRectMake(w*.5 - mi.size.width*.5, CGRectGetMinY(cfButtonBar.frame) - 25.0 - mi.size.height, mi.size.width, mi.size.height);
 
     //the instruction bubbles anchor to the bar and more-info frames finalized above
     [self setInstructionPosition];

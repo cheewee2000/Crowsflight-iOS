@@ -152,7 +152,7 @@
             frame.origin.x = frame.size.width + TOP_VIEW_SHADOW_RADIUS;
             break;
         case DrawerLayoutStyleLeftAnchored:
-            frame.origin.x = frame.size.width - TOP_VIEW_ANCHOR_WIDTH;
+            frame.origin.x = CFListWidth(); //the list drawer's width; see cwtAppDelegate.h
             break;
         case DrawerLayoutStyleRightFullscreen:
             frame.origin.x =  TOP_VIEW_SHADOW_RADIUS - frame.size.width;

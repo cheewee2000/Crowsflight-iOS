@@ -38,7 +38,9 @@
     self.progress=1;
     
     dele = (cwtAppDelegate *)[[UIApplication sharedApplication] delegate];
-    CGRect screen = [[UIScreen mainScreen] bounds];
+    //first-guess geometry only: everything positioned from this is re-laid out against the
+    //live view size in viewDidLayoutSubviews (the window can resize, e.g. iPhone Duo fold)
+    CGRect screen = self.view.bounds;
     
     //    self.arrowImage=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrow-line.png"]];
     //    self.arrowImage.center=CGPointMake(screen.size.width*.5, screen.size.height*.5);
@@ -46,14 +48,9 @@
     
     
     //main arrow
-    //cwtArrow draws a translucent yellow arc whose thickest stroke reaches its farthest
-    //extent at r + thickness/2 from the view centre. In cwtArrow drawRect: thickness =
-    //screenH*0.5 and r = 60 + thickness/2, so the outer stroke edge = 60 + screenH*0.5.
-    //Those sizes derive from the screen and fixed constants (NOT self.bounds), so the
-    //drawing is pixel-identical regardless of frame size — the frame only has to contain
-    //that radius. The view rotates about its centre (set in viewDidLayoutSubviews to
-    //distanceText.center), so a square of 2×extent+margin fully contains it through 360°.
-    //Old frame was screenH*1.5 square (~3800px@3x, ~59MB backing store); this ~halves it.
+    //cwtArrow draws a translucent yellow arc from 60pt out to (frame/2 - 20pt). The view
+    //rotates about its centre, so a square of 2×(extent+20) contains it through 360°;
+    //viewDidLayoutSubviews re-sizes it so the extent reaches the view's far corners.
     CGFloat arrowExtent = 60.0 + screen.size.height*0.5;   //max radial extent of the drawing
     CGFloat arrowSize   = 2.0*(arrowExtent + 20.0);        //+20pt margin for anti-aliasing/line width
     self.arrow=[[cwtArrow alloc] initWithFrame:CGRectMake(0,0, arrowSize, arrowSize)];
@@ -215,6 +212,29 @@
 }
 
 -(void)viewDidLayoutSubviews{
+    //everything hangs off the live view size, not the screen: on an iPhone Duo the window
+    //changes size when the phone folds/unfolds and the screen it launched on is not
+    //necessarily the one it is showing on
+    CGFloat w = self.view.bounds.size.width;
+    CGFloat h = self.view.bounds.size.height;
+    self.distanceText.center   = CGPointMake(w*.5, h*.5);
+    self.accuracyText.center   = CGPointMake(w*.5, h*.5-30);
+    self.satSearchImage.center = CGPointMake(w*.5, h*.5-30);
+    self.unitText.center       = CGPointMake(w*.5, h*.5+30);
+    //title stays centred but clear of any side safe area (the iPhone Duo cover screen has
+    //its camera and status items down the right edge)
+    UIEdgeInsets safe = self.view.safeAreaInsets;
+    CGFloat titleInset = 15 + MAX(safe.left, safe.right);
+    self.destinationButton.frame = CGRectMake(titleInset, h*.1, w-2*titleInset, 120);
+
+    //wedge reaches the far corners of the view from its centre. bounds (not frame): the
+    //arrow carries a rotation transform
+    CGFloat arrowSize = 2.0*(hypot(w, h)*.5 + 20.0);
+    if (self.arrow.bounds.size.width != arrowSize) {
+        self.arrow.bounds = CGRectMake(0, 0, arrowSize, arrowSize);
+        [self.arrow setNeedsDisplay];
+    }
+
     self.arrow.center=CGPointMake(self.distanceText.center.x, self.distanceText.center.y);
     self.arcProgressView.center=CGPointMake(self.distanceText.center.x, self.distanceText.center.y);
 
@@ -225,9 +245,9 @@
                                           : dele.window.safeAreaInsets.bottom;
     CGFloat barTop = self.view.bounds.size.height - (44 + MAX(safeBottom, 11.0f));
     CGRect dt = self.displayText.frame;
-    self.displayText.frame = CGRectMake(dt.origin.x, barTop - dt.size.height, dt.size.width, dt.size.height);
+    self.displayText.frame = CGRectMake(dt.origin.x, barTop - dt.size.height, w, dt.size.height);
     CGRect pn = self.pageNText.frame;
-    self.pageNText.frame = CGRectMake(pn.origin.x, barTop - pn.size.height, pn.size.width, pn.size.height);
+    self.pageNText.frame = CGRectMake(w - 160, barTop - pn.size.height, pn.size.width, pn.size.height);
 }
 
 -(void)loadArc{
