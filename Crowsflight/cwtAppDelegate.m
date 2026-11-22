@@ -22,6 +22,35 @@
     WCSession *session;
 }
 @property (nonatomic, strong) Reachability *reachability;
+- (void)setUpWindowInScene:(UIWindowScene *)scene;
+@end
+
+// Apps built with the iOS 27 SDK must use the UIScene lifecycle or UIKit traps at launch.
+// Thin shim (named in Info.plist UIApplicationSceneManifest): all logic stays in cwtAppDelegate.
+@interface cwtSceneDelegate : UIResponder <UIWindowSceneDelegate>
+@end
+
+@implementation cwtSceneDelegate
+
+- (cwtAppDelegate *)app { return (cwtAppDelegate *)[UIApplication sharedApplication].delegate; }
+
+- (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions {
+    if (![scene isKindOfClass:[UIWindowScene class]]) return;
+    [[self app] setUpWindowInScene:(UIWindowScene *)scene];
+    [self scene:scene openURLContexts:connectionOptions.URLContexts];
+}
+
+- (void)scene:(UIScene *)scene openURLContexts:(NSSet<UIOpenURLContext *> *)URLContexts {
+    for (UIOpenURLContext *context in URLContexts) {
+        [[self app] application:[UIApplication sharedApplication] openURL:context.URL options:@{}];
+    }
+}
+
+- (void)sceneDidBecomeActive:(UIScene *)scene { [[self app] applicationDidBecomeActive:[UIApplication sharedApplication]]; }
+- (void)sceneWillResignActive:(UIScene *)scene { [[self app] applicationWillResignActive:[UIApplication sharedApplication]]; }
+- (void)sceneDidEnterBackground:(UIScene *)scene { [[self app] applicationDidEnterBackground:[UIApplication sharedApplication]]; }
+- (void)sceneWillEnterForeground:(UIScene *)scene { [[self app] applicationWillEnterForeground:[UIApplication sharedApplication]]; }
+
 @end
 
 @implementation cwtAppDelegate
@@ -36,21 +65,8 @@
     
     [self loadmyLocations];
 
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.viewController = [[cwtViewController3 alloc] init];
-    self.window.rootViewController = self.viewController;
-    
-    
-    [self.viewController.view setFrame:[[UIScreen mainScreen] bounds]];
-    
-    self.navController = [[UINavigationController alloc] initWithRootViewController:self.viewController];
-    [self.navController setNavigationBarHidden:YES animated:NO];
-    //self.navController.wantsFullScreenLayout=NO;
+    // The window is created in -setUpWindowInScene: once the scene connects (cwtSceneDelegate, bottom of this file).
 
-    
-    [self.window makeKeyAndVisible];
-    [self.window addSubview:self.navController.view];
-    
 //    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
 //    {
 //        NSLog(@"Running in IOS-7");
@@ -116,6 +132,21 @@
 
     
     return YES;
+}
+
+
+- (void)setUpWindowInScene:(UIWindowScene *)scene {
+    self.window = [[UIWindow alloc] initWithWindowScene:scene];
+    self.viewController = [[cwtViewController3 alloc] init];
+    self.window.rootViewController = self.viewController;
+
+    [self.viewController.view setFrame:self.window.bounds];
+
+    self.navController = [[UINavigationController alloc] initWithRootViewController:self.viewController];
+    [self.navController setNavigationBarHidden:YES animated:NO];
+
+    [self.window makeKeyAndVisible];
+    [self.window addSubview:self.navController.view];
 }
 
 
