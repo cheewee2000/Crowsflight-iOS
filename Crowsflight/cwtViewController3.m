@@ -265,15 +265,21 @@
     //down-arrows end 316/320 of the way down, up-arrows 2/320 from the top. the old code
     //placed the squares with pre-notch constants; anchor the tips to the live frames of
     //their targets instead so they stay attached when the bar/safe areas move.
-    CGFloat downTip = w * (316.0f/320.0f);
-    CGFloat upTip   = w * (2.0f/320.0f);
     CGFloat barTop  = CGRectGetMinY(cfButtonBar.frame);
 
-    if(instructionN==0)      [self.instructions setFrame:CGRectMake(0, h*.5+62-upTip, w, w)];                              //up at the distance disc bottom
-    else if(instructionN==4) [self.instructions setFrame:CGRectMake(0, h*.1+30-upTip, w, w)];                              //up at the title text (title y=h*.1, ~22pt tall, 8pt gap)
-    else if(instructionN==5) [self.instructions setFrame:CGRectMake(0, h*.5-w-50, w, w)];                                  //down at the disc top (centre-anchored, unchanged)
-    else if(instructionN==6) [self.instructions setFrame:CGRectMake(0, CGRectGetMinY(moreInfo.frame)+16-downTip, w, w)];   //down at the more-info button
-    else                     [self.instructions setFrame:CGRectMake(0, barTop+7-downTip, w, w)];                           //down at the toolbar icons (steps 1-3)
+    //bubbles that point at the centred compass/title/more-info are capped at the widest
+    //iPhone and centred, so on a wide window they do not grow over the toolbar. the ones
+    //that point at toolbar icons (steps 1-3) span the full width like the icons do.
+    CGFloat s = MIN(w, 440.0f);
+    CGFloat x = (w - s) * .5f;
+    CGFloat downTip = s * (316.0f/320.0f);
+    CGFloat upTip   = s * (2.0f/320.0f);
+
+    if(instructionN==0)      [self.instructions setFrame:CGRectMake(x, h*.5+62-upTip, s, s)];                              //up at the distance disc bottom
+    else if(instructionN==4) [self.instructions setFrame:CGRectMake(x, h*.1+30-upTip, s, s)];                              //up at the title text (title y=h*.1, ~22pt tall, 8pt gap)
+    else if(instructionN==5) [self.instructions setFrame:CGRectMake(x, h*.5-s-50, s, s)];                                  //down at the disc top (centre-anchored, unchanged)
+    else if(instructionN==6) [self.instructions setFrame:CGRectMake(x, CGRectGetMinY(moreInfo.frame)+16-downTip, s, s)];   //down at the more-info button
+    else                     [self.instructions setFrame:CGRectMake(0, barTop+7-w*(316.0f/320.0f), w, w)];                 //down at the toolbar icons (steps 1-3)
 }
 
 
@@ -496,6 +502,7 @@
     self.compassImage.center = self.compassN.center;
     NSArray<UIView *> *icons = cfButtonBar.subviews;
     icons[0].frame = CGRectMake(w*.07, 0, 44, 44);
+    icons[0].hidden = dele.rootController.listPaneWidth > 0; //list already showing beside us
     icons[1].frame = CGRectMake(w*.5-22, 0, 44, 44);
     icons[2].frame = CGRectMake(w-44-w*.07, 0, 44, 44);
 
@@ -529,6 +536,7 @@
 
 
 -(void)updateViewControllersWithLatLng: (int)_page{
+    [dele.rootController locationMoved];
     for (cfLocationViewController2 *vc in [loadedPages allValues]) {
         [vc updateDistanceWithLatLng:.3];
     }
@@ -581,6 +589,7 @@
 }
 
 -(void)showList{
+    if (dele.rootController.listPaneWidth > 0) return; //already showing beside the compass
     //[[NSUbiquitousKeyValueStore defaultStore] synchronize];
 
     //[self.audioSelect1 play];
@@ -740,6 +749,7 @@
     settledPage = index;
     self.locationViewController = incoming;
     [self unloadDistantPages];
+    [dele.rootController currentDestinationChanged];
 }
 
 //tear down and rebuild at the given page without animation (data may have changed)

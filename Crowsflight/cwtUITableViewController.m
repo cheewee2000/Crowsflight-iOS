@@ -58,7 +58,7 @@
         self.filterBar.borderStyle = UITextBorderStyleNone;
         self.filterBar.returnKeyType=UIReturnKeySearch;
 
-        UIView * statusBackground=[[UIView alloc] initWithFrame:CGRectMake(0, -100, CFScreenBounds().size.width, 100)];
+        UIView * statusBackground=[[UIView alloc] initWithFrame:CGRectMake(0, -100, (CFListWidth()+40), 100)];
         //match the main compass screen's background tone (and the filter bar itself) so the
         //notch/status strip reads as one continuous surface instead of a brighter white band
         [statusBackground setBackgroundColor:[UIColor colorWithWhite:.95 alpha:1]];
@@ -248,7 +248,9 @@
 
 -(void)setInstructionPosition{
     int instructionN=(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"listInstructions"];
-    CGRect screen = CFScreenBounds();
+    //the bubbles were drawn for a list 40pt narrower than the screen; scale them to the list
+    //itself, which is no longer tied to the screen (beside the compass in landscape)
+    CGRect screen = CGRectMake(0, 0, CFListWidth()+40, CFScreenBounds().size.height);
     
     NSLog(@"instn %i",instructionN);
     
@@ -361,7 +363,7 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
 
-    int screenWidth=CFScreenBounds().size.width;
+    int screenWidth=(CFListWidth()+40);
 
     if(!self.isFiltered){
     float yPos=0;
@@ -473,7 +475,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     float lineWidth=CFListWidth();
-    float screenWidth=CFScreenBounds().size.width;
+    float screenWidth=(CFListWidth()+40);
 
     if(indexPath.section==0){
 
@@ -1006,6 +1008,12 @@
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
 
         [[NSUserDefaults standardUserDefaults] setInteger:cell.tag forKey:@"currentDestinationN"];
+        if (dele.rootController.listPaneWidth > 0) {
+            //side by side with the compass: no drawer to close, turn the compass to it
+            [dele.viewController flipToPage:cell.tag];
+            [self.filterBar resignFirstResponder];
+            return;
+        }
         dele.viewController.locationViewController.page=cell.tag;
         [self dismissViewControllerAnimated:YES completion:nil];
         [self.navigationController popDrawerViewController:YES];
@@ -1261,7 +1269,8 @@
         
                 
         [[NSUserDefaults standardUserDefaults] setInteger:toIndexPath.row forKey:@"currentDestinationN"];
-        dele.viewController.locationViewController.page=toIndexPath.row;
+        //(side by side with the compass the pager reloads itself via -locationsChanged)
+        if (dele.rootController.listPaneWidth == 0) dele.viewController.locationViewController.page=toIndexPath.row;
         
         [self.tableView reloadData];
 

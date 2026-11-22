@@ -8,6 +8,7 @@
 
 #import "cwtAppDelegate.h"
 #import "UINavigationController+GZDrawer.h"
+#import "cwtListViewController.h"
 #import "cwtViewController3.h"
 #import "cwtUITableViewController.h"
 //#import "cwtIAP.h"
@@ -84,9 +85,133 @@ CGRect CFScreenBounds(void) {
 }
 
 CGFloat CFListWidth(void) {
-    UIWindow *window = ((cwtAppDelegate *)[UIApplication sharedApplication].delegate).window;
-    return CFScreenBounds().size.width - MAX(40.0, window.safeAreaInsets.right);
+    cwtAppDelegate *app = (cwtAppDelegate *)[UIApplication sharedApplication].delegate;
+    if (app.rootController.listPaneWidth > 0) return app.rootController.listPaneWidth;
+    return CFScreenBounds().size.width - MAX(40.0, app.window.safeAreaInsets.right);
 }
+
+@implementation cwtRootViewController {
+    cwtListViewController *list;
+}
+
+- (cwtAppDelegate *)app { return (cwtAppDelegate *)[UIApplication sharedApplication].delegate; }
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    //shows in the left safe-area strip beside the list pane, so match the list
+    self.view.backgroundColor = [UIColor colorWithRed:1.0 green:78/255.0f blue:36/255.0f alpha:1];
+    UINavigationController *nav = [self app].navController;
+    [self addChildViewController:nav];
+    //the compass wedge and the sliding drawer cover are larger than their pane
+    nav.view.clipsToBounds = YES;
+    [self.view addSubview:nav.view];
+    [nav didMoveToParentViewController:self];
+}
+
+//landscape is offered only where both panes fit (an unfolded iPhone Duo); every other
+//iPhone, and the Duo's cover screen, stay portrait as before
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    CGSize size = CFScreenBounds().size;
+    return MIN(size.width, size.height) >= 600 ? UIInterfaceOrientationMaskAllButUpsideDown : UIInterfaceOrientationMaskPortrait;
+}
+
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    CGSize size = self.view.bounds.size;
+    CGFloat safeLeft = self.view.safeAreaInsets.left;
+    BOOL split = size.width > size.height && size.height >= 600;
+    CGFloat pane = split ? MIN(360.0, (size.width - safeLeft)*0.45) : 0;
+
+    //the list lays its rows out for one width when it is built, so rebuild it if that changes
+    if (list && pane != _listPaneWidth) {
+        [list willMoveToParentViewController:nil];
+        [list.view removeFromSuperview];
+        [list removeFromParentViewController];
+        list = nil;
+    }
+    _listPaneWidth = pane;  //before building the list: it sizes itself with CFListWidth()
+    if (split && !list) {
+        //coming from portrait with the list drawer still open: put the compass back first
+        [[self app].navController popDrawerViewController:NO];
+        list = [[cwtListViewController alloc] init];
+        [self addChildViewController:list];
+        list.view.clipsToBounds = YES;
+        [self.view addSubview:list.view];
+        [list didMoveToParentViewController:self];
+    }
+    list.view.frame = CGRectMake(safeLeft, 0, pane, size.height);
+    CGFloat x = split ? safeLeft + pane : 0;
+    [self app].navController.view.frame = CGRectMake(x, 0, size.width - x, size.height);
+
+    //the window can cross the landscape threshold when the phone folds/unfolds
+    if (@available(iOS 16.0, *)) [self setNeedsUpdateOfSupportedInterfaceOrientations];
+
+    //headings are reported relative to the top of the device; keep them relative to the
+    //top of the interface now that it can be landscape (interface left == device right)
+    UIWindowScene *scene = self.view.window.windowScene;
+    if (scene) {
+        UIInterfaceOrientation o;
+        if (@available(iOS 16.0, *)) o = scene.effectiveGeometry.interfaceOrientation;
+        else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+            o = scene.interfaceOrientation;
+#pragma clang diagnostic pop
+        }
+        CLDeviceOrientation heading = CLDeviceOrientationPortrait;
+        if (o == UIInterfaceOrientationLandscapeLeft) heading = CLDeviceOrientationLandscapeRight;
+        else if (o == UIInterfaceOrientationLandscapeRight) heading = CLDeviceOrientationLandscapeLeft;
+        else if (o == UIInterfaceOrientationPortraitUpsideDown) heading = CLDeviceOrientationPortraitUpsideDown;
+        [self app].locationManager.headingOrientation = heading;
+    }
+}
+
+- (cwtUITableViewController *)table { return (cwtUITableViewController *)list.childViewControllers.firstObject; }
+
+- (void)reloadList { [[self table].tableView reloadData]; }
+
+//the drawer list is rebuilt, with fresh distances, every time it opens; beside the compass
+//it stays up, so refresh its distances as we move - but never under the user's finger.
+//ponytail: whole-table reload at most every 10s; update just the distance labels in place
+//if this ever shows as a flicker.
+- (void)locationMoved {
+    if (!list) return;
+    static CFAbsoluteTime last;
+    CFAbsoluteTime now = CFAbsoluteTimeGetCurrent();
+    cwtUITableViewController *table = [self table];
+    if (now - last < 10 || table.tableView.isDragging || table.tableView.isDecelerating
+        || [table isDraggingCell] || table.currentlyActiveSlidingCell) return;
+    last = now;
+    [self reloadList];
+}
+
+//as a drawer the list is rebuilt every time it opens and the compass reloads when the
+//drawer closes. side by side neither happens, so sync them here. deferred a turn: callers
+//are mid-edit (row deletion/reordering) and finish their own table updates first.
+- (void)locationsChanged {
+    if (!list) return;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (!self->list) return;
+        [[self app].viewController viewWillAppear:NO]; //clamps the current destination + reloads the pager
+        [self reloadList];
+    });
+}
+
+- (void)currentDestinationChanged {
+    if (!list) return;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self reloadList];
+        //follow the compass: bring its destination's row into view if it is off-screen
+        cwtUITableViewController *table = [self table];
+        NSInteger n = [[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"];
+        if (table && !table.isFiltered && n >= 0 && n < [table.tableView numberOfRowsInSection:0]) {
+            [table.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:n inSection:0]
+                                   atScrollPosition:UITableViewScrollPositionNone animated:YES];
+        }
+    });
+}
+
+@end
 
 @implementation cwtAppDelegate
 
@@ -173,15 +298,12 @@ CGFloat CFListWidth(void) {
 - (void)setUpWindowInScene:(UIWindowScene *)scene {
     self.window = [[UIWindow alloc] initWithWindowScene:scene];
     self.viewController = [[cwtViewController3 alloc] init];
-    self.window.rootViewController = self.viewController;
-
-    [self.viewController.view setFrame:self.window.bounds];
-
     self.navController = [[UINavigationController alloc] initWithRootViewController:self.viewController];
     [self.navController setNavigationBarHidden:YES animated:NO];
 
+    self.rootController = [[cwtRootViewController alloc] init];
+    self.window.rootViewController = self.rootController;
     [self.window makeKeyAndVisible];
-    [self.window addSubview:self.navController.view];
 }
 
 
@@ -300,6 +422,7 @@ CGFloat CFListWidth(void) {
 	//load destination list
 	NSLog(@"The array count: %i", (int)[self.locationDictionaryArray count]);
 	self.nDestinations=(int)[self.locationDictionaryArray count];
+    [self.rootController locationsChanged];
 
 
 }
@@ -417,7 +540,7 @@ CGFloat CFListWidth(void) {
     self.myLat=newLocation.coordinate.latitude;
     self.myLng=newLocation.coordinate.longitude;
 
-    [(cwtViewController3*)self.window.rootViewController updateViewControllersWithLatLng: (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"]];
+    [self.viewController updateViewControllersWithLatLng: (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"]];
 
     //[(cwtMapViewController*)self.viewController.mapViewController centerDeviceLocation];
     //[(cwtMapViewController*)self.viewController.mapViewController.mapView setCenterCoordinate:newLocation.coordinate animated:YES];
@@ -435,7 +558,7 @@ CGFloat CFListWidth(void) {
 
     self.headingAccuracy=newHeading.headingAccuracy;
 
-    [(cwtViewController3*)self.window.rootViewController updateViewControllersWithHeading:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"]];
+    [self.viewController updateViewControllersWithHeading:(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"]];
     
     //[self.viewController.mapViewController updateCone];
     //[self.viewController.mapViewController mapView:self.viewController.mapViewController.mapView rendererForOverlay:self.viewController.mapViewController.cone];
@@ -653,8 +776,8 @@ static NSString * const kPendingImportsKey = @"pendingImports";
     NSString *path = [documentsDirectory stringByAppendingPathComponent:@"/locationList.plist"];
     [self.locationDictionaryArray writeToFile:path atomically:YES];
     
-    [(cwtViewController3*)self.window.rootViewController updateViewControllersWithLatLng: (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"]];
-    [(cwtViewController3*)self.window.rootViewController updateViewControllersWithName];
+    [self.viewController updateViewControllersWithLatLng: (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"currentDestinationN"]];
+    [self.viewController updateViewControllersWithName];
     
     [self iCloudSync];
 

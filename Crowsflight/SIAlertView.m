@@ -277,6 +277,8 @@ static SIAlertView *__si_alert_current_view;
                                                                              andStyle:[SIAlertView currentAlertView].backgroundStyle];
         
         
+        //scene-based app: a window with no scene is never put on screen
+        __si_alert_background_window.windowScene = ((cwtAppDelegate *)[UIApplication sharedApplication].delegate).window.windowScene;
         [__si_alert_background_window makeKeyAndVisible];
         __si_alert_background_window.alpha = 0;
         [UIView animateWithDuration:0.2
@@ -378,6 +380,8 @@ static SIAlertView *__si_alert_current_view;
         window.opaque = NO;
         window.windowLevel = UIWindowLevelAlert;
         window.rootViewController = viewController;
+        //scene-based app: a window with no scene is never put on screen
+        window.windowScene = ((cwtAppDelegate *)[UIApplication sharedApplication].delegate).window.windowScene;
         self.alertWindow = window;
     }
     [self.alertWindow makeKeyAndVisible];

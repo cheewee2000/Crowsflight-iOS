@@ -95,9 +95,9 @@
                          animated:(BOOL)animated {
     
     // Screen capture the current content of the navigation view (alogn with the navigation bar, if any)
-    UIImage *image = [[self class] imageByScreencapturingView:self.view.window];
+    UIImage *image = [[self class] imageByScreencapturingView:self.view]; //the nav controller's own view, not the window: beside the list in landscape it is only one pane
     
-    CGRect frame = self.view.window.bounds;
+    CGRect frame = self.view.bounds;
     
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
     {
@@ -117,7 +117,7 @@
     topViewButton.layer.shadowRadius = TOP_VIEW_SHADOW_RADIUS;
     topViewButton.layer.shadowColor = [UIColor blackColor].CGColor;
     topViewButton.layer.shadowOpacity = TOP_VIEW_SHADOW_OPACITY;
-    topViewButton.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.view.window.layer.bounds].CGPath;
+    topViewButton.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.view.bounds].CGPath;
     // Tapping the button closes the drawer
     [topViewButton addTarget:self action:@selector(popDrawerViewController) forControlEvents:UIControlEventTouchDown];
     // Add the button to the drawer view controller
